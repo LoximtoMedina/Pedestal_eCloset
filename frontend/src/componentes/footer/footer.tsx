@@ -1,6 +1,6 @@
 import { useDisclosure } from '@mantine/hooks';
 import { useViewportType } from '../../hooks/useViewportType';
-import './header.css';
+import './footer.css';
 import logo from '../../assets/PedestalLogo.svg';
 
 
