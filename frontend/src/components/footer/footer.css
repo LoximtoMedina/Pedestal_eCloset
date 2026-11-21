@@ -1,0 +1,130 @@
+/* Contenedor principal del Footer */
+.pedestalFooter {
+  width: 100%;
+  background-color: hsl(0, 0%, 100%);
+  border-top: 1px solid hsl(0, 0%, 90%);
+  padding: 3.5rem 2.5rem;
+}
+
+.pedestalFooterInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+/* Columna izquierda: Marca, descripción y redes */
+.pedestalFooterBrand {
+  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pedestalFooterTitleBrand {
+  color: hsl(0, 0%, 10%);
+  letter-spacing: -0.02em;
+}
+
+.pedestalFooterDescription {
+  color: hsl(0, 0%, 45%);
+  line-height: 1.5;
+}
+
+.pedestalFooterSocial {
+  margin-top: 0.75rem;
+}
+
+.pedestalFooterSocialBtn {
+  color: hsl(0, 0%, 45%);
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.pedestalFooterSocialBtn:hover {
+  color: hsl(0, 0%, 15%);
+  transform: translateY(-1px);
+}
+
+/* Columnas derechas: Grupos de enlaces */
+.pedestalFooterGroups {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 4.5rem;
+  flex-wrap: wrap;
+}
+
+.pedestalFooterColumn {
+  min-width: 120px;
+}
+
+.pedestalFooterColumnTitle {
+  color: hsl(0, 0%, 15%);
+  margin-bottom: 0.75rem;
+}
+
+.pedestalFooterLinkList {
+  display: flex;
+  flex-direction: column;
+}
+
+.pedestalFooterLink {
+  text-decoration: none;
+  font-size: 0.9rem;
+  color: hsl(0, 0%, 45%);
+  padding: 0.2rem 0;
+  transition: color 0.15s ease;
+}
+
+.pedestalFooterLink:hover {
+  color: hsl(0, 0%, 15%);
+  text-decoration: underline;
+}
+
+/* Tablet (769px - 1024px) */
+@media (max-width: 1024px) {
+  .pedestalFooter {
+    padding: 3rem 1.25rem;
+  }
+
+  .pedestalFooterInner {
+    gap: 2rem;
+  }
+
+  .pedestalFooterGroups {
+    gap: 2.5rem;
+  }
+}
+
+/* Mobile (hasta 768px) */
+@media (max-width: 768px) {
+  .pedestalFooter {
+    padding: 2.5rem 1.25rem;
+  }
+
+  .pedestalFooterInner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+  }
+
+  .pedestalFooterBrand {
+    align-items: center;
+    max-width: 100%;
+  }
+
+  .pedestalFooterGroups {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.75rem;
+  }
+
+  .pedestalFooterColumn {
+    min-width: auto;
+  }
+}

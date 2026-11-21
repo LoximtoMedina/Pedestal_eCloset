@@ -4,8 +4,8 @@
     box-sizing: border-box;
 }
 
-body{
-    height: 700vh;
+.App{
+    height: auto;
     width: 100%;
 }
 
