@@ -43,7 +43,7 @@ header {
   }
 
   .navLink {
-    text-decoration: none;
+    text-align: center;
     font-weight: 600;
     color: hsl(0, 0%, 15%);
     
