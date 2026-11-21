@@ -1,11 +1,10 @@
-import { useState } from 'react';
 import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
 import './App.css';
 
 // Importación de componentes
-import Header from './componentes/header/header';
-import Footer from './componentes/footer/footer';
+import Header from './components/header/header';
+import Footer from './components/footer/footer';
 
 function App() {
   return (
