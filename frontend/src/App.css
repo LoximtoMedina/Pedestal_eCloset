@@ -9,3 +9,24 @@ body{
     width: 100%;
     background: red;
 }
+
+h1{
+    font-family: 'Rowdies', sans-serif;
+    font-size: 1.5rem;
+    
+    letter-spacing: -3%;
+}
+
+a{
+    text-decoration: none;
+}
+
+button{
+    background: transparent;
+    border: none;
+
+    font-family: 'Inter', sans-serif;
+    color: hsl(0, 0%, 10%);
+    
+    cursor: pointer;
+}
