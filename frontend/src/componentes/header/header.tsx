@@ -16,7 +16,7 @@ const navItems: NavItem[] = [
   { label: 'Contáctanos', key: 'contactUs', href: '#contact' },
 ];
 
-function Header() {
+function header() {
   const viewport = useViewportType();
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
 
@@ -134,4 +134,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default header;

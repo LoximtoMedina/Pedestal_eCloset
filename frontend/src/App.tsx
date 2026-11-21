@@ -4,26 +4,18 @@ import { MantineProvider } from '@mantine/core';
 import './App.css';
 
 // Importación de componentes
-import header from './componentes/header/header';
-import footer from './componentes/footer/footer';
+import Header from './componentes/header/header';
+import Footer from './componentes/footer/footer';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <MantineProvider>
-        <header />
-      </MantineProvider>
-      
-      <div className="App">
+    <MantineProvider>
+      <Header />
+    
+      <div className="App"> </div>
 
-      </div>
-
-      <MantineProvider>
-        <footer />
-      </MantineProvider>
-    </>
+      <Footer />
+    </MantineProvider>
   );
 }
 
