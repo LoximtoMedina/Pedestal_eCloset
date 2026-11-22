@@ -53,7 +53,7 @@ function Home() {
     <main className={`homePage homePage--${viewport}`}>
       {/* Hero Section */}
       <section className={`pedestalHeroWrapper pedestalHeroWrapper--${viewport}`}>
-        <Container size={760} className="pedestalHeroInner">
+        <Container className="pedestalHeroInner">
           <h1 className="pedestalHeroTitle">Eleva tu estilo</h1>
 
           <Text className="pedestalHeroDescription">
@@ -98,62 +98,60 @@ function Home() {
             “Lo que vistes es cómo te presentas al mundo, especialmente hoy, cuando los contactos
             humanos son tan rápidos. La moda es un lenguaje instantáneo”
           </p>
-          <footer className="pedestalCarouselQuoteAuthor">Miuccia Prada</footer>
+          <footer className="pedestalCarouselQuoteAuthor">- Miuccia Prada</footer>
         </blockquote>
       </section>
 
-      {/* Sección Acerca de nosotros */}
+      {/* Sección de Acerca de nosotros */}
       <section id="about" className="pedestalAboutSection">
-        <div className="pedestalAboutInner">
-          <div className="pedestalAboutLeft">
-            <Title order={2} className="pedestalAboutTitle">
-              Acerca de nosotros
-            </Title>
-            <Text className="pedestalAboutDescription">
-              PEDESTAL es una empresa dedicada a la comercializacion de prendas de vestir y
-              accesorios mediante una plataforma digital integrada que une ERP, eCommerce y eCloset.
+        <div className="pedestalAboutLeft">
+          <Title order={2} className="pedestalAboutTitle">
+            Acerca de nosotros
+          </Title>
+          <Text className="pedestalAboutDescription">
+            PEDESTAL es una empresa dedicada a la comercializacion de prendas de vestir y
+            accesorios mediante una plataforma digital integrada que une ERP, eCommerce y eCloset.
+          </Text>
+        </div>
+
+        <div className="pedestalAboutRight">
+          <div className="pedestalAboutCard">
+            <div className="pedestalAboutCardHeader">
+              <IconCircleFilled size={14} className="pedestalAboutIcon" />
+              <Title order={3} className="pedestalAboutCardTitle">
+                Misión
+              </Title>
+            </div>
+            <Text className="pedestalAboutCardText">
+              Ofrecer una experiencia moderna y elegante en la adquisicion y gestion de prendas de
+              vestir, integrando tecnologia, diseno y calidad para ayudar a los clientes a
+              expresar su identidad.
             </Text>
           </div>
 
-          <div className="pedestalAboutRight">
-            <div className="pedestalAboutCard">
-              <div className="pedestalAboutCardHeader">
-                <IconCircleFilled size={14} className="pedestalAboutIcon" />
-                <Title order={3} className="pedestalAboutCardTitle">
-                  Misión
-                </Title>
-              </div>
-              <Text className="pedestalAboutCardText">
-                Ofrecer una experiencia moderna y elegante en la adquisicion y gestion de prendas de
-                vestir, integrando tecnologia, diseno y calidad para ayudar a los clientes a
-                expresar su identidad.
-              </Text>
+          <div className="pedestalAboutCard">
+            <div className="pedestalAboutCardHeader">
+              <IconDiamondFilled size={14} className="pedestalAboutIcon" />
+              <Title order={3} className="pedestalAboutCardTitle">
+                Visión
+              </Title>
             </div>
+            <Text className="pedestalAboutCardText">
+              Convertirnos en la plataforma lider en gestion de moda digital y comercio
+              electronico en Centroamerica.
+            </Text>
+          </div>
 
-            <div className="pedestalAboutCard">
-              <div className="pedestalAboutCardHeader">
-                <IconDiamondFilled size={14} className="pedestalAboutIcon" />
-                <Title order={3} className="pedestalAboutCardTitle">
-                  Visión
-                </Title>
-              </div>
-              <Text className="pedestalAboutCardText">
-                Convertirnos en la plataforma lider en gestion de moda digital y comercio
-                electronico en Centroamerica.
-              </Text>
+          <div className="pedestalAboutCard">
+            <div className="pedestalAboutCardHeader">
+              <IconTriangleFilled size={14} className="pedestalAboutIcon" />
+              <Title order={3} className="pedestalAboutCardTitle">
+                Valores
+              </Title>
             </div>
-
-            <div className="pedestalAboutCard">
-              <div className="pedestalAboutCardHeader">
-                <IconTriangleFilled size={14} className="pedestalAboutIcon" />
-                <Title order={3} className="pedestalAboutCardTitle">
-                  Valores
-                </Title>
-              </div>
-              <Text className="pedestalAboutCardText">
-                Elegancia, Innovacion, Calidad, Confianza, Responsabilidad y Exclusividad.
-              </Text>
-            </div>
+            <Text className="pedestalAboutCardText">
+              Elegancia, Innovacion, Calidad, Confianza, Responsabilidad y Exclusividad.
+            </Text>
           </div>
         </div>
       </section>

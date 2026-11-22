@@ -2,72 +2,73 @@
   width: 100%;
 }
 
-/* Hero Section */
+/* HERO SECTION */
 .pedestalHeroWrapper {
-  position: relative;
-  box-sizing: border-box;
-  background-color: hsl(0, 0%, 100%);
+  height: 100vh;
   width: 100%;
+  
+  background: url('../../assets/Pedestal_Neon_Pattern.svg') no-repeat center center;
+  background-size: cover;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .pedestalHeroInner {
+    text-align: center;
+
+    background-color: #ffffff97;
+    backdrop-filter: blur(7px);
+    border-radius: 12px;
+    padding: 2.5rem 4.5rem;
+
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1.5rem;
+
+    .pedestalHeroTitle {
+      font-size: 3.75rem;
+      font-weight: 700;
+    }
+
+    .pedestalHeroDescription {
+      max-width: 540px;
+    }
+
+
+    .pedestalHeroControls {
+      .pedestalHeroPrimaryBtn {
+        background-color: hsl(0, 0%, 8%);
+        color: hsl(0, 0%, 100%);
+        font-weight: 600;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        transition: background-color 0.2s ease, transform 0.15s ease;
+      }
+
+      .pedestalHeroPrimaryBtn:hover {
+        background-color: hsl(0, 0%, 22%);
+      }
+
+      .pedestalHeroSecondaryBtn {
+        background-color: hsl(0, 0%, 100%);
+        color: hsl(0, 0%, 12%);
+        border: 1px solid hsl(0, 0%, 86%);
+        font-weight: 500;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+      }
+
+      .pedestalHeroSecondaryBtn:hover {
+        background-color: hsl(0, 0%, 97%);
+        border-color: hsl(0, 0%, 75%);
+      }
+    }
+  }
 }
 
-.pedestalHeroInner {
-  position: relative;
-  padding-top: 7.5rem;
-  padding-bottom: 4.5rem;
-  text-align: center;
-}
-
-.pedestalHeroTitle {
-  font-size: 3.75rem;
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.025em;
-  margin: 0;
-  padding: 0;
-  color: hsl(0, 0%, 8%);
-}
-
-.pedestalHeroDescription {
-  max-width: 540px;
-  margin: 1.25rem auto 0;
-  font-size: 1.15rem;
-  line-height: 1.55;
-  color: hsl(0, 0%, 45%);
-}
-
-.pedestalHeroControls {
-  margin-top: 2rem;
-}
-
-.pedestalHeroPrimaryBtn {
-  background-color: hsl(0, 0%, 8%);
-  color: hsl(0, 0%, 100%);
-  font-weight: 600;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  transition: background-color 0.2s ease, transform 0.15s ease;
-}
-
-.pedestalHeroPrimaryBtn:hover {
-  background-color: hsl(0, 0%, 22%);
-}
-
-.pedestalHeroSecondaryBtn {
-  background-color: hsl(0, 0%, 100%);
-  color: hsl(0, 0%, 12%);
-  border: 1px solid hsl(0, 0%, 86%);
-  font-weight: 500;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-}
-
-.pedestalHeroSecondaryBtn:hover {
-  background-color: hsl(0, 0%, 97%);
-  border-color: hsl(0, 0%, 75%);
-}
-
-/* Sección Carrusel */
+/* OFFERS SECTION */
 .pedestalCarouselSection {
   width: 100%;
   max-width: 1200px;
@@ -112,85 +113,80 @@
 
 /* Sección Acerca de nosotros */
 .pedestalAboutSection {
+  height: 100vh;
   width: 100%;
-  background-color: hsl(241, 68%, 74%);
-  padding: 4.5rem 2.5rem;
-  margin-top: 3rem;
-}
 
-.pedestalAboutInner {
-  max-width: 1200px;
-  margin: 0 auto;
+  background: #d3d3d34f;
+
   display: flex;
+  flex-flow: row nowrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 4rem;
+  justify-content: space-around;
+
+  .pedestalAboutLeft {
+    height: 100%;
+    width: 40%;
+
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    justify-content: center;
+
+    gap: 1.5rem;
+
+    .pedestalAboutTitle {
+      font-size: 3rem;
+    }
+  }
+
+  .pedestalAboutRight {
+    height: 100%;
+    width: 40%;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    gap: 1.15rem;
+
+    .pedestalAboutCard {
+      background-color: hsla(0, 0%, 0%, 0.1);
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+
+      .pedestalAboutDescription {
+        font-size: 1.35rem;
+        line-height: 1.45;
+        font-weight: 500;
+        color: hsl(0, 0%, 18%);
+      }
+
+      .pedestalAboutCardHeader {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 0.45rem;
+      }
+
+      .pedestalAboutCardTitle {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: hsl(0, 0%, 8%);
+      }
+
+      .pedestalAboutCardText {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: hsl(0, 0%, 20%);
+      }
+    }
+  }
 }
 
-.pedestalAboutLeft {
-  flex: 1;
-  max-width: 480px;
-}
-
-.pedestalAboutTitle {
-  font-size: 3rem;
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.025em;
-  color: hsl(0, 0%, 5%);
-  margin-bottom: 1.25rem;
-}
-
-.pedestalAboutDescription {
-  font-size: 1.35rem;
-  line-height: 1.45;
-  font-weight: 500;
-  color: hsl(0, 0%, 18%);
-}
-
-.pedestalAboutRight {
-  flex: 1;
-  max-width: 520px;
-  display: flex;
-  flex-direction: column;
-  gap: 1.15rem;
-}
-
-.pedestalAboutCard {
-  background-color: hsla(241, 55%, 64%, 0.65);
-  border-radius: 14px;
-  padding: 1.25rem 1.5rem;
-}
-
-.pedestalAboutCardHeader {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  margin-bottom: 0.45rem;
-}
-
-.pedestalAboutIcon {
-  color: hsl(241, 20%, 30%);
-  flex-shrink: 0;
-}
-
-.pedestalAboutCardTitle {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: hsl(0, 0%, 8%);
-}
-
-.pedestalAboutCardText {
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: hsl(0, 0%, 20%);
-}
-
-/* Sección Contacto */
+/* CONTACT US SECTION */
 .pedestalContactSection {
+  height: 100vh;
   width: 100%;
-  background-color: hsl(0, 0%, 100%);
-  padding: 4.5rem 2.5rem;
+  padding: 2.5rem;
 }
 
 .pedestalContactInner {
@@ -251,13 +247,8 @@
   background-color: hsl(0, 0%, 22%);
 }
 
-/* Tablet (769px - 1024px) */
+/* RESPONSIVE TABLET (769px - 1024px) */
 @media (max-width: 1024px) {
-  .pedestalHeroInner {
-    padding-top: 6.5rem;
-    padding-bottom: 3.5rem;
-  }
-
   .pedestalHeroTitle {
     font-size: 3rem;
   }
@@ -277,7 +268,8 @@
   }
 
   .pedestalAboutSection {
-    padding: 3.5rem 1.25rem;
+    height: auto;
+    padding: 3rem 0;
   }
 
   .pedestalAboutInner {
@@ -297,34 +289,32 @@
   }
 }
 
-/* Mobile (hasta 768px) */
+/* RESPONSIVE MOBILE (hasta 768px) */
 @media (max-width: 768px) {
-  .pedestalHeroInner {
-    padding-top: 5.5rem;
-    padding-bottom: 2.5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
+  .pedestalHeroWrapper{
+    .pedestalHeroInner {
+      width: 80%;
+      padding: 2.5rem;
 
-  .pedestalHeroTitle {
-    font-size: 2.35rem;
-    line-height: 1.15;
-  }
+      .pedestalHeroTitle {
+        font-size: 2.35rem;
+        line-height: 1.15;
+      }
 
-  .pedestalHeroDescription {
-    font-size: 1rem;
-    margin-top: 1rem;
-  }
+      .pedestalHeroDescription {
+        font-size: 1rem;
+      }
 
-  .pedestalHeroControls {
-    margin-top: 1.5rem;
-  }
+      .pedestalHeroControls {
+        display: flex;
+        flex-flow: column nowrap;
 
-  .pedestalHeroPrimaryBtn,
-  .pedestalHeroSecondaryBtn {
-    flex: 1;
-    padding-left: 1rem;
-    padding-right: 1rem;
+        .pedestalHeroPrimaryBtn, .pedestalHeroSecondaryBtn {
+          width: 100%;
+          padding: 0 1rem;
+        }
+      }
+    }
   }
 
   .pedestalCarouselSection {
@@ -340,18 +330,27 @@
   }
 
   .pedestalAboutSection {
-    padding: 3rem 1rem;
+    height: auto;
+
+    flex-flow: column nowrap;
+    padding: 3rem 0;
+    gap: 3rem;
+
+    .pedestalAboutLeft{
+      height: 40%;
+      width: 90%;
+    } 
+    
+    .pedestalAboutRight {
+      height: 40%;
+      width: 90%;
+    }
   }
 
   .pedestalAboutInner {
     flex-direction: column;
     align-items: stretch;
     gap: 2rem;
-  }
-
-  .pedestalAboutLeft,
-  .pedestalAboutRight {
-    max-width: 100%;
   }
 
   .pedestalAboutTitle {
@@ -363,6 +362,7 @@
   }
 
   .pedestalContactSection {
+    height: auto;
     padding: 3rem 1rem;
   }
 

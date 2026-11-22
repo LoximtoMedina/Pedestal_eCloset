@@ -42,10 +42,10 @@ function Footer() {
         {/* Columna izquierda: Marca + descripción + redes */}
         <div className="pedestalFooterBrand">
           <Text fw={700} size="lg" className="pedestalFooterTitleBrand">
-            Ecloset
+            Pedestal
           </Text>
           <Text size="sm" className="pedestalFooterDescription">
-            Tu espacio digital para organizar, descubrir y renovar tu clóset con estilo.
+            La tienda donde puedes elevar tu estilo con un espacio digital para organizar, descubrir y renovar tu clóset con estilo.
           </Text>
 
           <Group gap="xs" className="pedestalFooterSocial" justify={isMobile ? 'center' : 'flex-start'}>

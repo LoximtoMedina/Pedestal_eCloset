@@ -38,7 +38,7 @@ function Login({ onSubmit, onRegisterClick }: LoginProps) {
       <div className="loginWrapper">
         <Paper className="loginFormCard" component="section" aria-label="Iniciar sesión">
           <Title order={2} className="loginTitle">
-            Bienvenido a PEDESTAL
+            Bienvenido a Pedestal
           </Title>
 
           <form className="loginForm" onSubmit={handleSubmit}>
