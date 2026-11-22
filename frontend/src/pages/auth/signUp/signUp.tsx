@@ -1,3 +1,6 @@
+/* ==========================================================================
+   1. DEPENDENCIAS DE UI, HOOKS Y ESTILOS
+   ========================================================================== */
 import {
   Anchor,
   Button,
@@ -11,6 +14,9 @@ import {
 import { useViewportType } from '../../../hooks/useViewportType';
 import './signUp.css';
 
+/* ==========================================================================
+   2. TIPOS Y CONTRATO DE PROPS
+   ========================================================================== */
 export interface SignUpData {
   documentoIdentidad: string;
   primerNombre: string;
@@ -32,6 +38,9 @@ interface SignUpProps {
   onLoginClick?: () => void;
 }
 
+/* ==========================================================================
+   3. COMPONENTE DE REGISTRO (SIGN UP)
+   ========================================================================== */
 function SignUp({ onSubmit, onLoginClick }: SignUpProps) {
   const viewport = useViewportType();
 
@@ -66,8 +75,8 @@ function SignUp({ onSubmit, onLoginClick }: SignUpProps) {
             Crea tu cuenta en Pedestal
           </Title>
 
+          {/* Formulario de registro */}
           <form className="signUpForm" onSubmit={handleSubmit}>
-            {/* Documento de identidad y Teléfono */}
             <div className="signUpRow">
               <TextInput
                 name="documentoIdentidad"
@@ -99,7 +108,6 @@ function SignUp({ onSubmit, onLoginClick }: SignUpProps) {
               />
             </div>
 
-            {/* Primer y Segundo Nombre */}
             <div className="signUpRow">
               <TextInput
                 name="primerNombre"
@@ -129,7 +137,6 @@ function SignUp({ onSubmit, onLoginClick }: SignUpProps) {
               />
             </div>
 
-            {/* Primer y Segundo Apellido */}
             <div className="signUpRow">
               <TextInput
                 name="primerApellido"
@@ -159,7 +166,6 @@ function SignUp({ onSubmit, onLoginClick }: SignUpProps) {
               />
             </div>
 
-            {/* Correo electrónico y Nombre de usuario */}
             <div className="signUpRow">
               <TextInput
                 name="correo"
@@ -191,7 +197,6 @@ function SignUp({ onSubmit, onLoginClick }: SignUpProps) {
               />
             </div>
 
-            {/* Ciudad y Dirección */}
             <div className="signUpRow">
               <TextInput
                 name="ciudad"
@@ -222,7 +227,6 @@ function SignUp({ onSubmit, onLoginClick }: SignUpProps) {
               />
             </div>
 
-            {/* Contraseña y Confirmar contraseña */}
             <div className="signUpRow">
               <PasswordInput
                 name="contrasena"
@@ -281,6 +285,7 @@ function SignUp({ onSubmit, onLoginClick }: SignUpProps) {
             </Button>
           </form>
 
+          {/* Enlace hacia inicio de sesión */}
           <Text className="signUpFooterText">
             ¿Ya tienes una cuenta?{' '}
             <Anchor
@@ -296,6 +301,7 @@ function SignUp({ onSubmit, onLoginClick }: SignUpProps) {
           </Text>
         </Paper>
 
+        {/* Panel visual lateral (oculto en mobile) */}
         {viewport !== 'mobile' && (
           <aside className="signUpVisualPanel" aria-hidden="true" />
         )}

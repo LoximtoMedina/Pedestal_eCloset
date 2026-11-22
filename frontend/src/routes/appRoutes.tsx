@@ -1,70 +1,86 @@
-// Importación de los componentes y hook de navegación de react-router
+/* ==========================================================================
+   1. DEPENDENCIAS DE ENRUTAMIENTO Y CONTEXTO DE SESIÓN
+   ========================================================================== */
 import { Routes, Route, Navigate, useNavigate } from 'react-router';
-// Importación de los layouts generales para separar vistas públicas y paneles
+import { useAuth } from '../context/authContext';
+
+/* ==========================================================================
+   2. LAYOUTS, GUARDAS DE RUTA Y VISTAS
+   ========================================================================== */
 import PublicLayout from '../layouts/publicLayout';
 import DashboardLayout from '../layouts/dashboardLayout';
-// Importación de la guarda para proteger las rutas privadas
 import ProtectedRoute from './protectedRoutes';
-// Importación de las pantallas principales y de autenticación
 import Home from '../pages/home/home';
 import Login from '../pages/auth/login/login';
 import SignUp from '../pages/auth/signUp/signUp';
 
-// Definición de las props que recibe el enrutador principal
-interface AppRoutesProps {
-  isAuthenticated: boolean; // Estado global de sesión que se pasa a las rutas protegidas
-}
-
-// Componente que centraliza todas las rutas públicas y privadas de la aplicación
-function AppRoutes({ isAuthenticated }: AppRoutesProps) {
-  // Hook para navegar de forma programática entre rutas (ej. al enviar formularios)
+/* ==========================================================================
+   3. ENRUTADOR PRINCIPAL DE LA APLICACIÓN
+   --------------------------------------------------------------------------
+   Centraliza el estado de sesión desde AuthContext y organiza las rutas en:
+   - Rutas de autenticación (/login, /signup) sin layout público.
+   - Rutas públicas con PublicLayout.
+   - Rutas privadas protegidas por ProtectedRoute y envueltas en DashboardLayout.
+   ========================================================================== */
+function AppRoutes() {
+  const { isAuthenticated, loginMock } = useAuth();
   const navigate = useNavigate();
 
   return (
     <Routes>
-      {/* Rutas de autenticación sin PublicLayout (pantalla limpia, sin Header ni Footer) */}
+      {/* Rutas de autenticación (redirigen a "/" si ya hay sesión activa) */}
       <Route
         path="/login"
         element={
-          <Login
-            // Si el usuario hace clic en "Registrarse", lo manda a /signup
-            onRegisterClick={() => navigate('/signup')}
-            // Al enviar el formulario de login, lo redirige al inicio (aquí irá la llamada a la API)
-            onSubmit={() => {
-              navigate('/');
-            }}
-          />
+          isAuthenticated ? (
+            <Navigate to="/" replace />
+          ) : (
+            <Login
+              onRegisterClick={() => navigate('/signup')}
+              onSubmit={({ email }) => {
+                loginMock({ identifier: email });
+                navigate('/');
+              }}
+            />
+          )
         }
       />
 
       <Route
         path="/signup"
         element={
-          <SignUp
-            // Si ya tiene cuenta y hace clic en "Iniciar Sesión", lo manda a /login
-            onLoginClick={() => navigate('/login')}
-            // Al completar el registro, lo lleva al login para que inicie sesión
-            onSubmit={() => {
-              navigate('/login');
-            }}
-          />
+          isAuthenticated ? (
+            <Navigate to="/" replace />
+          ) : (
+            <SignUp
+              onLoginClick={() => navigate('/login')}
+              onSubmit={(data) => {
+                loginMock({
+                  correo: data.correo,
+                  nombreUsuario: data.nombreUsuario,
+                  primerNombre: data.primerNombre,
+                  primerApellido: data.primerApellido,
+                });
+                navigate('/');
+              }}
+            />
+          )
         }
       />
 
-      {/* Rutas públicas envueltas en PublicLayout (Header + vista + Footer) */}
+      {/* Rutas públicas con Header y Footer */}
       <Route element={<PublicLayout />}>
-        {/* Ruta raíz pública (landing / inicio de la tienda) */}
         <Route path="/" element={<Home />} />
       </Route>
 
-      {/* Grupo de rutas protegidas: solo accesibles si isAuthenticated es true */}
+      {/* Rutas privadas protegidas con DashboardLayout */}
       <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
         <Route element={<DashboardLayout />}>
-          {/* Aquí irán las rutas privadas / dashboards */}
+          {/* Aquí se agregarán las rutas de dashboards y módulos internos */}
         </Route>
       </Route>
 
-      {/* Ruta comodín: cualquier URL que no exista redirige al inicio */}
+      {/* Redirección por defecto ante rutas inexistentes */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

@@ -14,6 +14,9 @@ import {
 import { useForm } from '@mantine/form';
 import { IconCircleFilled, IconDiamondFilled, IconTriangleFilled } from '@tabler/icons-react';
 import { useViewportType } from '../../hooks/useViewportType';
+import { useMemo } from 'react';
+import { usePublicHeaderItems } from '../../layouts/publicLayout';
+import type { HeaderNavItem } from '../../components/header/header';
 
 /*Importacion del css a la pagina home*/
 import './home.css';
@@ -28,6 +31,18 @@ interface ContactFormValues {
 function Home() {
   const viewport = useViewportType();
   const [sentMessage, setSentMessage] = useState(false);
+
+  const homeNavItems = useMemo<HeaderNavItem[]>(
+    () => [
+      { key: 'offers', label: 'Ofertas', href: '#offers' },
+      { key: 'about', label: 'Sobre Nosotros', href: '#about' },
+      { key: 'contact', label: 'Contáctanos', href: '#contact' },
+      { key: 'shop', label: 'Tienda', to: '/shop' },
+      { key: 'ecloset', label: 'eCloset', to: '/ecloset' },
+    ],
+    []
+  );
+  usePublicHeaderItems(homeNavItems);
 
   const contactForm = useForm<ContactFormValues>({
     initialValues: {

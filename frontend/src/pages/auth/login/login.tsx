@@ -1,3 +1,6 @@
+/* ==========================================================================
+   1. DEPENDENCIAS DE UI, HOOKS Y ESTILOS
+   ========================================================================== */
 import {
   Anchor,
   Button,
@@ -11,26 +14,37 @@ import {
 import { useViewportType } from '../../../hooks/useViewportType';
 import './login.css';
 
+/* ==========================================================================
+   2. TIPOS Y CONTRATO DE PROPS
+   ========================================================================== */
+export interface LoginCredentials {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+}
+
 interface LoginProps {
-  onSubmit?: (credentials: {
-    email: string;
-    password: string;
-    rememberMe: boolean;
-  }) => void;
+  onSubmit?: (credentials: LoginCredentials) => void;
   onRegisterClick?: () => void;
 }
 
+/* ==========================================================================
+   3. COMPONENTE DE INICIO DE SESIÓN (LOGIN)
+   ========================================================================== */
 function Login({ onSubmit, onRegisterClick }: LoginProps) {
   const viewport = useViewportType();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const email = String(formData.get('email') ?? '');
-    const password = String(formData.get('password') ?? '');
-    const rememberMe = formData.get('rememberMe') === 'on';
 
-    onSubmit?.({ email, password, rememberMe });
+    const credentials: LoginCredentials = {
+      email: String(formData.get('email') ?? '').trim(),
+      password: String(formData.get('password') ?? ''),
+      rememberMe: formData.get('rememberMe') === 'on',
+    };
+
+    onSubmit?.(credentials);
   };
 
   return (
@@ -41,9 +55,11 @@ function Login({ onSubmit, onRegisterClick }: LoginProps) {
             Bienvenido a Pedestal
           </Title>
 
+          {/* Formulario de acceso */}
           <form className="loginForm" onSubmit={handleSubmit}>
             <TextInput
               name="email"
+              type="email"
               label="Correo electrónico"
               placeholder="correo@ejemplo.com"
               size="md"
@@ -96,10 +112,11 @@ function Login({ onSubmit, onRegisterClick }: LoginProps) {
             </Button>
           </form>
 
+          {/* Enlace hacia registro */}
           <Text className="loginFooterText">
             ¿No tienes una cuenta?{' '}
             <Anchor
-              href="#register"
+              href="/signup"
               className="loginRegisterLink"
               onClick={(event) => {
                 event.preventDefault();
@@ -111,6 +128,7 @@ function Login({ onSubmit, onRegisterClick }: LoginProps) {
           </Text>
         </Paper>
 
+        {/* Panel visual lateral (oculto en mobile) */}
         {viewport !== 'mobile' && (
           <aside className="loginVisualPanel" aria-hidden="true" />
         )}
