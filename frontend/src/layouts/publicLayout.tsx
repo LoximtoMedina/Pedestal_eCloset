@@ -27,13 +27,20 @@ export function usePublicHeaderItems(items: HeaderNavItem[]) {
    3. LAYOUT PÚBLICO (HEADER + CONTENIDO DE PÁGINA + FOOTER)
    ========================================================================== */
 function PublicLayout() {
-  const { isAuthenticated, user, logoutMock } = useAuth();
+  const { isAuthenticated, user, logoutMock, hasPermission } = useAuth();
   const navigate = useNavigate();
   const [headerItems, setHeaderItems] = useState<HeaderNavItem[]>([]);
 
   const profileMenuItems: HeaderSubItem[] = [
-    { key: 'ecloset', label: 'Mi eCloset', to: '/ecloset' },
-    { key: 'dashboard', label: 'Panel de control', to: '/dashboard' },
+    ...(hasPermission('ecloset.access')
+      ? [{ key: 'user', label: 'Mi Usuario', to: '/ecloset' }]
+      : []),
+    ...(hasPermission('ecloset.access')
+      ? [{ key: 'ecloset', label: 'Mi eCloset', to: '/ecloset' }]
+      : []),
+    ...(hasPermission('dashboard.view')
+      ? [{ key: 'dashboard', label: 'Panel de control', to: '/dashboard' }]
+      : []),
     {
       key: 'logout',
       label: 'Cerrar sesión',

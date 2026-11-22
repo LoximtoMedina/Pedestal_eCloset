@@ -1,23 +1,36 @@
-// Importación de los componentes de react-router para redirigir y renderizar rutas hijas
+/* ==========================================================================
+   1. DEPENDENCIAS DE ENRUTAMIENTO Y CONTEXTO DE SESIÓN
+   ========================================================================== */
 import { Navigate, Outlet } from 'react-router';
+import { useAuth } from '../context/authContext';
 
-// Definición de las propiedades que recibe la guarda de rutas protegidas
+/* ==========================================================================
+   2. TIPOS Y CONTRATO DE PROPS
+   ========================================================================== */
 interface ProtectedRoutesProps {
-  isAuthenticated: boolean; // Indica si el usuario tiene una sesión activa
-  redirectTo?: string; // Ruta a la que se envía al usuario si no está autenticado (por defecto '/login')
+  redirectTo?: string;
+  requiredPermission?: string;
 }
 
-// Componente encargado de bloquear el acceso a vistas privadas si no hay sesión iniciada
+/* ==========================================================================
+   3. GUARDA DE RUTAS PRIVADAS (SESIÓN Y PERMISO OPCIONAL)
+   ========================================================================== */
 function ProtectedRoute({
-  isAuthenticated,
   redirectTo = '/login',
+  requiredPermission,
 }: ProtectedRoutesProps) {
-  // Si el usuario no ha iniciado sesión, lo redirige a la vista de login reemplazando el historial
+  const { isAuthenticated, hasPermission } = useAuth();
+
+  // Bloquea el acceso si no hay sesión activa
   if (!isAuthenticated) {
     return <Navigate to={redirectTo} replace />;
   }
 
-  // Si sí está autenticado, permite renderizar la ruta hija correspondiente
+  // Si la ruta exige un permiso específico y el usuario no lo tiene, redirige al inicio
+  if (requiredPermission && !hasPermission(requiredPermission)) {
+    return <Navigate to="/" replace />;
+  }
+
   return <Outlet />;
 }
 

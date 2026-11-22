@@ -9,6 +9,8 @@ export interface SessionUser {
   primerNombre: string;
   primerApellido: string;
   avatarSrc?: string;
+  role?: string;
+  permissions?: string[];
 }
 
 export interface LoginMockPayload {
@@ -20,14 +22,15 @@ export interface LoginMockPayload {
   avatarSrc?: string;
 }
 
-interface AuthContextValue {
+export interface AuthContextValue {
   isAuthenticated: boolean;
   user: SessionUser | null;
-  loginMock: (payload?: LoginMockPayload) => void;
+  loginMock: (customUser?: Partial<SessionUser> & { identifier?: string }) => void;
   logoutMock: () => void;
+  hasPermission: (permission?: string) => boolean;
 }
 
-// Usuario simulado por defecto para pruebas rápidas
+// usuario simulado
 const DEFAULT_MOCK_USER: SessionUser = {
   idUsuario: 1,
   idCuenta: 1,
@@ -36,12 +39,32 @@ const DEFAULT_MOCK_USER: SessionUser = {
   primerNombre: 'Carlos',
   primerApellido: 'Mejía',
   avatarSrc: '',
+  role: 'admin',
+  permissions: ['dashboard.view', 'ecloset.access'],
 };
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 interface AuthProviderProps {
   children: ReactNode;
+}
+
+export function getDashboardRoute(role?: string): string {
+  switch (role) {
+    case 'store_manager':
+    case 'jefe_tienda':
+      return '/dashboards/store';
+    case 'area_manager':
+    case 'jefe_area':
+      return '/dashboards/area';
+    case 'national_manager':
+    case 'jefe_nacional':
+      return '/dashboards/national';
+    case 'admin':
+      return '/dashboards/national';
+    default:
+      return '/dashboards/store';
+  }
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
@@ -85,6 +108,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setUser(null);
   };
 
+  const hasPermission = (permission?: string): boolean => {
+    if (!permission) return true;
+    if (!isAuthenticated || !user?.permissions) return false;
+    return user.permissions.includes(permission);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -92,6 +121,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         user,
         loginMock,
         logoutMock,
+        hasPermission,
       }}
     >
       {children}

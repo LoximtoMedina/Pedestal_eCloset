@@ -38,7 +38,6 @@ function Home() {
       { key: 'about', label: 'Sobre Nosotros', href: '#about' },
       { key: 'contact', label: 'Contáctanos', href: '#contact' },
       { key: 'shop', label: 'Tienda', to: '/shop' },
-      { key: 'ecloset', label: 'eCloset', to: '/ecloset' },
     ],
     []
   );
