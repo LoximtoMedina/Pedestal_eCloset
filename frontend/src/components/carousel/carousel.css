@@ -1,0 +1,92 @@
+/* Contenedor general del carrusel */
+.pedestalCarouselSection {
+  width: 100%;
+  max-width: 1200px;
+  margin: 6rem auto 2rem; /* margen superior para que no lo tape el header fixed */
+  padding: 0 2.5rem;
+}
+
+.pedestalCarouselContainer {
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+.pedestalCarouselCard {
+  position: relative;
+  overflow: hidden;
+  height: 440px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Capa oscura sutil para que el texto blanco siempre contraste bien */
+.pedestalCarouselCardOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    hsla(0, 0%, 0%, 0.25) 0%,
+    hsla(0, 0%, 0%, 0.65) 100%
+  );
+  z-index: 0;
+}
+
+.pedestalCarouselCardContent {
+  position: relative;
+  z-index: 1;
+}
+
+.pedestalCarouselCategory {
+  color: hsl(0, 0%, 100%);
+  opacity: 0.85;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.pedestalCarouselTitle {
+  font-weight: 600;
+  color: hsl(0, 0%, 100%);
+  line-height: 1.2;
+  font-size: 2rem;
+  margin-top: 0.5rem;
+}
+
+.pedestalCarouselBtn {
+  position: relative;
+  z-index: 1;
+}
+
+/* Tablet (769px - 1024px) */
+@media (max-width: 1024px) {
+  .pedestalCarouselSection {
+    padding: 0 1.25rem;
+  }
+
+  .pedestalCarouselCard {
+    height: 380px;
+  }
+
+  .pedestalCarouselTitle {
+    font-size: 1.5rem;
+  }
+}
+
+/* Mobile (hasta 768px) */
+@media (max-width: 768px) {
+  .pedestalCarouselSection {
+    padding: 0 1rem;
+  }
+
+  .pedestalCarouselCard {
+    height: 320px;
+  }
+
+  .pedestalCarouselTitle {
+    font-size: 1.35rem;
+  }
+}

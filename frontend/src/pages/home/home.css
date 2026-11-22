@@ -1,0 +1,372 @@
+.homePage {
+  width: 100%;
+}
+
+/* Hero Section */
+.pedestalHeroWrapper {
+  position: relative;
+  box-sizing: border-box;
+  background-color: hsl(0, 0%, 100%);
+  width: 100%;
+}
+
+.pedestalHeroInner {
+  position: relative;
+  padding-top: 7.5rem;
+  padding-bottom: 4.5rem;
+  text-align: center;
+}
+
+.pedestalHeroTitle {
+  font-size: 3.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  margin: 0;
+  padding: 0;
+  color: hsl(0, 0%, 8%);
+}
+
+.pedestalHeroDescription {
+  max-width: 540px;
+  margin: 1.25rem auto 0;
+  font-size: 1.15rem;
+  line-height: 1.55;
+  color: hsl(0, 0%, 45%);
+}
+
+.pedestalHeroControls {
+  margin-top: 2rem;
+}
+
+.pedestalHeroPrimaryBtn {
+  background-color: hsl(0, 0%, 8%);
+  color: hsl(0, 0%, 100%);
+  font-weight: 600;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.pedestalHeroPrimaryBtn:hover {
+  background-color: hsl(0, 0%, 22%);
+}
+
+.pedestalHeroSecondaryBtn {
+  background-color: hsl(0, 0%, 100%);
+  color: hsl(0, 0%, 12%);
+  border: 1px solid hsl(0, 0%, 86%);
+  font-weight: 500;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.pedestalHeroSecondaryBtn:hover {
+  background-color: hsl(0, 0%, 97%);
+  border-color: hsl(0, 0%, 75%);
+}
+
+/* Sección Carrusel */
+.pedestalCarouselSection {
+  width: 100%;
+  max-width: 1200px;
+  margin: 2.5rem auto;
+  padding: 0 2.5rem;
+}
+
+.pedestalCarouselHeader {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: hsl(0, 0%, 10%);
+  letter-spacing: -0.02em;
+}
+
+.pedestalCarouselQuoteBox {
+  margin: 2rem 0 0;
+  padding: 0;
+  border: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.pedestalCarouselQuoteText {
+  max-width: 720px;
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.55;
+  font-style: italic;
+  font-weight: 500;
+  color: hsl(0, 0%, 12%);
+}
+
+.pedestalCarouselQuoteAuthor {
+  font-size: 1rem;
+  font-weight: 700;
+  color: hsl(0, 0%, 12%);
+  white-space: nowrap;
+}
+
+/* Sección Acerca de nosotros */
+.pedestalAboutSection {
+  width: 100%;
+  background-color: hsl(241, 68%, 74%);
+  padding: 4.5rem 2.5rem;
+  margin-top: 3rem;
+}
+
+.pedestalAboutInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4rem;
+}
+
+.pedestalAboutLeft {
+  flex: 1;
+  max-width: 480px;
+}
+
+.pedestalAboutTitle {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: hsl(0, 0%, 5%);
+  margin-bottom: 1.25rem;
+}
+
+.pedestalAboutDescription {
+  font-size: 1.35rem;
+  line-height: 1.45;
+  font-weight: 500;
+  color: hsl(0, 0%, 18%);
+}
+
+.pedestalAboutRight {
+  flex: 1;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.pedestalAboutCard {
+  background-color: hsla(241, 55%, 64%, 0.65);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+}
+
+.pedestalAboutCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.45rem;
+}
+
+.pedestalAboutIcon {
+  color: hsl(241, 20%, 30%);
+  flex-shrink: 0;
+}
+
+.pedestalAboutCardTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: hsl(0, 0%, 8%);
+}
+
+.pedestalAboutCardText {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: hsl(0, 0%, 20%);
+}
+
+/* Sección Contacto */
+.pedestalContactSection {
+  width: 100%;
+  background-color: hsl(0, 0%, 100%);
+  padding: 4.5rem 2.5rem;
+}
+
+.pedestalContactInner {
+  margin: 0 auto;
+}
+
+.pedestalContactTitle {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  text-align: center;
+  color: hsl(0, 0%, 8%);
+}
+
+.pedestalContactSubtitle {
+  max-width: 480px;
+  margin: 0.65rem auto 0;
+  text-align: center;
+  font-size: 1rem;
+  color: hsl(0, 0%, 45%);
+}
+
+.pedestalContactLabel {
+  font-weight: 600;
+  color: hsl(0, 0%, 15%);
+  margin-bottom: 0.3rem;
+}
+
+.pedestalContactInput {
+  background-color: hsl(0, 0%, 96%);
+  border: 1px solid hsl(0, 0%, 90%);
+  border-radius: 8px;
+  color: hsl(0, 0%, 10%);
+}
+
+.pedestalContactInput:focus {
+  border-color: hsl(0, 0%, 25%);
+  background-color: hsl(0, 0%, 100%);
+}
+
+.pedestalContactSuccess {
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: 600;
+  color: hsl(142, 60%, 32%);
+}
+
+.pedestalContactSubmitBtn {
+  background-color: hsl(0, 0%, 8%);
+  color: hsl(0, 0%, 100%);
+  font-weight: 600;
+  padding-left: 1.75rem;
+  padding-right: 1.75rem;
+  transition: background-color 0.2s ease;
+}
+
+.pedestalContactSubmitBtn:hover {
+  background-color: hsl(0, 0%, 22%);
+}
+
+/* Tablet (769px - 1024px) */
+@media (max-width: 1024px) {
+  .pedestalHeroInner {
+    padding-top: 6.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .pedestalHeroTitle {
+    font-size: 3rem;
+  }
+
+  .pedestalHeroDescription {
+    font-size: 1.05rem;
+  }
+
+  .pedestalCarouselSection {
+    padding: 0 1.25rem;
+  }
+
+  .pedestalCarouselQuoteBox {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .pedestalAboutSection {
+    padding: 3.5rem 1.25rem;
+  }
+
+  .pedestalAboutInner {
+    gap: 2.5rem;
+  }
+
+  .pedestalAboutTitle {
+    font-size: 2.35rem;
+  }
+
+  .pedestalAboutDescription {
+    font-size: 1.15rem;
+  }
+
+  .pedestalContactSection {
+    padding: 3.5rem 1.25rem;
+  }
+}
+
+/* Mobile (hasta 768px) */
+@media (max-width: 768px) {
+  .pedestalHeroInner {
+    padding-top: 5.5rem;
+    padding-bottom: 2.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .pedestalHeroTitle {
+    font-size: 2.35rem;
+    line-height: 1.15;
+  }
+
+  .pedestalHeroDescription {
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+
+  .pedestalHeroControls {
+    margin-top: 1.5rem;
+  }
+
+  .pedestalHeroPrimaryBtn,
+  .pedestalHeroSecondaryBtn {
+    flex: 1;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .pedestalCarouselSection {
+    padding: 0 1rem;
+  }
+
+  .pedestalCarouselHeader {
+    font-size: 1.25rem;
+  }
+
+  .pedestalCarouselQuoteText {
+    font-size: 1rem;
+  }
+
+  .pedestalAboutSection {
+    padding: 3rem 1rem;
+  }
+
+  .pedestalAboutInner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2rem;
+  }
+
+  .pedestalAboutLeft,
+  .pedestalAboutRight {
+    max-width: 100%;
+  }
+
+  .pedestalAboutTitle {
+    font-size: 2rem;
+  }
+
+  .pedestalAboutDescription {
+    font-size: 1.05rem;
+  }
+
+  .pedestalContactSection {
+    padding: 3rem 1rem;
+  }
+
+  .pedestalContactTitle {
+    font-size: 2rem;
+  }
+}
