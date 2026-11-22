@@ -1,0 +1,350 @@
+.pedestalPosTerminalSection {
+  width: 100%;
+  max-width: 1280px;
+  margin: 5.5rem auto 3rem;
+  padding: 0 2rem;
+  box-sizing: border-box;
+}
+
+/* Barra superior oscura */
+.pedestalPosTopHeader {
+  background-color: hsl(0, 0%, 8%);
+  color: hsl(0, 0%, 100%);
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px 10px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.pedestalPosBrandMark {
+  letter-spacing: 0.08em;
+  color: hsl(0, 0%, 100%);
+}
+
+.pedestalPosBranchSub {
+  color: hsl(0, 0%, 72%);
+}
+
+/* División principal en dos columnas */
+.pedestalPosMainSplit {
+  display: grid;
+  grid-template-columns: 410px minmax(0, 1fr);
+  background-color: hsl(0, 0%, 100%);
+  border: 1px solid hsl(0, 0%, 88%);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  overflow: visible;
+}
+
+/* Columna izquierda: Cliente + Orden + Totales */
+.pedestalPosLeftPanel {
+  padding: 1rem;
+  border-right: 1px solid hsl(0, 0%, 90%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: hsl(0, 0%, 99%);
+}
+
+.pedestalPosSearchRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.9rem;
+}
+
+.pedestalPosCustomerCard {
+  background-color: hsl(0, 0%, 100%);
+  border: 1px solid hsl(0, 0%, 90%);
+  border-radius: 8px;
+  padding: 0.85rem;
+  margin-bottom: 0.85rem;
+}
+
+.pedestalPosCustomerTop {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pedestalPosAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: hsla(241, 68%, 74%, 0.25);
+  color: hsl(0, 0%, 12%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pedestalPosCustomerName {
+  font-size: 1rem;
+  font-weight: 700;
+  color: hsl(0, 0%, 10%);
+}
+
+.pedestalPosCustomerStats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid hsl(0, 0%, 93%);
+}
+
+.pedestalPosStatLabel {
+  letter-spacing: 0.05em;
+}
+
+.pedestalPosCustomerTabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.pedestalPosTabActive {
+  background-color: hsl(241, 68%, 74%);
+  color: hsl(0, 0%, 8%);
+  font-weight: 700;
+  border: none;
+}
+
+.pedestalPosTabActive:hover {
+  background-color: hsl(241, 62%, 68%);
+}
+
+.pedestalPosTabNeutral {
+  color: hsl(0, 0%, 20%);
+  font-weight: 600;
+}
+
+.pedestalPosLinesWrapper {
+  flex: 1;
+  min-height: 150px;
+  max-height: 210px;
+  overflow-y: auto;
+  background-color: hsl(0, 0%, 100%);
+  border: 1px solid hsl(0, 0%, 92%);
+  border-radius: 8px;
+  padding: 0.25rem 0.5rem;
+}
+
+.pedestalPosSummaryBox {
+  margin-top: 0.9rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid hsl(0, 0%, 88%);
+}
+
+.pedestalPosTotalHeading {
+  color: hsl(0, 0%, 10%);
+  letter-spacing: -0.02em;
+}
+
+.pedestalPosTotalValue {
+  color: hsl(0, 0%, 8%);
+}
+
+/* Columna derecha: Categorías + Prendas + Botonera */
+.pedestalPosRightPanel {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  background-color: hsl(0, 0%, 100%);
+}
+
+.pedestalPosCategoryRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.pedestalPosLavenderTileBtn {
+  background-color: hsl(241, 68%, 74%);
+  color: hsl(0, 0%, 8%);
+}
+
+.pedestalPosLavenderTileBtn:hover {
+  background-color: hsl(241, 62%, 68%);
+}
+
+.pedestalPosCategoryTile {
+  background-color: hsla(241, 68%, 74%, 0.35);
+  color: hsl(0, 0%, 10%);
+  border: 1px solid hsla(241, 68%, 74%, 0.7);
+  border-radius: 6px;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.pedestalPosCategoryTile:hover {
+  background-color: hsla(241, 68%, 74%, 0.6);
+}
+
+.pedestalPosCategoryTile--active {
+  background-color: hsl(0, 0%, 8%);
+  color: hsl(0, 0%, 100%);
+  border-color: hsl(0, 0%, 8%);
+}
+
+.pedestalPosQuickGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: 0.55rem;
+}
+
+.pedestalPosProductTile {
+  position: relative;
+  height: 92px;
+  padding: 0;
+  border-radius: 8px;
+  border: 1px solid hsl(0, 0%, 88%);
+  overflow: hidden;
+  cursor: pointer;
+  background-color: hsl(0, 0%, 96%);
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+
+.pedestalPosProductTile:hover {
+  transform: translateY(-2px);
+  border-color: hsl(241, 68%, 74%);
+}
+
+.pedestalPosProductImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pedestalPosProductPriceTag {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(180deg, transparent 0%, hsla(0, 0%, 0%, 0.78) 100%);
+  color: hsl(0, 0%, 100%);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.35rem 0.4rem 0.25rem;
+  text-align: center;
+}
+
+.pedestalPosActionsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.pedestalPosActionTile {
+  background-color: hsl(0, 0%, 97%);
+  color: hsl(0, 0%, 12%);
+  border: 1px solid hsl(0, 0%, 88%);
+  border-radius: 8px;
+  padding: 0.65rem 0.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.pedestalPosActionTile:hover {
+  background-color: hsla(241, 68%, 74%, 0.25);
+}
+
+.pedestalPosBottomBar {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 0.6rem;
+  margin-top: 0.25rem;
+}
+
+.pedestalPosCancelSaleBtn {
+  background-color: hsl(0, 72%, 51%);
+  color: hsl(0, 0%, 100%);
+  border: none;
+  border-radius: 8px;
+  padding: 0.85rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  cursor: pointer;
+}
+
+.pedestalPosCancelSaleBtn:hover {
+  background-color: hsl(0, 72%, 44%);
+}
+
+.pedestalPosPaySaleBtn {
+  background-color: hsl(241, 68%, 74%);
+  color: hsl(0, 0%, 8%);
+  border: none;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.pedestalPosPaySaleBtn:hover:not(:disabled) {
+  background-color: hsl(241, 62%, 67%);
+}
+
+.pedestalPosPaySaleBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pedestalPosModalConfirmBtn {
+  background-color: hsl(0, 0%, 8%);
+  color: hsl(0, 0%, 100%);
+}
+
+/* Tablet (769px - 1024px) */
+@media (max-width: 1024px) {
+  .pedestalPosTerminalSection {
+    padding: 0 1.25rem;
+  }
+
+  .pedestalPosMainSplit {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile (hasta 768px) */
+@media (max-width: 768px) {
+  .pedestalPosTerminalSection {
+    margin-top: 5rem;
+    padding: 0 0.75rem;
+  }
+
+  .pedestalPosMainSplit {
+    grid-template-columns: 1fr;
+  }
+
+  .pedestalPosActionsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pedestalPosBottomBar {
+    grid-template-columns: 100px minmax(0, 1fr);
+  }
+}
