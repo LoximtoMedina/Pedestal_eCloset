@@ -1,5 +1,5 @@
 import { ActionIcon, Group, Stack, Text } from '@mantine/core';
-import { IconBrandInstagram, IconBrandLinkedin, IconBrandX } from '@tabler/icons-react';
+import { IconBrandFacebook, IconBrandGithub, IconBrandInstagram } from '@tabler/icons-react';
 import { useViewportType } from '../../hooks/useViewportType';
 import './footer.css';
 
@@ -15,28 +15,19 @@ interface FooterGroupItem {
 
 const footerGroups: FooterGroupItem[] = [
   {
-    title: 'Features',
+    title: 'Explorar',
     links: [
-      { label: 'Core features', href: '#core-features' },
-      { label: 'Pro experience', href: '#pro-experience' },
-      { label: 'Integrations', href: '#integrations' },
+      { label: 'Ofertas', href: '#offers' },
+      { label: 'Sobre Nosotros', href: '#about' },
+      { label: 'Novedades', href: '#new' },
+      { label: 'Colecciones', href: '#collections' },
     ],
   },
   {
-    title: 'Learn more',
+    title: 'Contáctanos',
     links: [
-      { label: 'Blog', href: '#blog' },
-      { label: 'Case studies', href: '#case-studies' },
-      { label: 'Customer stories', href: '#customer-stories' },
-      { label: 'Best practices', href: '#best-practices' },
-    ],
-  },
-  {
-    title: 'Support',
-    links: [
-      { label: 'Contact', href: '#contact' },
-      { label: 'Support', href: '#support' },
       { label: 'Legal', href: '#legal' },
+      { label: 'Contacto', href: '#contact' },
     ],
   },
 ];
@@ -51,10 +42,10 @@ function Footer() {
         {/* Columna izquierda: Marca + descripción + redes */}
         <div className="pedestalFooterBrand">
           <Text fw={700} size="lg" className="pedestalFooterTitleBrand">
-            Namedly
+            Ecloset
           </Text>
           <Text size="sm" className="pedestalFooterDescription">
-            Descriptive line about what your company does.
+            Tu espacio digital para organizar, descubrir y renovar tu clóset con estilo.
           </Text>
 
           <Group gap="xs" className="pedestalFooterSocial" justify={isMobile ? 'center' : 'flex-start'}>
@@ -72,26 +63,26 @@ function Footer() {
 
             <ActionIcon
               component="a"
-              href="#linkedin"
-              aria-label="LinkedIn"
+              href="#github"
+              aria-label="GitHub"
               variant="subtle"
               color="gray"
               size="lg"
               className="pedestalFooterSocialBtn"
             >
-              <IconBrandLinkedin size={20} stroke={1.6} />
+              <IconBrandGithub size={20} stroke={1.6} />
             </ActionIcon>
 
             <ActionIcon
               component="a"
-              href="#x"
-              aria-label="X"
+              href="#facebook"
+              aria-label="Facebook"
               variant="subtle"
               color="gray"
               size="lg"
               className="pedestalFooterSocialBtn"
             >
-              <IconBrandX size={20} stroke={1.6} />
+              <IconBrandFacebook size={20} stroke={1.6} />
             </ActionIcon>
           </Group>
         </div>
