@@ -1,0 +1,145 @@
+/* Contenedor principal compensando el header fijo */
+.signUpPage {
+  min-height: 100vh;
+  width: 100%;
+  background-color: hsl(0, 0%, 100%);
+  color: hsl(0, 0%, 15%);
+}
+
+/* Distribución de pantalla dividida en escritorio y tablet */
+.signUpWrapper {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+/* Columna del formulario */
+.signUpFormCard {
+  width: 450px;
+  max-width: 100%;
+  min-height: 100%;
+  padding: 3rem 2.5rem 2.25rem;
+  border-radius: 0;
+  background-color: hsl(0, 0%, 100%);
+  border-right: 1px solid hsl(0, 0%, 90%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 2;
+}
+
+.signUpTitle {
+  text-align: center;
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: hsl(0, 0%, 12%);
+  margin-bottom: 1.85rem;
+}
+
+.signUpForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.signUpLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: hsl(0, 0%, 18%);
+  margin-bottom: 0.35rem;
+}
+
+.signUpInput {
+  border-color: hsl(0, 0%, 84%);
+  color: hsl(0, 0%, 15%);
+  background-color: hsl(0, 0%, 100%);
+}
+
+.signUpInput:focus,
+.signUpInput:focus-within {
+  border-color: hsl(0, 0%, 15%);
+}
+
+.signUpCheckboxRoot {
+  margin-top: 0.25rem;
+  margin-bottom: 0.4rem;
+}
+
+.signUpCheckboxLabel {
+  font-size: 0.875rem;
+  color: hsl(0, 0%, 25%);
+  cursor: pointer;
+}
+
+.signUpSubmitBtn {
+  margin-top: 0.4rem;
+  height: 2.75rem;
+  background-color: hsl(0, 0%, 12%);
+  color: hsl(0, 0%, 100%);
+  font-weight: 600;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.signUpSubmitBtn:hover {
+  background-color: hsl(0, 0%, 22%);
+}
+
+.signUpFooterText {
+  text-align: center;
+  font-size: 0.9rem;
+  color: hsl(0, 0%, 40%);
+  margin-top: 1.35rem;
+}
+
+.signUpLoginLink {
+  font-weight: 600;
+  color: hsl(0, 0%, 12%);
+  text-decoration: underline;
+}
+
+.signUpLoginLink:hover {
+  color: hsl(0, 0%, 45%);
+}
+
+/* Panel visual derecho (imagen de fondo) */
+.signUpVisualPanel {
+  flex: 1;
+  min-height: 100%;
+  background-image: url('https://images.unsplash.com/photo-1484242857719-4b9144542727?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1280&q=80');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Tablet (769px - 1024px) */
+@media (max-width: 1024px) {
+  .signUpFormCard {
+    width: 390px;
+    padding: 2.5rem 1.75rem 2rem;
+  }
+
+  .signUpTitle {
+    font-size: 1.45rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Mobile (hasta 768px) */
+@media (max-width: 768px) {
+  .signUpFormCard {
+    width: 100%;
+    max-width: 100%;
+    border-right: none;
+    padding: 2rem 1.25rem;
+    justify-content: flex-start;
+  }
+
+  .signUpTitle {
+    font-size: 1.35rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1.35rem;
+  }
+}

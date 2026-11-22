@@ -1,19 +1,18 @@
 import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
+import { BrowserRouter } from 'react-router';
 import './App.css';
-
-// Importación de componentes
-import Header from './components/header/header';
-import Footer from './components/footer/footer';
+import AppRoutes from './routes/appRoutes';
 
 function App() {
+  // Más adelante esto vendrá de AuthContext
+  const isAuthenticated = false;
+
   return (
     <MantineProvider>
-      <Header />
-    
-      <div className="App"> </div>
-
-      <Footer />
+      <BrowserRouter>
+        <AppRoutes isAuthenticated={isAuthenticated} />
+      </BrowserRouter>
     </MantineProvider>
   );
 }

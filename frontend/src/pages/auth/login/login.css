@@ -1,0 +1,145 @@
+/* Contenedor principal compensando el header fijo */
+.loginPage {
+  min-height: 100vh;
+  width: 100%;
+  background-color: hsl(0, 0%, 100%);
+  color: hsl(0, 0%, 15%);
+}
+
+/* Distribución de pantalla dividida en escritorio y tablet */
+.loginWrapper {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+/* Columna del formulario */
+.loginFormCard {
+  width: 450px;
+  max-width: 100%;
+  min-height: 100%;
+  padding: 4rem 2.5rem 2.5rem;
+  border-radius: 0;
+  background-color: hsl(0, 0%, 100%);
+  border-right: 1px solid hsl(0, 0%, 90%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 2;
+}
+
+.loginTitle {
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: hsl(0, 0%, 12%);
+  margin-bottom: 2.25rem;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.loginLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: hsl(0, 0%, 18%);
+  margin-bottom: 0.35rem;
+}
+
+.loginInput {
+  border-color: hsl(0, 0%, 84%);
+  color: hsl(0, 0%, 15%);
+  background-color: hsl(0, 0%, 100%);
+}
+
+.loginInput:focus,
+.loginInput:focus-within {
+  border-color: hsl(0, 0%, 15%);
+}
+
+.loginCheckboxRoot {
+  margin-top: 0.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.loginCheckboxLabel {
+  font-size: 0.875rem;
+  color: hsl(0, 0%, 25%);
+  cursor: pointer;
+}
+
+.loginSubmitBtn {
+  margin-top: 0.5rem;
+  height: 2.75rem;
+  background-color: hsl(0, 0%, 12%);
+  color: hsl(0, 0%, 100%);
+  font-weight: 600;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.loginSubmitBtn:hover {
+  background-color: hsl(0, 0%, 22%);
+}
+
+.loginFooterText {
+  text-align: center;
+  font-size: 0.9rem;
+  color: hsl(0, 0%, 40%);
+  margin-top: 1.5rem;
+}
+
+.loginRegisterLink {
+  font-weight: 600;
+  color: hsl(0, 0%, 12%);
+  text-decoration: underline;
+}
+
+.loginRegisterLink:hover {
+  color: hsl(0, 0%, 45%);
+}
+
+/* Panel visual derecho (imagen de fondo) */
+.loginVisualPanel {
+  flex: 1;
+  min-height: 100%;
+  background-image: url('https://images.unsplash.com/photo-1484242857719-4b9144542727?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1280&q=80');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Tablet (769px - 1024px) */
+@media (max-width: 1024px) {
+  .loginFormCard {
+    width: 390px;
+    padding: 3rem 1.75rem 2rem;
+  }
+
+  .loginTitle {
+    font-size: 1.5rem;
+    margin-bottom: 1.75rem;
+  }
+}
+
+/* Mobile (hasta 768px) */
+@media (max-width: 768px) {
+  .loginFormCard {
+    width: 100%;
+    max-width: 100%;
+    border-right: none;
+    padding: 2.25rem 1.25rem;
+    justify-content: flex-start;
+  }
+
+  .loginTitle {
+    font-size: 1.4rem;
+    margin-top: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+}

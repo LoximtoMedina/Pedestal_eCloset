@@ -1,5 +1,6 @@
 import { Burger, Drawer, Menu, Stack, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { useNavigate } from 'react-router';
 import { useViewportType } from '../../hooks/useViewportType';
 import './header.css';
 import logo from '../../assets/PedestalLogo.svg';
@@ -16,18 +17,31 @@ const navItems: NavItem[] = [
   { label: 'Contáctanos', key: 'contactUs', href: '#contact' },
 ];
 
-function header() {
+function Header() {
   const viewport = useViewportType();
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
+  const navigate = useNavigate();
 
   const isMobile = viewport === 'mobile';
+
+  // Función auxiliar para navegar y cerrar el Drawer en móvil al mismo tiempo
+  const handleGoTo = (path: string) => {
+    closeDrawer();
+    navigate(path);
+  };
 
   return (
     <header className={`header header--${viewport}`}>
       {/* Sección izquierda: Logo + Nombre */}
       <div className="logo">
         <img src={logo} alt="Logo" />
-        <a href="#home">
+        <a
+          href="/"
+          onClick={(event) => {
+            event.preventDefault();
+            handleGoTo('/');
+          }}
+        >
           <h1>PEDESTAL</h1>
         </a>
       </div>
@@ -69,8 +83,12 @@ function header() {
       {/* Tablet y Desktop: Botones de sesión */}
       {!isMobile && (
         <div className="sessionButtons">
-          <button type="button">Iniciar Sesión</button>
-          <button type="button">Registrarse</button>
+          <button type="button" onClick={() => navigate('/login')}>
+            Iniciar Sesión
+          </button>
+          <button type="button" onClick={() => navigate('/signup')}>
+            Registrarse
+          </button>
         </div>
       )}
 
@@ -119,10 +137,10 @@ function header() {
               </a>
 
               <div className="mobileSessionButtons">
-                <button type="button" onClick={closeDrawer}>
+                <button type="button" onClick={() => handleGoTo('/login')}>
                   Iniciar Sesión
                 </button>
-                <button type="button" onClick={closeDrawer}>
+                <button type="button" onClick={() => handleGoTo('/signup')}>
                   Registrarse
                 </button>
               </div>
@@ -134,4 +152,4 @@ function header() {
   );
 }
 
-export default header;
+export default Header;
