@@ -8,7 +8,6 @@ import {
   Group,
   Modal,
   NumberInput,
-  Paper,
   SegmentedControl,
   Select,
   Stack,
@@ -31,7 +30,7 @@ import {
   IconUser,
 } from '@tabler/icons-react';
 import { useViewportType } from '../../hooks/useViewportType';
-import './pos.css';
+import './posTerminal.css';
 
 interface CustomerProfile {
   id: string;
