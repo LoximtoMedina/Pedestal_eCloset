@@ -15,14 +15,14 @@ import Login from '../pages/auth/login/login';
 import SignUp from '../pages/auth/signUp/signUp';
 
 // Descomenta e importa tus vistas conforme las vayas conectando:
-// import Catalog from '../pages/shop/catalog/catalog';
-// import TryOn from '../pages/ecloset/tryOn/tryOn';
-// import Profile from '../pages/user/profile/profile';
-// import MyOrders from '../pages/user/myOrders/myOrders';
-// import StoreDashboard from '../pages/dashboards/storeDashboard/storeDashboard';
-// import AreaDashboard from '../pages/dashboards/areaDashboard/areaDashboard';
-// import NationalDashboard from '../pages/dashboards/nationalDashboard/nationalDashboard';
-// import RolesAdmin from '../pages/admin/roles/roles';
+import Catalog from '../pages/shop/catalog/catalog';
+import TryOn from '../pages/ecloset/tryOn/tryOn';
+import Profile from '../pages/user/profile/profile';
+import MyOrders from '../pages/user/myOrders/myOrders';
+import StoreDashboard from '../pages/dashboards/storeDashboard/storeDashboard';
+import AreaDashboard from '../pages/dashboards/areaDashboard/areaDashboard';
+import NationalDashboard from '../pages/dashboards/nationalDashboard/nationalDashboard';
+import RolesAdmin from '../pages/admin/roles/roles';
 
 /* ==========================================================================
    3. ENRUTADOR PRINCIPAL DE LA APLICACIÓN
@@ -77,25 +77,25 @@ function AppRoutes() {
       {/* Rutas públicas con Header y Footer */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/shop/catalog" element={<div>Catálogo de Tienda</div>} />
+        <Route path="/shop/catalog" element={<Catalog />} />
       </Route>
 
       {/* Rutas privadas protegidas (requieren sesión iniciada) */}
       <Route element={<ProtectedRoute />}>
         {/* Vistas de usuario / eCloset */}
         <Route element={<PublicLayout />}>
-          <Route path="/user/profile" element={<div>Perfil de Usuario</div>} />
-          <Route path="/user/my-orders" element={<div>Mis Pedidos</div>} />
-          <Route path="/ecloset/try-on" element={<div>eCloset - Try On</div>} />
+          <Route path="/user/profile" element={<Profile />} />
+          <Route path="/user/my-orders" element={<MyOrders />} />
+          <Route path="/ecloset/try-on" element={<TryOn />} />
         </Route>
 
         {/* Dashboards y módulos internos con DashboardLayout */}
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<Navigate to={dashboardTarget} replace />} />
-          <Route path="/dashboards/store" element={<div>Dashboard de Tienda</div>} />
-          <Route path="/dashboards/area" element={<div>Dashboard de Área</div>} />
-          <Route path="/dashboards/national" element={<div>Dashboard Nacional</div>} />
-          <Route path="/admin/roles" element={<div>Administración de Roles</div>} />
+          <Route path="/dashboards/store" element={<StoreDashboard />} />
+          <Route path="/dashboards/area" element={<AreaDashboard />} />
+          <Route path="/dashboards/national" element={<NationalDashboard />} />
+          <Route path="/admin/roles" element={<RolesAdmin />} />
         </Route>
       </Route>
 

@@ -37,7 +37,7 @@ function Home() {
       { key: 'offers', label: 'Ofertas', href: '#offers' },
       { key: 'about', label: 'Sobre Nosotros', href: '#about' },
       { key: 'contact', label: 'Contáctanos', href: '#contact' },
-      { key: 'shop', label: 'Tienda', to: '/shop' },
+      { key: 'shop', label: 'Tienda', to: '/shop/catalog' },
     ],
     []
   );
