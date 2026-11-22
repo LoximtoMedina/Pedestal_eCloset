@@ -33,10 +33,10 @@ function PublicLayout() {
 
   const profileMenuItems: HeaderSubItem[] = [
     ...(hasPermission('ecloset.access')
-      ? [{ key: 'user', label: 'Mi Usuario', to: '/ecloset' }]
+      ? [{ key: 'user', label: 'Mi Usuario', to: '/user/profile' }]
       : []),
     ...(hasPermission('ecloset.access')
-      ? [{ key: 'ecloset', label: 'Mi eCloset', to: '/ecloset' }]
+      ? [{ key: 'ecloset', label: 'Mi eCloset', to: '/ecloset/try-on' }]
       : []),
     ...(hasPermission('dashboard.view')
       ? [{ key: 'dashboard', label: 'Panel de control', to: '/dashboard' }]
