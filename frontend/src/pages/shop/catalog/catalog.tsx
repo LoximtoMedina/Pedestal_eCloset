@@ -1,14 +1,9 @@
 import './catalog.css';
-import Header from '../../../components/header/header';
-import Footer from '../../../components/footer/footer';
 
 function catalog() {
 
   return (
     <>
-      <Header />
-      <main>
-
         <main>
 
     {/* HERO COMPLETO */}
@@ -329,10 +324,6 @@ function catalog() {
     </div>
 
 </main>
-
-
-      </main>
-      <Footer />
     </>
   );
 }
