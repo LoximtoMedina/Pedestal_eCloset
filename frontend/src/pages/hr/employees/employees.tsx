@@ -1,10 +1,10 @@
-import './employee.css';
+import './employees.css';
 
-function employee() {
+function employees() {
 
   return (
     <></>
   );
 }
 
-export default employee;
+export default employees;

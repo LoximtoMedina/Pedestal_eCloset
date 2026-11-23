@@ -1,7 +1,7 @@
 /* ==========================================================================
    1. DEPENDENCIAS DE LAYOUT, CONTEXTO DE SESIÓN Y COMPONENTES
    ========================================================================== */
-import { Outlet, useNavigate, useOutletContext } from 'react-router';
+import { Outlet, useNavigate} from 'react-router';
 import { useAuth } from '../context/authContext';
 import Header, { type HeaderSubItem } from '../components/header/header';
 

@@ -4,25 +4,67 @@
 import { Routes, Route, Navigate, useNavigate } from 'react-router';
 import { useAuth, getDashboardRoute } from '../context/authContext';
 
-/* ==========================================================================
-   2. LAYOUTS, GUARDAS DE RUTA Y VISTAS
-   ========================================================================== */
+/* 
+==========================================================================
+  2. LAYOUTS, GUARDAS DE RUTA Y VISTAS
+========================================================================== 
+*/
 import PublicLayout from '../layouts/publicLayout';
 import DashboardLayout from '../layouts/dashboardLayout';
 import ProtectedRoute from './protectedRoutes';
-import Home from '../pages/home/home';
+
+// Ruta de Admin
+import RolesAdmin from '../pages/admin/roles/roles';
+import AreasAdmin from '../pages/admin/areas/areas';
+import StoresAdmin from '../pages/admin/stores/stores';
+
+// Ruta de Auth
 import Login from '../pages/auth/login/login';
 import SignUp from '../pages/auth/signUp/signUp';
 
-// Descomenta e importa tus vistas conforme las vayas conectando:
-import Catalog from '../pages/shop/catalog/catalog';
-import TryOn from '../pages/ecloset/tryOn/tryOn';
-import Profile from '../pages/user/profile/profile';
-import MyOrders from '../pages/user/myOrders/myOrders';
-import StoreDashboard from '../pages/dashboards/storeDashboard/storeDashboard';
+// Ruta de Dashboards
 import AreaDashboard from '../pages/dashboards/areaDashboard/areaDashboard';
 import NationalDashboard from '../pages/dashboards/nationalDashboard/nationalDashboard';
-import RolesAdmin from '../pages/admin/roles/roles';
+import StoreDashboard from '../pages/dashboards/storeDashboard/storeDashboard';
+
+// Ruta de eCloset
+import ModelPoses from '../pages/ecloset/modelPoses/modelPoses';
+import OutfitPlanner from '../pages/ecloset/outfitPlanner/outfitPlanner';
+import TryOn from '../pages/ecloset/tryOn/tryOn';
+
+// Ruta de Home
+import Home from '../pages/home/home';
+
+// Ruta de HR
+import Employees from '../pages/hr/employees/employees';
+import PayRoll from '../pages/hr/payRoll/payRoll';
+
+// Ruta de POS
+import POS from '../pages/pos/posTerminal';
+
+// Ruta de Inventory
+import Racks from '../pages/inventory/racks/racks';
+import Stock from '../pages/inventory/stock/stock';
+import StockMovements from '../pages/inventory/stockMovements/stockMovements';
+
+// Ruta de Promotions
+import Coupons from '../pages/promotions/coupons/coupons'
+import Discounts from '../pages/promotions/discounts/discounts'
+
+// Ruta de Purchases
+import PurchaseOrders from '../pages/purchases/purchaseOrders/purchaseOrders'
+import Suppliers from '../pages/purchases/suppliers/suppliers'
+
+// Ruta de Shop
+import Cart from '../pages/shop/cart/cart';
+import Catalog from '../pages/shop/catalog/catalog'; 
+import CheckOut from '../pages/shop/chekcout/checkout'
+import ProductDetail from '../pages/shop/productDetail/productDetail'
+
+// Ruta de User
+import Profile from '../pages/user/profile/profile';
+import MyOrders from '../pages/user/myOrders/myOrders';
+
 
 /* ==========================================================================
    3. ENRUTADOR PRINCIPAL DE LA APLICACIÓN
@@ -34,7 +76,7 @@ function AppRoutes() {
 
   return (
     <Routes>
-      {/* Rutas de autenticación (redirigen si ya existe sesión activa) */}
+      {/* Rutas de auth */}
       <Route
         path="/login"
         element={
@@ -74,32 +116,73 @@ function AppRoutes() {
         }
       />
 
-      {/* Rutas públicas con Header y Footer */}
+      {/* Rutas que UTILIZAN el LAYOUT PÚBLICO y que NO NECESITAN una SESIÓN ACTIVA */}
       <Route element={<PublicLayout />}>
+        {/* Home */}
         <Route path="/" element={<Home />} />
+
+        {/* Shop */}
         <Route path="/shop/catalog" element={<Catalog />} />
+        <Route path="/shop/catalog/product-detail" element={<ProductDetail />} />
       </Route>
 
-      {/* Rutas privadas protegidas (requieren sesión iniciada) */}
+      
       <Route element={<ProtectedRoute />}>
-        {/* Vistas de usuario / eCloset */}
+        {/* Rutas que UTILIZAN el LAYOUT PÚBLICO y que NECESITAN una SESIÓN ACTIVA */}
         <Route element={<PublicLayout />}>
-          <Route path="/user/profile" element={<Profile />} />
-          <Route path="/user/my-orders" element={<MyOrders />} />
+          {/* eCloset */}
+          <Route path="/ecloset/model-poses" element={<ModelPoses />} />
+          <Route path="/ecloset/outfit-planner" element={<OutfitPlanner />} />
           <Route path="/ecloset/try-on" element={<TryOn />} />
+
+          {/* User */}
+          <Route path="/user/my-orders" element={<MyOrders />} />
+          <Route path="/user/profile" element={<Profile />} />
+
+          {/* Shop */}
+          <Route path="/shop/cart" element={<Cart />} />
+          <Route path="/shop/cart/checkout" element={<CheckOut />} />
         </Route>
 
-        {/* Dashboards y módulos internos con DashboardLayout */}
+        {/* Rutas que UTILIZAN el LAYOUT de DASHBOARD y que NECESITAN una SESIÓN ACTIVA */}
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<Navigate to={dashboardTarget} replace />} />
+          {/* Admin */}
+          <Route path="/admin/areas" element={<AreasAdmin />} />
+          <Route path="/admin/roles" element={<RolesAdmin />} />
+          <Route path="/admin/stores" element={<StoresAdmin />} />
+          
+          {/* Dashboards */}
           <Route path="/dashboards/store" element={<StoreDashboard />} />
           <Route path="/dashboards/area" element={<AreaDashboard />} />
           <Route path="/dashboards/national" element={<NationalDashboard />} />
-          <Route path="/admin/roles" element={<RolesAdmin />} />
+
+          {/* HR */}
+          <Route path="/hr/employees" element={<Employees />} />
+          <Route path="/hr/pay-roll" element={<PayRoll />} />
+
+          {/* Inventory */}
+          <Route path="/inventory/racks" element={<Racks />} />
+          <Route path="/inventory/stock" element={<Stock />} />
+          <Route path="/inventory/stock-movement" element={<StockMovements />} />
+
+          {/* Promotions */}
+          <Route path="/promotions/coupons" element={<Coupons />} />
+          <Route path="/promotions/discounts" element={<Discounts />} />
+
+          {/* Purchases */}
+          <Route path="/purchases/purchase-orders" element={<PurchaseOrders />} />
+          <Route path="/purchases/suppliers" element={<Suppliers />} />
+
+
         </Route>
+
+        {/* Rutas que NO UTILIZAN NINGUN LAYOUT y que NECESITAN una SESIÓN ACTIVA */}
+        <Route path="/pos" element={<POS />} />
+        
       </Route>
 
-      {/* Redirección por defecto ante rutas inexistentes */}
+      {/* RUTA COMODÍN: Redirección por defecto ante rutas inexistentes */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
