@@ -1,30 +1,15 @@
 /* ==========================================================================
-   1. DEPENDENCIAS DE LAYOUT, CONTEXTO DE SESIÓN Y COMPONENTES
+1. DEPENDENCIAS DE LAYOUT, CONTEXTO DE SESIÓN Y COMPONENTES
    ========================================================================== */
-import { useEffect, useState } from 'react';
-import { Outlet, useNavigate, useOutletContext } from 'react-router';
+import { useState } from 'react';
+import { Outlet, useNavigate } from 'react-router';
 import { useAuth } from '../context/authContext';
 import Header, { type HeaderNavItem, type HeaderSubItem } from '../components/header/header';
 import Footer from '../components/footer/footer';
+import { type PublicLayoutOutletContext } from '../hooks/usePublicHeaderItems';
 
 /* ==========================================================================
-   2. CONTEXTO DE OUTLET PARA QUE CADA PÁGINA DEFINA SUS PESTAÑAS DEL HEADER
-   ========================================================================== */
-interface PublicLayoutOutletContext {
-  setHeaderItems: (items: HeaderNavItem[]) => void;
-}
-
-export function usePublicHeaderItems(items: HeaderNavItem[]) {
-  const context = useOutletContext<PublicLayoutOutletContext | undefined>();
-
-  useEffect(() => {
-    context?.setHeaderItems(items);
-    return () => context?.setHeaderItems([]);
-  }, [context, items]);
-}
-
-/* ==========================================================================
-   3. LAYOUT PÚBLICO (HEADER + CONTENIDO DE PÁGINA + FOOTER)
+2. LAYOUT PÚBLICO (HEADER + CONTENIDO DE PÁGINA + FOOTER)
    ========================================================================== */
 function PublicLayout() {
   const { isAuthenticated, user, logoutMock, hasPermission } = useAuth();

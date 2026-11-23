@@ -15,7 +15,7 @@ import { useForm } from '@mantine/form';
 import { IconCircleFilled, IconDiamondFilled, IconTriangleFilled } from '@tabler/icons-react';
 import { useViewportType } from '../../hooks/useViewportType';
 import { useMemo } from 'react';
-import { usePublicHeaderItems } from '../../layouts/publicLayout';
+import { usePublicHeaderItems } from '../../hooks/usePublicHeaderItems';
 import type { HeaderNavItem } from '../../components/header/header';
 
 /*Importacion del css a la pagina home*/
