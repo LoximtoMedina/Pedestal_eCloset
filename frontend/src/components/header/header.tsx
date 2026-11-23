@@ -368,8 +368,11 @@ function Header({
                     <button
                       type="button"
                       onClick={() => {
-                        closeDrawer();
-                        onLoginClick ? onLoginClick() : navigate('/login');
+                        if (onLoginClick) {
+                          onLoginClick()
+                        } else {
+                          navigate('/login');
+                        }
                       }}
                     >
                       Iniciar Sesión
@@ -377,8 +380,11 @@ function Header({
                     <button
                       type="button"
                       onClick={() => {
-                        closeDrawer();
-                        onRegisterClick ? onRegisterClick() : navigate('/signup');
+                        if (onRegisterClick) {
+                          onRegisterClick();
+                        } else {
+                          navigate('/signup');
+                        }
                       }}
                     >
                       Registrarse

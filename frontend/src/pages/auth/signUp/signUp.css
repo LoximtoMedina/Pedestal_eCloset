@@ -18,7 +18,8 @@
 
 /* Columna del formulario (un poco más ancha para alojar las filas de 2 campos) */
 .signUpFormCard {
-  width: 620px;
+  height: auto;
+  width: 40%;
   max-width: 100%;
   min-height: 100vh;
   padding: 2.25rem 2.5rem;
@@ -92,7 +93,9 @@
   background-color: hsl(0, 0%, 12%);
   color: hsl(0, 0%, 100%);
   font-weight: 600;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 .signUpSubmitBtn:hover {
@@ -118,14 +121,33 @@
 
 /* Panel visual derecho */
 .signUpVisualPanel {
-  flex: 1;
-  min-height: 100%;
-    
-  background-image: url('../../../assets/Pedestal_Neon_Pattern.svg');
+  align-self: stretch;
+  min-height: 100vh;
+  width: 60%;
+  position: relative;
+  overflow: hidden;
+}
+
+.signUpVisualPanel::before,
+.signUpVisualPanel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  opacity: 0;
+  pointer-events: none;
+}
 
+/* Capa A: rota entre imagen 1 e imagen 3 */
+.signUpVisualPanel::before {
+  animation: fadeLayerA 15s infinite ease-in-out;
+}
+
+/* Capa B: entra a desvanecer sobre la capa A con la imagen 2 */
+.signUpVisualPanel::after {
+  animation: fadeLayerB 15s infinite ease-in-out;
 }
 
 /* Tablet (769px - 1024px) */
@@ -168,5 +190,40 @@
     font-size: 1.35rem;
     margin-top: 0.5rem;
     margin-bottom: 1.25rem;
+  }
+}
+
+/*Animaciones*/
+@keyframes fadeLayerA {
+  0%, 28% {
+    opacity: 1;
+    background-image: url("https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D");
+  }
+  33.33%, 61.33% {
+    opacity: 0;
+    background-image: url("https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D");
+  }
+  66.66%, 94.66% {
+    opacity: 1;
+    background-image: url("https://images.unsplash.com/photo-1608748010899-18f300247112?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D");
+  }
+  100% {
+    opacity: 1;
+    background-image: url("https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D");
+  }
+}
+
+@keyframes fadeLayerB {
+  0%, 28% {
+    opacity: 0;
+    background-image: url("https://images.unsplash.com/photo-1675095525726-c4759069b211?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D");
+  }
+  33.33%, 61.33% {
+    opacity: 1;
+    background-image: url("https://images.unsplash.com/photo-1675095525726-c4759069b211?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D");
+  }
+  66.66%, 100% {
+    opacity: 0;
+    background-image: url("https://images.unsplash.com/photo-1675095525726-c4759069b211?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D");
   }
 }
