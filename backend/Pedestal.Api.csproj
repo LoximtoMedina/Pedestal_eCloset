@@ -4,10 +4,44 @@
     <TargetFramework>net11.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>0c053cfd-0e8a-43c8-9a07-43677f8c2cfb</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="query\**" />
+    <Content Remove="query\**" />
+    <EmbeddedResource Remove="query\**" />
+    <None Remove="query\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="11.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="11.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="11.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="11.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Features\Auth\" />
+    <Folder Include="Features\Admin\" />
+    <Folder Include="Features\Hr\" />
+    <Folder Include="Features\Inventory\" />
+    <Folder Include="Features\Dashboards\" />
+    <Folder Include="Features\Ecloset\" />
+    <Folder Include="Features\Pos\" />
+    <Folder Include="Features\User\" />
+    <Folder Include="Features\Shop\" />
+    <Folder Include="Features\Promotions\" />
+    <Folder Include="Features\Purchases\" />
+    <Folder Include="Infrastructure\" />
+    <Folder Include="Rules\" />
   </ItemGroup>
 
 </Project>
