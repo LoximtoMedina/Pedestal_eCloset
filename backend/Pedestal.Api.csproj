@@ -29,18 +29,7 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Features\Auth\" />
-    <Folder Include="Features\Admin\" />
-    <Folder Include="Features\Hr\" />
-    <Folder Include="Features\Inventory\" />
-    <Folder Include="Features\Dashboards\" />
-    <Folder Include="Features\Ecloset\" />
-    <Folder Include="Features\Pos\" />
-    <Folder Include="Features\User\" />
-    <Folder Include="Features\Shop\" />
-    <Folder Include="Features\Promotions\" />
-    <Folder Include="Features\Purchases\" />
-    <Folder Include="Infrastructure\" />
+    <Folder Include="Infrastructure\Storage\" />
     <Folder Include="Rules\" />
   </ItemGroup>
 
