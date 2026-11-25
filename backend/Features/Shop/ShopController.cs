@@ -1,6 +1,19 @@
-﻿namespace Pedestal.Api.Features.Shop
+﻿using Microsoft.AspNetCore.Mvc;
+using Pedestal.Api.Features.Shop;
+
+namespace Pedestal.Api.Features.Shop
 {
-    public class ShopController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ShopController : ControllerBase
     {
+        private readonly ShopService _shopService;
+
+        public ShopController(ShopService shopService)
+        {
+            _shopService = shopService;
+        }
+
+        // Aquí van los endpoints: [HttpGet], [HttpPost], [HttpPut], [HttpDelete]
     }
 }
