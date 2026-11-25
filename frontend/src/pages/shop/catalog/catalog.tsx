@@ -1,5 +1,4 @@
 import { useMemo, useState, type ReactNode } from "react";
-const [filtrosAbiertos, setFiltrosAbiertos] = useState(false);
 import { usePublicHeaderItems } from "../../../hooks/usePublicHeaderItems";
 import type { HeaderNavItem } from "../../../components/header/header";
 import ProductCard, {
@@ -127,6 +126,8 @@ function SeccionFiltro({
 =================================== */
 
 function Catalog() {
+  const [filtrosAbiertos, setFiltrosAbiertos] = useState(false);
+
   const catalogNavItems = useMemo<HeaderNavItem[]>(
     () => [
       {
