@@ -1,7 +1,8 @@
 import { useState, type ReactNode } from "react";
+import { useNavigate } from "react-router";
 import CartItem, {
   type ItemCarrito,
-} from "../../../components/CartItems/CartItem";
+} from "../../../components/CartItems/cartItem";
 import {
   IconoCaja,
   IconoCamion,
@@ -82,44 +83,41 @@ function SeccionExtra({
 =================================== */
 
 function Cart() {
+  const navigate = useNavigate();
   const [items, setItems] = useState<ItemCarrito[]>(ITEMS_INICIALES);
 
-  const cambiarCantidad = (id: number, delta: number) =>
+  const cambiarCantidad = (id: number, delta: number) => {
     setItems((prev) =>
-      prev.map((i) =>
-        i.id === id ? { ...i, cantidad: Math.max(1, i.cantidad + delta) } : i,
+      prev.map((item) =>
+        item.id === id
+          ? { ...item, cantidad: Math.max(1, item.cantidad + delta) }
+          : item,
       ),
     );
+  };
 
-  const quitar = (id: number) =>
-    setItems((prev) => prev.filter((i) => i.id !== id));
+  const quitar = (id: number) => {
+    setItems((prev) => prev.filter((item) => item.id !== id));
+  };
 
-  const totalUnidades = items.reduce((suma, i) => suma + i.cantidad, 0);
-  const subtotal = items.reduce((suma, i) => suma + i.precio * i.cantidad, 0);
+  const totalUnidades = items.reduce((suma, item) => suma + item.cantidad, 0);
+  const subtotal = items.reduce((suma, item) => suma + item.precio * item.cantidad, 0);
   const palabra = totalUnidades === 1 ? "producto" : "productos";
 
   return (
     <main className="cart-page">
       <div className="cart-container">
-        {/* TODO: conectar con la ruta del catálogo, por ejemplo navigate("/shop/catalog") */}
-        <button type="button" className="continue-shopping">
+        <button
+          type="button"
+          className="continue-shopping"
+          onClick={() => navigate("/shop/catalog")}
+        >
           <IconoChevronIzquierda size={18} />
           Seguir comprando
         </button>
 
         <section className="cart-content">
           <div className="cart-main">
-            <header className="cart-hero">
-              <div>
-                <h1>Tu carrito</h1>
-                <p>Revisa tus productos antes de continuar.</p>
-              </div>
-
-              <span className="cart-count">
-                {totalUnidades} {palabra}
-              </span>
-            </header>
-
             {items.length > 0 ? (
               <div className="cart-products">
                 {items.map((item) => (
@@ -170,6 +168,7 @@ function Cart() {
 
           <aside className="cart-summary">
             <h2>Resumen del pedido</h2>
+            <p className="summary-subtitle">Revisa tus productos antes de continuar.</p>
 
             <div className="summary-row">
               <span>
