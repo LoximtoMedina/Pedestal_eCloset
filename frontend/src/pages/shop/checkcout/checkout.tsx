@@ -5,7 +5,6 @@ import {
   type InputHTMLAttributes,
   type ReactNode,
 } from "react";
-import type { ItemCarrito } from "../../../components/CartItems/CartItems";
 import CheckoutSection from "../../../components/CheckoutSection/CheckoutSection";
 import CheckoutSteps from "../../../components/CheckoutSteps/CheckoutSteps";
 import OrderSummary from "../../../components/OrderSummary/OrderSummary";
@@ -26,6 +25,15 @@ import "./checkout.css";
 =================================== */
 
 // TODO: reemplazar por los productos del carrito compartido (contexto)
+type ItemCarrito = {
+  id: number;
+  nombre: string;
+  talla: string;
+  color: string;
+  precio: number;
+  cantidad: number;
+};
+
 const ITEMS: ItemCarrito[] = [
   { id: 1, nombre: "Playera Essential", talla: "M", color: "Beige", precio: 450, cantidad: 1 },
   { id: 2, nombre: "Sudadera Minimal", talla: "L", color: "Negro", precio: 850, cantidad: 1 },
