@@ -1,5 +1,5 @@
 import { IconoMas, IconoMenos, IconoPapelera } from "../icons/icons";
-import { formatoPrecio } from "../../assets/utils/formatoPrecio";
+import { formatoPrecio } from "../../utils/formatoPrecio";
 import "./cartItem.css";
 
 /*

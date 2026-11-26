@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import CartItem, {
   type ItemCarrito,
-} from "../../../components/CartItems/cartItem";
+} from "../../../components/CartItems/CartItem";
 import {
   IconoCaja,
   IconoCamion,
@@ -13,7 +13,7 @@ import {
   IconoNota,
   IconoRegalo,
 } from "../../../components/icons/icons";
-import { formatoPrecio } from "../../../assets/utils/formatoPrecio";
+import { formatoPrecio } from "../../../utils/formatoPrecio";
 import "./cart.css";
 
 /* ===================================
