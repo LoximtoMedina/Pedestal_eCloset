@@ -3,7 +3,7 @@ import { usePublicHeaderItems } from "../../../hooks/usePublicHeaderItems";
 import type { HeaderNavItem } from "../../../components/header/header";
 import ProductCard, {
   type Producto,
-} from "../../../components/ProductCard/ProductCard";
+} from "../../../components/ProductCard/productCard";
 import { useCart } from "../../../context/CartContext";
 import "./catalog.css";
 
