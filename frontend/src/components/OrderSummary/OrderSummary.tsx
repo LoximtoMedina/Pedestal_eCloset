@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import type { ItemCarrito } from "../CartItems/cartItem";
+import type { ItemCarrito } from '../CartItems/cartItem';
 import {
   IconoBolsa,
   IconoCaja,

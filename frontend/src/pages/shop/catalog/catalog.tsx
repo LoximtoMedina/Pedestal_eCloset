@@ -1,5 +1,5 @@
 import { useMemo, useState, type ReactNode } from "react";
-import { usePublicHeaderItems } from "../../../hooks/usePublicHeaderItems";
+import { useLayoutNavItems } from '../../../hooks/useLayoutNavItems';
 import type { HeaderNavItem } from "../../../components/header/header";
 import ProductCard, {
   type Producto,
@@ -139,7 +139,7 @@ function Catalog() {
     [],
   );
 
-  usePublicHeaderItems(catalogNavItems);
+  useLayoutNavItems<HeaderNavItem>(catalogNavItems);
 
   const [precio, setPrecio] = useState<[number, number]>([0, PRECIO_MAX]);
 

@@ -1,15 +1,20 @@
+import { useState, type MouseEvent } from 'react';
 import { Box, Burger, Drawer, Flex } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Outlet, useNavigate } from 'react-router';
 import logo from '../assets/PedestalLogo.svg';
 import '../components/header/header.css';
-import SideBar from '../components/sideBar/sideBar';
+import SideBar, { type SideBarSection } from '../components/sideBar/sideBar';
+import { useAuth } from '../context/authContext';
+import type { LayoutNavOutletContext } from '../hooks/useLayoutNavItems';
 import { useViewportType } from '../hooks/useViewportType';
 
 function DashboardLayout() {
   const viewport = useViewportType();
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const navigate = useNavigate();
+  const { user, logoutMock } = useAuth();
+  const [sidebarItems, setSidebarItems] = useState<SideBarSection[]>([]);
 
   const isMobile = viewport === 'mobile';
 
@@ -18,6 +23,19 @@ function DashboardLayout() {
     navigate(path);
   };
 
+  const handleLogout = () => {
+    logoutMock();
+    navigate('/login');
+  };
+
+  const sideBarUser = user
+    ? {
+        name: `${user.primerNombre ?? ''} ${user.primerApellido ?? ''}`.trim() || undefined,
+        email: user.correo,
+        avatarSrc: user.avatarSrc,
+      }
+    : null;
+
   return (
     <Flex
       direction={isMobile ? 'column' : 'row'}
@@ -25,7 +43,6 @@ function DashboardLayout() {
       w="100%"
       bg="light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8))"
     >
-      {/* Mobile: Header superior con logo a la izquierda y burger a la derecha */}
       {isMobile && (
         <>
           <header
@@ -36,7 +53,7 @@ function DashboardLayout() {
               <img src={logo} alt="Logo de Pedestal" />
               <a
                 href="/"
-                onClick={(event) => {
+                onClick={(event: MouseEvent<HTMLAnchorElement>) => {
                   event.preventDefault();
                   handleGoTo('/');
                 }}
@@ -69,22 +86,30 @@ function DashboardLayout() {
               title: 'pedestalDrawerTitle',
             }}
           >
-            <SideBar inDrawer onNavigate={closeDrawer} />
+            <SideBar
+              items={sidebarItems}
+              user={sideBarUser}
+              inDrawer
+              onNavigate={closeDrawer}
+              onLogoutClick={handleLogout}
+            />
           </Drawer>
         </>
       )}
 
-      {/* Tablet y Desktop: SideBar fijo a la izquierda */}
       {!isMobile && (
         <Box
           component="aside"
           style={{ position: 'sticky', top: 0, height: '100vh', flexShrink: 0 }}
         >
-          <SideBar />
+          <SideBar
+            items={sidebarItems}
+            user={sideBarUser}
+            onLogoutClick={handleLogout}
+          />
         </Box>
       )}
 
-      {/* Área derecha: Vistas hijas y paneles con <Splitter /> */}
       <Box
         component="main"
         style={{
@@ -95,7 +120,7 @@ function DashboardLayout() {
           flexDirection: 'column',
         }}
       >
-        <Outlet />
+        <Outlet context={{ setNavItems: setSidebarItems } satisfies LayoutNavOutletContext<SideBarSection>} />
       </Box>
     </Flex>
   );

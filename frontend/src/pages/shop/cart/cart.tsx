@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import CartItem, {
   type ItemCarrito,
-} from "../../../components/CartItems/CartItem";
+} from '../../../components/CartItems/cartItem';
 import {
   IconoCaja,
   IconoCamion,
