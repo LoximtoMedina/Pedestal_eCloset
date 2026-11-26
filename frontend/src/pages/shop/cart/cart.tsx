@@ -109,7 +109,7 @@ function Cart() {
 
         <section className="cart-content">
           <div className="cart-main">
-            <header className="cart-hero">
+            <div className="cart-hero">
               <div>
                 <h1>Tu carrito</h1>
                 <p>Revisa tus productos antes de continuar.</p>
@@ -118,7 +118,7 @@ function Cart() {
               <span className="cart-count">
                 {totalUnidades} {palabra}
               </span>
-            </header>
+            </div>
 
             {items.length > 0 ? (
               <div className="cart-products">

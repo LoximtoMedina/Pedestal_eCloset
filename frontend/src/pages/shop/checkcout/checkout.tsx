@@ -6,7 +6,6 @@ import {
   type ReactNode,
 } from "react";
 
-
 import CheckoutSection from "../../../components/CheckoutSection/CheckoutSection";
 import CheckoutSteps from "../../../components/CheckoutSteps/CheckoutSteps";
 import OrderSummary from "../../../components/OrderSummary/OrderSummary";
@@ -146,14 +145,14 @@ function Checkout() {
   return (
     <main className="checkout-page">
       <div className="checkout-container">
-        <header className="checkout-head">
+        <div className="checkout-head">
           <div>
             <h1>Finalizar compra</h1>
             <p>Completa tus datos para recibir tu pedido.</p>
           </div>
 
           <CheckoutSteps pasoActual={1} />
-        </header>
+        </div>
 
         <div className="checkout-layout">
           <form className="checkout-forms" onSubmit={manejarEnvio}>

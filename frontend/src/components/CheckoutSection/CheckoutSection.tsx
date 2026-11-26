@@ -22,14 +22,14 @@ function CheckoutSection({ icono, titulo, subtitulo, children }: Props) {
 
   return (
     <section className="checkout-section" aria-labelledby={idTitulo}>
-      <header className="checkout-section__head">
+      <div className="checkout-section__head">
         <span className="checkout-section__icon">{icono}</span>
 
         <div>
           <h2 id={idTitulo}>{titulo}</h2>
           <p>{subtitulo}</p>
         </div>
-      </header>
+      </div>
 
       <div className="checkout-section__body">{children}</div>
     </section>

@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import type { ItemCarrito } from "../CartItems/cartItem";
+import type { ItemCarrito } from "../CartItems/CartItem";
 import {
   IconoBolsa,
   IconoCaja,
@@ -56,13 +56,13 @@ function OrderSummary({ items, costoEnvio }: Props) {
 
   return (
     <aside className="order-summary" aria-label="Resumen del pedido">
-      <header className="order-summary__head">
+      <div className="order-summary__head">
         <IconoBolsa size={26} />
         <h2>Resumen del pedido</h2>
         <Link to={RUTA_CARRITO} className="order-summary__link">
           Editar carrito
         </Link>
-      </header>
+      </div>
 
       <ul className="order-summary__items">
         {items.map((item) => (
