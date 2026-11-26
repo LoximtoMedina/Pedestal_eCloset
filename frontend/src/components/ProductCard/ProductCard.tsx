@@ -18,9 +18,12 @@ export type Producto = {
   id: number; // identificador único del producto
   nombre: string; // nombre que ve el cliente
   precio: number; // precio de venta en lempiras
+  categoria?: string; // categoría del producto ("Playeras", "Gorras"...); sirve para filtrar
   etiqueta?: "Nuevo" | "Más vendido"; // insignia opcional (arriba a la izquierda)
   colores: string[]; // colores disponibles en hex, cada uno es un círculo
   imagen?: string; // ruta de la foto principal; si falta se muestra "IMG"
+  tallas?: string[]; // tallas disponibles; la primera se usa al agregar desde la tarjeta
+  coloresNombre?: string[]; // nombre de cada color de `colores`, en el mismo orden
 };
 
 type Props = {

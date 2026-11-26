@@ -58,7 +58,7 @@ import Suppliers from '../pages/purchases/suppliers/suppliers'
 // Ruta de Shop
 import Cart from '../pages/shop/cart/cart';
 import Catalog from '../pages/shop/catalog/catalog'; 
-import CheckOut from '../pages/shop/checkcout/checkout'
+import CheckOut from '../pages/shop/checkout/checkout'
 import ProductDetail from '../pages/shop/productDetail/productDetail'
 
 // Ruta de User

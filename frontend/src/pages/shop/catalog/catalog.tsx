@@ -4,6 +4,7 @@ import type { HeaderNavItem } from "../../../components/header/header";
 import ProductCard, {
   type Producto,
 } from "../../../components/ProductCard/ProductCard";
+import { useCart } from "../../../context/CartContext";
 import "./catalog.css";
 
 /* ===================================
@@ -35,15 +36,21 @@ const COLORES_FILTRO = [
 ];
 
 const PRODUCTOS: Producto[] = [
-  { id: 1, nombre: "Playera Essential", precio: 450, etiqueta: "Nuevo", colores: ["#111111", "#b4b4b4", "#dccfbd"] },
-  { id: 2, nombre: "Sudadera Minimal", precio: 850, colores: ["#ffffff", "#858585", "#4d5136"] },
-  { id: 3, nombre: "Pantalón Cargo", precio: 950, etiqueta: "Más vendido", colores: ["#6b4a36", "#424a2c", "#111111"] },
-  { id: 4, nombre: "Gorra Classic", precio: 350, colores: ["#111111", "#e0e0dd", "#dccfbd"] },
-  { id: 5, nombre: "Chaqueta Urban", precio: 1200, colores: ["#2a2a28", "#858585", "#dccfbd"] },
-  { id: 6, nombre: "Playera Oversize", precio: 550, colores: ["#5b5a35", "#858585", "#c9b08a"] },
-  { id: 7, nombre: "Short Basic", precio: 600, colores: ["#4a3a2e", "#111111"] },
-  { id: 8, nombre: "Sudadera Graphic", precio: 900, colores: ["#3d3a35", "#ffffff"] },
+  { id: 1, nombre: "Playera Essential", precio: 450, categoria: "Playeras", etiqueta: "Nuevo", colores: ["#111111", "#b4b4b4", "#dccfbd"], coloresNombre: ["Negro", "Gris", "Beige"], tallas: ["S", "M", "L"] },
+  { id: 2, nombre: "Sudadera Minimal", precio: 850, categoria: "Sudaderas", colores: ["#ffffff", "#858585", "#4d5136"], coloresNombre: ["Blanco", "Gris", "Verde oliva"], tallas: ["S", "M", "L", "XL"] },
+  { id: 3, nombre: "Pantalón Cargo", precio: 950, categoria: "Pantalones", etiqueta: "Más vendido", colores: ["#6b4a36", "#424a2c", "#111111"], coloresNombre: ["Café", "Verde oliva", "Negro"], tallas: ["S", "M", "L", "XL"] },
+  { id: 4, nombre: "Gorra Classic", precio: 350, categoria: "Gorras", colores: ["#111111", "#e0e0dd", "#dccfbd"], coloresNombre: ["Negro", "Gris", "Beige"], tallas: ["Única"] },
+  { id: 5, nombre: "Chaqueta Urban", precio: 1200, categoria: "Chaquetas", colores: ["#2a2a28", "#858585", "#dccfbd"], coloresNombre: ["Negro", "Gris", "Beige"], tallas: ["S", "M", "L", "XL"] },
+  { id: 6, nombre: "Playera Oversize", precio: 550, categoria: "Playeras", colores: ["#5b5a35", "#858585", "#c9b08a"], coloresNombre: ["Verde oliva", "Gris", "Beige"], tallas: ["S", "M", "L", "XL"] },
+  { id: 7, nombre: "Short Basic", precio: 600, categoria: "Pantalones", colores: ["#4a3a2e", "#111111"], coloresNombre: ["Café", "Negro"], tallas: ["S", "M", "L", "XL"] },
+  { id: 8, nombre: "Sudadera Graphic", precio: 900, categoria: "Sudaderas", colores: ["#3d3a35", "#ffffff"], coloresNombre: ["Gris", "Blanco"], tallas: ["S", "M", "L", "XL"] },
 ];
+
+type Orden = "populares" | "nuevos" | "precio-asc" | "precio-desc";
+
+/** Agrega el valor a la lista si no está, o lo quita si ya está. */
+const alternar = (lista: string[], valor: string) =>
+  lista.includes(valor) ? lista.filter((v) => v !== valor) : [...lista, valor];
 
 /* ===================================
    ÍCONOS (SVG propios, sin librerías)
@@ -128,6 +135,18 @@ function SeccionFiltro({
 function Catalog() {
   const [filtrosAbiertos, setFiltrosAbiertos] = useState(false);
 
+  const { agregar } = useCart();
+
+  const agregarAlCarrito = (p: Producto) =>
+    agregar({
+      id: p.id,
+      nombre: p.nombre,
+      precio: p.precio,
+      imagen: p.imagen,
+      talla: p.tallas?.[0] ?? "Única",
+      color: p.coloresNombre?.[0] ?? "Estándar",
+    });
+
   const catalogNavItems = useMemo<HeaderNavItem[]>(
     () => [
       {
@@ -145,6 +164,57 @@ function Catalog() {
 
   const izquierda = (precio[0] / PRECIO_MAX) * 100;
   const derecha = 100 - (precio[1] / PRECIO_MAX) * 100;
+
+  const [categorias, setCategorias] = useState<string[]>(["Todo"]);
+  const [tallasSel, setTallasSel] = useState<string[]>([]);
+  const [coloresSel, setColoresSel] = useState<string[]>([]); // nombres de color
+  const [orden, setOrden] = useState<Orden>("populares");
+
+  // "Todo" y las demás categorías no pueden estar marcadas a la vez
+  const alternarCategoria = (cat: string) => {
+    if (cat === "Todo") {
+      setCategorias(["Todo"]);
+      return;
+    }
+
+    const nuevas = alternar(
+      categorias.filter((c) => c !== "Todo"),
+      cat,
+    );
+    setCategorias(nuevas.length > 0 ? nuevas : ["Todo"]);
+  };
+
+  const limpiarFiltros = () => {
+    setCategorias(["Todo"]);
+    setTallasSel([]);
+    setColoresSel([]);
+    setPrecio([0, PRECIO_MAX]);
+  };
+
+  const productosVisibles = useMemo(() => {
+    const filtrados = PRODUCTOS.filter((p) => {
+      const cumpleCategoria =
+        categorias.includes("Todo") ||
+        (p.categoria !== undefined && categorias.includes(p.categoria));
+
+      const cumpleTalla =
+        tallasSel.length === 0 || (p.tallas ?? []).some((t) => tallasSel.includes(t));
+
+      const cumpleColor =
+        coloresSel.length === 0 ||
+        (p.coloresNombre ?? []).some((c) => coloresSel.includes(c));
+
+      const cumplePrecio = p.precio >= precio[0] && p.precio <= precio[1];
+
+      return cumpleCategoria && cumpleTalla && cumpleColor && cumplePrecio;
+    });
+
+    // "populares" deja el orden original; "nuevos" usa el id más alto como el más reciente
+    if (orden === "precio-asc") return [...filtrados].sort((x, y) => x.precio - y.precio);
+    if (orden === "precio-desc") return [...filtrados].sort((x, y) => y.precio - x.precio);
+    if (orden === "nuevos") return [...filtrados].sort((x, y) => y.id - x.id);
+    return filtrados;
+  }, [categorias, tallasSel, coloresSel, precio, orden]);
 
   return (
     <main className="catalog-page">
@@ -201,7 +271,11 @@ function Catalog() {
                 {CATEGORIAS.map((cat) => (
                   <li key={cat}>
                     <label>
-                      <input type="checkbox" defaultChecked={cat === "Todo"} />
+                      <input
+                        type="checkbox"
+                        checked={categorias.includes(cat)}
+                        onChange={() => alternarCategoria(cat)}
+                      />
                       {cat}
                     </label>
                   </li>
@@ -212,7 +286,13 @@ function Catalog() {
             <SeccionFiltro titulo="Talla">
               <div className="sizes">
                 {TALLAS.map((talla) => (
-                  <button type="button" key={talla}>
+                  <button
+                    type="button"
+                    key={talla}
+                    className={tallasSel.includes(talla) ? "is-selected" : ""}
+                    aria-pressed={tallasSel.includes(talla)}
+                    onClick={() => setTallasSel(alternar(tallasSel, talla))}
+                  >
                     {talla}
                   </button>
                 ))}
@@ -225,7 +305,9 @@ function Catalog() {
                   <button
                     type="button"
                     key={c.hex}
-                    className="swatch swatch--filter"
+                    className={`swatch swatch--filter ${coloresSel.includes(c.nombre) ? "is-selected" : ""}`}
+                    aria-pressed={coloresSel.includes(c.nombre)}
+                    onClick={() => setColoresSel(alternar(coloresSel, c.nombre))}
                     style={{ background: c.hex }}
                     aria-label={c.nombre}
                     title={c.nombre}
@@ -279,7 +361,7 @@ function Catalog() {
               </div>
             </SeccionFiltro>
 
-            <button type="button" className="clear-filters">
+            <button type="button" className="clear-filters" onClick={limpiarFiltros}>
               Limpiar filtros
             </button>
           </aside>
@@ -295,7 +377,11 @@ function Catalog() {
               <div className="catalog-controls">
                 <div className="catalog-sort">
                   <label htmlFor="orden">Ordenar por:</label>
-                  <select id="orden" defaultValue="populares">
+                  <select
+                    id="orden"
+                    value={orden}
+                    onChange={(e) => setOrden(e.target.value as Orden)}
+                  >
                     <option value="populares">Más populares</option>
                     <option value="nuevos">Más nuevos</option>
                     <option value="precio-asc">Precio: menor a mayor</option>
@@ -303,15 +389,32 @@ function Catalog() {
                   </select>
                 </div>
 
-                <span className="catalog-count">{PRODUCTOS.length} productos</span>
+                <span className="catalog-count">
+                  {productosVisibles.length}{" "}
+                  {productosVisibles.length === 1 ? "producto" : "productos"}
+                </span>
               </div>
             </div>
 
-            <div className="products-grid">
-              {PRODUCTOS.map((p) => (
-                <ProductCard key={p.id} producto={p} />
-              ))}
-            </div>
+            {productosVisibles.length > 0 ? (
+              <div className="products-grid">
+                {productosVisibles.map((p) => (
+                  <ProductCard
+                    key={p.id}
+                    producto={p}
+                    onAgregarCarrito={agregarAlCarrito}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="catalog-empty">
+                <h3>No encontramos productos</h3>
+                <p>Prueba quitando algún filtro o ampliando el rango de precio.</p>
+                <button type="button" onClick={limpiarFiltros}>
+                  Limpiar filtros
+                </button>
+              </div>
+            )}
           </div>
         </section>
       </div>

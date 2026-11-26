@@ -1,8 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router";
-import CartItem, {
-  type ItemCarrito,
-} from "../../../components/CartItems/CartItem";
+import CartItem from "../../../components/CartItems/CartItem";
+import { useCart } from "../../../context/CartContext";
 import {
   IconoCaja,
   IconoCamion,
@@ -18,14 +17,8 @@ import { formatoPrecio } from "../../../utils/formatoPrecio";
 import "./cart.css";
 
 /* ===================================
-   DATOS (por ahora fijos; luego vendrán del carrito del cliente)
+   DATOS
 =================================== */
-
-const ITEMS_INICIALES: ItemCarrito[] = [
-  { id: 1, nombre: "Camisa Oversize", talla: "M", color: "Negro", precio: 650, cantidad: 1 },
-  { id: 2, nombre: "Pantalón Cargo", talla: "L", color: "Beige", precio: 850, cantidad: 1 },
-  { id: 3, nombre: "Gorra Urbana", talla: "Única", color: "Blanco", precio: 350, cantidad: 1 },
-];
 
 const BENEFICIOS = [
   {
@@ -84,24 +77,7 @@ function SeccionExtra({
 
 function Cart() {
   const navigate = useNavigate();
-  const [items, setItems] = useState<ItemCarrito[]>(ITEMS_INICIALES);
-
-  const cambiarCantidad = (id: number, delta: number) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? { ...item, cantidad: Math.max(1, item.cantidad + delta) }
-          : item,
-      ),
-    );
-  };
-
-  const quitar = (id: number) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  const totalUnidades = items.reduce((suma, item) => suma + item.cantidad, 0);
-  const subtotal = items.reduce((suma, item) => suma + item.precio * item.cantidad, 0);
+  const { items, totalUnidades, subtotal, cambiarCantidad, quitar } = useCart();
   const palabra = totalUnidades === 1 ? "producto" : "productos";
 
   return (
@@ -179,7 +155,6 @@ function Cart() {
 
           <aside className="cart-summary">
             <h2>Resumen del pedido</h2>
-            <p className="summary-subtitle">Revisa tus productos antes de continuar.</p>
 
             <div className="summary-row">
               <span>
@@ -203,6 +178,7 @@ function Cart() {
               type="button"
               className="checkout-btn"
               disabled={items.length === 0}
+              onClick={() => navigate("/shop/cart/checkout")}
             >
               Finalizar compra
               <IconoFlechaDerecha size={20} />

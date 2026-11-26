@@ -19,27 +19,12 @@ import {
   IconoUbicacion,
 } from "../../../components/icons/icons";
 import { formatoPrecio } from "../../../utils/formatoPrecio";
+import { useCart } from "../../../context/CartContext";
 import "./checkout.css";
 
 /* ===================================
-   DATOS (por ahora fijos; luego vendrán del carrito y de la base)
+   DATOS (por ahora fijos; luego vendrán de la base)
 =================================== */
-
-// TODO: reemplazar por los productos del carrito compartido (contexto)
-type ItemCarrito = {
-  id: number;
-  nombre: string;
-  talla: string;
-  color: string;
-  precio: number;
-  cantidad: number;
-};
-
-const ITEMS: ItemCarrito[] = [
-  { id: 1, nombre: "Playera Essential", talla: "M", color: "Beige", precio: 450, cantidad: 1 },
-  { id: 2, nombre: "Sudadera Minimal", talla: "L", color: "Negro", precio: 850, cantidad: 1 },
-  { id: 3, nombre: "Gorra Classic", talla: "Única", color: "Beige", precio: 350, cantidad: 1 },
-];
 
 const DEPARTAMENTOS = [
   "Atlántida",
@@ -131,6 +116,7 @@ function OpcionRadio({
 function Checkout() {
   const [envio, setEnvio] = useState<MetodoEnvio>("estandar");
   const [pago, setPago] = useState<MetodoPago>("tarjeta");
+  const { items } = useCart();
 
   const costoEnvio = ENVIOS.find((e) => e.id === envio)?.precio ?? 0;
 
@@ -324,7 +310,7 @@ function Checkout() {
             </div>
           </form>
 
-          <OrderSummary items={ITEMS} costoEnvio={costoEnvio} />
+          <OrderSummary items={items} costoEnvio={costoEnvio} />
         </div>
       </div>
     </main>
