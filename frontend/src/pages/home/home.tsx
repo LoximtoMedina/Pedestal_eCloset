@@ -15,7 +15,7 @@ import { useForm } from '@mantine/form';
 import { IconCircleFilled, IconDiamondFilled, IconTriangleFilled } from '@tabler/icons-react';
 import { useViewportType } from '../../hooks/useViewportType';
 import { useMemo } from 'react';
-import { usePublicHeaderItems } from '../../hooks/usePublicHeaderItems';
+import { useLayoutNavItems } from '../../hooks/useLayoutNavItems';
 import type { HeaderNavItem } from '../../components/header/header';
 
 /*Importacion del css a la pagina home*/
@@ -32,7 +32,7 @@ function Home() {
   const viewport = useViewportType();
   const [sentMessage, setSentMessage] = useState(false);
 
-  const homeNavItems = useMemo<HeaderNavItem[]>(
+  const navItems = useMemo<HeaderNavItem[]>(
     () => [
       { key: 'offers', label: 'Ofertas', href: '#offers' },
       { key: 'about', label: 'Sobre Nosotros', href: '#about' },
@@ -41,7 +41,7 @@ function Home() {
     ],
     []
   );
-  usePublicHeaderItems(homeNavItems);
+  useLayoutNavItems<HeaderNavItem>(navItems);
 
   const contactForm = useForm<ContactFormValues>({
     initialValues: {

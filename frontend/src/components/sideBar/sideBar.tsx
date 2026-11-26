@@ -1,17 +1,8 @@
-import type { ComponentType } from 'react';
+import type { ComponentType, MouseEvent } from 'react';
 import {
-  IconAdjustments,
-  IconBuildingStore,
-  IconCalendarStats,
-  IconChartBar,
   IconChevronRight,
-  IconGauge,
   IconLogout,
-  IconPackage,
-  IconShoppingBag,
-  IconTag,
   IconUser,
-  IconUsers,
 } from '@tabler/icons-react';
 import {
   Avatar,
@@ -29,11 +20,13 @@ import logo from '../../assets/PedestalLogo.svg';
 import './sideBar.css';
 
 export interface SideBarSubLink {
+  key?: string;
   label: string;
   link: string;
 }
 
 export interface SideBarSection {
+  key?: string;
   label: string;
   icon: ComponentType<{ size?: number | string; stroke?: number }>;
   link?: string;
@@ -41,63 +34,20 @@ export interface SideBarSection {
   links?: SideBarSubLink[];
 }
 
-interface SideBarProps {
-  inDrawer?: boolean;
-  onNavigate?: () => void;
+export interface SideBarUserInfo {
+  name?: string;
+  email?: string;
+  avatarSrc?: string;
 }
 
-const pedestalNavData: SideBarSection[] = [
-  {
-    label: 'Inicio',
-    icon: IconGauge,
-    link: '/dashboards',
-  },
-  {
-    label: 'Dashboards',
-    icon: IconChartBar,
-    initiallyOpened: true,
-    links: [
-      { label: 'Tienda', link: '/dashboards/store' },
-      { label: 'Área', link: '/dashboards/area' },
-      { label: 'Nacional', link: '/dashboards/national' },
-    ],
-  },
-  {
-    label: 'Inventario',
-    icon: IconPackage,
-    link: '/inventory',
-  },
-  {
-    label: 'Punto de Venta (POS)',
-    icon: IconBuildingStore,
-    link: '/pos',
-  },
-  {
-    label: 'Compras',
-    icon: IconShoppingBag,
-    link: '/purchases',
-  },
-  {
-    label: 'Promociones',
-    icon: IconTag,
-    link: '/promotions',
-  },
-  {
-    label: 'Recursos Humanos',
-    icon: IconUsers,
-    link: '/hr',
-  },
-  {
-    label: 'eCloset',
-    icon: IconCalendarStats,
-    link: '/ecloset',
-  },
-  {
-    label: 'Administración',
-    icon: IconAdjustments,
-    link: '/admin',
-  },
-];
+export interface SideBarProps {
+  items?: SideBarSection[];
+  user?: SideBarUserInfo | null;
+  inDrawer?: boolean;
+  onNavigate?: () => void;
+  onProfileClick?: () => void;
+  onLogoutClick?: () => void;
+}
 
 function NavSectionItem({
   item,
@@ -138,9 +88,9 @@ function NavSectionItem({
       defaultOpened={Boolean(item.initiallyOpened) || hasActiveChild}
       className="pedestalSidebarNavItem"
     >
-      {item.links!.map((sub) => (
+      {item.links!.map((sub, index) => (
         <NavLink
-          key={sub.link}
+          key={sub.key ?? `${sub.link}-${index}`}
           label={sub.label}
           active={currentPath === sub.link}
           onClick={() => onSelectLink(sub.link)}
@@ -151,7 +101,14 @@ function NavSectionItem({
   );
 }
 
-function SideBar({ inDrawer = false, onNavigate }: SideBarProps) {
+function SideBar({
+  items = [],
+  user = null,
+  inDrawer = false,
+  onNavigate,
+  onProfileClick,
+  onLogoutClick,
+}: SideBarProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -160,11 +117,15 @@ function SideBar({ inDrawer = false, onNavigate }: SideBarProps) {
     navigate(path);
   };
 
-  const handleGoHome = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleGoHome = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     onNavigate?.();
     navigate('/');
   };
+
+  const displayName = user?.name?.trim() || 'Usuario Pedestal';
+  const displayEmail = user?.email?.trim() || 'usuario@pedestal.com';
+  const avatarInitial = displayName.charAt(0).toUpperCase() || 'P';
 
   return (
     <nav
@@ -185,9 +146,9 @@ function SideBar({ inDrawer = false, onNavigate }: SideBarProps) {
 
       <ScrollArea className="pedestalSidebarLinks">
         <div className="pedestalSidebarLinksInner">
-          {pedestalNavData.map((item) => (
+          {items.map((item, index) => (
             <NavSectionItem
-              key={item.label}
+              key={item.key ?? `${item.label}-${item.link ?? index}`}
               item={item}
               currentPath={location.pathname}
               onSelectLink={handleSelectLink}
@@ -201,15 +162,20 @@ function SideBar({ inDrawer = false, onNavigate }: SideBarProps) {
           <Menu.Target>
             <UnstyledButton className="pedestalSidebarUserBtn">
               <Group gap="sm" wrap="nowrap">
-                <Avatar radius="xl" size="md" color="dark">
-                  P
+                <Avatar
+                  src={user?.avatarSrc || undefined}
+                  radius="xl"
+                  size="md"
+                  color="dark"
+                >
+                  {avatarInitial}
                 </Avatar>
                 <Box style={{ flex: 1, minWidth: 0 }}>
                   <Text size="sm" fw={500} truncate>
-                    Usuario Pedestal
+                    {displayName}
                   </Text>
                   <Text c="dimmed" size="xs" truncate>
-                    usuario@pedestal.com
+                    {displayEmail}
                   </Text>
                 </Box>
                 <IconChevronRight size={15} stroke={1.6} />
@@ -220,7 +186,14 @@ function SideBar({ inDrawer = false, onNavigate }: SideBarProps) {
           <Menu.Dropdown>
             <Menu.Item
               leftSection={<IconUser size={15} />}
-              onClick={() => handleSelectLink('/profile')}
+              onClick={() => {
+                onNavigate?.();
+                if (onProfileClick) {
+                  onProfileClick();
+                } else {
+                  navigate('/profile');
+                }
+              }}
             >
               Mi perfil
             </Menu.Item>
@@ -228,7 +201,14 @@ function SideBar({ inDrawer = false, onNavigate }: SideBarProps) {
             <Menu.Item
               color="red"
               leftSection={<IconLogout size={15} />}
-              onClick={() => handleSelectLink('/login')}
+              onClick={() => {
+                onNavigate?.();
+                if (onLogoutClick) {
+                  onLogoutClick();
+                } else {
+                  navigate('/login');
+                }
+              }}
             >
               Cerrar sesión
             </Menu.Item>

@@ -1,9 +1,9 @@
 import { useMemo, useState, type ReactNode } from "react";
-import { usePublicHeaderItems } from "../../../hooks/usePublicHeaderItems";
+import { useLayoutNavItems } from "../../../hooks/useLayoutNavItems";
 import type { HeaderNavItem } from "../../../components/header/header";
 import ProductCard, {
   type Producto,
-} from "../../../components/ProductCard/productCard";
+} from "../../../components/ProductCard/ProductCard";
 import { useCart } from "../../../context/CartContext";
 import "./catalog.css";
 
@@ -147,7 +147,7 @@ function Catalog() {
       color: p.coloresNombre?.[0] ?? "Estándar",
     });
 
-  const catalogNavItems = useMemo<HeaderNavItem[]>(
+  const navItems = useMemo<HeaderNavItem[]>(
     () => [
       {
         key: "cart",
@@ -157,8 +157,7 @@ function Catalog() {
     ],
     [],
   );
-
-  usePublicHeaderItems(catalogNavItems);
+  useLayoutNavItems<HeaderNavItem>(navItems);
 
   const [precio, setPrecio] = useState<[number, number]>([0, PRECIO_MAX]);
 

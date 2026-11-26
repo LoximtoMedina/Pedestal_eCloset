@@ -3,10 +3,10 @@
    ========================================================================== */
 import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router';
-import { useAuth } from '../context/authContext';
-import Header, { type HeaderNavItem, type HeaderSubItem } from '../components/header/header';
-import Footer from '../components/footer/footer';
-import { type PublicLayoutOutletContext } from '../hooks/usePublicHeaderItems';
+import { useAuth } from '../../context/authContext';
+import Header, { type HeaderNavItem, type HeaderSubItem } from '../../components/header/header';
+import Footer from '../../components/footer/footer';
+import { type LayoutNavOutletContext } from '../../hooks/useLayoutNavItems';
 
 /* ==========================================================================
 2. LAYOUT PÚBLICO (HEADER + CONTENIDO DE PÁGINA + FOOTER)
@@ -53,7 +53,7 @@ function PublicLayout() {
         profileMenuItems={profileMenuItems}
       />
 
-      <Outlet context={{ setHeaderItems } satisfies PublicLayoutOutletContext} />
+      <Outlet context={{ setNavItems: setHeaderItems } satisfies LayoutNavOutletContext<HeaderNavItem>} />
 
       <Footer />
     </>

@@ -9,8 +9,8 @@ import { useAuth, getDashboardRoute } from '../context/authContext';
   2. LAYOUTS, GUARDAS DE RUTA Y VISTAS
 ========================================================================== 
 */
-import PublicLayout from '../layouts/publicLayout';
-import DashboardLayout from '../layouts/dashboardLayout';
+import PublicLayout from '../layouts/publicLayout/publicLayout';
+import DashboardLayout from '../layouts/dashboardLayout/dashboardLayout';
 import ProtectedRoute from './protectedRoutes';
 
 // Ruta de Admin
