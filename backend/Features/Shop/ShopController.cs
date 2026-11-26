@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Pedestal.Api.Features.Shop;
 
 namespace Pedestal.Api.Features.Shop
@@ -14,6 +15,11 @@ namespace Pedestal.Api.Features.Shop
             _shopService = shopService;
         }
 
-        // Aquí van los endpoints: [HttpGet], [HttpPost], [HttpPut], [HttpDelete]
+        [HttpGet("ping")]
+        [AllowAnonymous]
+        public IActionResult Ping()
+        {
+            return Ok("pong");
+        }
     }
 }
