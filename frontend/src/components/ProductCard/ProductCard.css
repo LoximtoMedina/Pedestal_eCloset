@@ -1,0 +1,173 @@
+/* Usa las variables de la página si existen (--brown, --line...) y tiene valores propios si no. */
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--line, #e8e3dc);
+    border-radius: 12px;
+    transition: box-shadow 0.2s;
+}
+
+.product-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.product-card button:focus-visible {
+    outline: 2px solid var(--brown, #705344);
+    outline-offset: 2px;
+}
+
+/* ---------- imagen ---------- */
+
+.product-card__media {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 6 / 5;
+    overflow: hidden;
+    background: #e6e2dd;
+}
+
+.product-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+}
+
+.product-card__placeholder {
+    color: var(--muted, #6f6b66);
+    font-size: 1.1rem;
+}
+
+.product-card__badge {
+    position: absolute;
+    z-index: 1;
+    top: 0.75rem;
+    left: 0.75rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    background: var(--brown, #705344);
+    color: #fff;
+    font-size: 0.75rem;
+}
+
+.product-card__fav {
+    position: absolute;
+    z-index: 1;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    background: none;
+    color: #222;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.product-card__fav:hover {
+    color: crimson;
+}
+
+.product-card__fav:hover svg {
+    fill: currentColor;
+}
+
+/* ---------- información ---------- */
+
+/* La info ocupa el resto de la tarjeta y el footer se pega abajo,
+   así todas las tarjetas de una fila quedan alineadas aunque el nombre cambie. */
+.product-card__info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 0.9rem 1rem 1rem;
+}
+
+.product-card__name {
+    margin: 0 0 0.25rem;
+    overflow: hidden;
+    font-size: 0.95rem;
+    font-weight: 600;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.product-card__price {
+    margin: 0 0 0.75rem;
+    font-size: 0.9rem;
+    color: #3a3835;
+}
+
+.product-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: auto;
+}
+
+.product-card__colors {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.product-card__swatch {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    border-radius: 50%;
+}
+
+.product-card__cart {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--brown, #705344);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.product-card__cart:hover {
+    background: var(--brown-dark, #5d4336);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .product-card,
+    .product-card * {
+        transition: none !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .product-card__info {
+        padding: 0.75rem;
+    }
+
+    .product-card__name {
+        font-size: 0.88rem;
+    }
+
+    .product-card__cart {
+        width: 34px;
+        height: 34px;
+    }
+
+    .product-card__badge {
+        top: 0.5rem;
+        left: 0.5rem;
+        font-size: 0.7rem;
+    }
+}
