@@ -70,9 +70,10 @@ import MyOrders from '../pages/user/myOrders/myOrders';
    3. ENRUTADOR PRINCIPAL DE LA APLICACIÓN
    ========================================================================== */
 function AppRoutes() {
-  const { isAuthenticated, user, loginMock } = useAuth();
+  const { isAuthenticated, user, login, register } = useAuth();
   const navigate = useNavigate();
-  const dashboardTarget = getDashboardRoute(user?.role);
+  // a qué panel va cada rol cuando entra a /dashboard
+  const dashboardTarget = getDashboardRoute(user?.roles?.[0], user?.initialRoute);
 
   return (
     <Routes>
@@ -85,9 +86,17 @@ function AppRoutes() {
           ) : (
             <Login
               onRegisterClick={() => navigate('/signup')}
-              onSubmit={({ email }) => {
-                loginMock({ identifier: email });
-                navigate('/');
+              onSubmit={(credentials) => {
+                // inicia sesión contra el backend con el correo y la contraseña del formulario
+                void login({
+                  identifier: credentials.email,
+                  password: credentials.password,
+                  rememberMe: credentials.rememberMe,
+                })
+                  .then(() => navigate('/'))
+                  .catch((error: unknown) =>
+                    console.error('No se pudo iniciar sesión:', error)
+                  );
               }}
             />
           )
@@ -103,13 +112,25 @@ function AppRoutes() {
             <SignUp
               onLoginClick={() => navigate('/login')}
               onSubmit={(data) => {
-                loginMock({
-                  correo: data.correo,
-                  nombreUsuario: data.nombreUsuario,
-                  primerNombre: data.primerNombre,
-                  primerApellido: data.primerApellido,
-                });
-                navigate('/');
+                // crea la cuenta en el backend y deja la sesión iniciada
+                void register({
+                  documentNumber: data.documentoIdentidad,
+                  phone: data.telefono,
+                  firstName: data.primerNombre,
+                  middleName: data.segundoNombre || undefined,
+                  firstSurname: data.primerApellido,
+                  secondSurname: data.segundoApellido || undefined,
+                  email: data.correo,
+                  username: data.nombreUsuario,
+                  city: data.ciudad,
+                  addressLine: data.direccion,
+                  password: data.contrasena,
+                  confirmPassword: data.confirmarContrasena,
+                })
+                  .then(() => navigate('/'))
+                  .catch((error: unknown) =>
+                    console.error('No se pudo registrar la cuenta:', error)
+                  );
               }}
             />
           )

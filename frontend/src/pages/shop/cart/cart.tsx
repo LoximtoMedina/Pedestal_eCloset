@@ -1,72 +1,148 @@
 import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router";
-import CartItem from "../../../components/CartItems/CartItem";
-import { useCart } from "../../../context/CartContext";
 import {
-  IconoCaja,
-  IconoCamion,
-  IconoCandado,
-  IconoChevronAbajo,
-  IconoChevronIzquierda,
-  IconoEscudo,
-  IconoFlechaDerecha,
-  IconoNota,
-  IconoRegalo,
-} from "../../../components/icons/icons";
-import { formatoPrecio } from "../../../utils/formatoPrecio";
+  IconArrowRight,
+  IconChevronDown,
+  IconChevronLeft,
+  IconGift,
+  IconLock,
+  IconMinus,
+  IconNote,
+  IconPackage,
+  IconPlus,
+  IconShieldCheck,
+  IconTrash,
+  IconTruckDelivery,
+} from "@tabler/icons-react";
+import { useCart, type CartLine } from "../../../context/CartContext";
+import { formatPrice } from "../../../utils/formatoPrecio";
 import "./cart.css";
 
 /* ===================================
    DATOS
+   Beneficios que se muestran debajo del total (texto fijo por ahora).
 =================================== */
 
-const BENEFICIOS = [
+const BENEFITS = [
   {
-    Icono: IconoCamion,
-    titulo: "Envíos a toda Honduras",
-    texto: "Recibe tu pedido en 2 a 5 días hábiles.",
+    Icon: IconTruckDelivery,
+    title: "Envíos a toda Honduras",
+    text: "Recibe tu pedido en 2 a 5 días hábiles.",
   },
   {
-    Icono: IconoCaja,
-    titulo: "Empaque de calidad",
-    texto: "Tus productos llegan protegidos y en óptimas condiciones.",
+    Icon: IconPackage,
+    title: "Empaque de calidad",
+    text: "Tus productos llegan protegidos y en óptimas condiciones.",
   },
   {
-    Icono: IconoEscudo,
-    titulo: "Compra segura",
-    texto: "Tus datos están protegidos durante todo el proceso.",
+    Icon: IconShieldCheck,
+    title: "Compra segura",
+    text: "Tus datos están protegidos durante todo el proceso.",
   },
 ];
 
 /* ===================================
-   SECCIÓN DESPLEGABLE (código promocional / nota)
+   FILA DE PRODUCTO
+   Una línea del carrito: foto, nombre, talla/color, cantidad y total.
 =================================== */
 
-function SeccionExtra({
-  icono,
-  titulo,
+function CartItemRow({
+  item,
+  onChangeQuantity,
+  onRemove,
+}: {
+  item: CartLine;
+  onChangeQuantity: (id: number, delta: number) => void;
+  onRemove: (id: number) => void;
+}) {
+  const { id, name, size, color, price, quantity, image } = item;
+
+  return (
+    <article className="cart-item">
+      {/* foto o recuadro "IMG" */}
+      <div className="cart-item__img">
+        {image ? <img src={image} alt={name} loading="lazy" /> : <span>IMG</span>}
+      </div>
+
+      {/* nombre y variante elegida */}
+      <div className="cart-item__info">
+        <h3>{name}</h3>
+        <p>
+          Talla {size} · {color}
+        </p>
+      </div>
+
+      {/* botón de eliminar la línea */}
+      <button
+        type="button"
+        className="cart-item__remove"
+        aria-label={`Eliminar ${name}`}
+        onClick={() => onRemove(id)}
+      >
+        <IconTrash size={18} stroke={1.8} />
+      </button>
+
+      {/* precio unitario */}
+      <p className="cart-item__price">{formatPrice(price)}</p>
+
+      {/* cantidad con menos / más (nunca baja de 1) */}
+      <div className="cart-item__qty" role="group" aria-label={`Cantidad de ${name}`}>
+        <button
+          type="button"
+          aria-label="Reducir cantidad"
+          disabled={quantity <= 1}
+          onClick={() => onChangeQuantity(id, -1)}
+        >
+          <IconMinus size={16} stroke={2} />
+        </button>
+
+        <span aria-live="polite">{quantity}</span>
+
+        <button
+          type="button"
+          aria-label="Aumentar cantidad"
+          onClick={() => onChangeQuantity(id, 1)}
+        >
+          <IconPlus size={16} stroke={2} />
+        </button>
+      </div>
+
+      {/* precio × cantidad */}
+      <p className="cart-item__total">{formatPrice(price * quantity)}</p>
+    </article>
+  );
+}
+
+/* ===================================
+   SECCIÓN DESPLEGABLE
+   Se usa para el código promocional y la nota del pedido.
+=================================== */
+
+function ExtraSection({
+  icon,
+  title,
   children,
 }: {
-  icono: ReactNode;
-  titulo: string;
+  icon: ReactNode;
+  title: string;
   children: ReactNode;
 }) {
-  const [abierta, setAbierta] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="extra">
       <button
         type="button"
         className="extra__head"
-        aria-expanded={abierta}
-        onClick={() => setAbierta(!abierta)}
+        aria-expanded={open}
+        onClick={() => setOpen(!open)}
       >
-        {icono}
-        <span>{titulo}</span>
-        <IconoChevronAbajo size={18} className="chevron" />
+        {icon}
+        <span>{title}</span>
+        <IconChevronDown size={18} stroke={1.8} className="chevron" />
       </button>
 
-      {abierta && <div className="extra__body">{children}</div>}
+      {open && <div className="extra__body">{children}</div>}
     </div>
   );
 }
@@ -77,22 +153,25 @@ function SeccionExtra({
 
 function Cart() {
   const navigate = useNavigate();
-  const { items, totalUnidades, subtotal, cambiarCantidad, quitar } = useCart();
-  const palabra = totalUnidades === 1 ? "producto" : "productos";
+  const { items, totalUnits, subtotal, changeQuantity, removeItem } = useCart();
+
+  const unitLabel = totalUnits === 1 ? "producto" : "productos";
 
   return (
     <main className="cart-page">
       <div className="cart-container">
+        {/* volver al catálogo */}
         <button
           type="button"
           className="continue-shopping"
           onClick={() => navigate("/shop/catalog")}
         >
-          <IconoChevronIzquierda size={18} />
+          <IconChevronLeft size={18} stroke={1.8} />
           Seguir comprando
         </button>
 
         <section className="cart-content">
+          {/* ---------- columna izquierda: productos y extras ---------- */}
           <div className="cart-main">
             <div className="cart-hero">
               <div>
@@ -101,18 +180,19 @@ function Cart() {
               </div>
 
               <span className="cart-count">
-                {totalUnidades} {palabra}
+                {totalUnits} {unitLabel}
               </span>
             </div>
 
+            {/* lista de líneas o mensaje de carrito vacío */}
             {items.length > 0 ? (
               <div className="cart-products">
                 {items.map((item) => (
-                  <CartItem
+                  <CartItemRow
                     key={item.id}
                     item={item}
-                    onCambiarCantidad={cambiarCantidad}
-                    onQuitar={quitar}
+                    onChangeQuantity={changeQuantity}
+                    onRemove={removeItem}
                   />
                 ))}
               </div>
@@ -123,10 +203,11 @@ function Cart() {
               </div>
             )}
 
+            {/* código promocional y nota del pedido */}
             <div className="cart-extras">
-              <SeccionExtra
-                icono={<IconoRegalo size={22} />}
-                titulo="¿Tienes un código promocional?"
+              <ExtraSection
+                icon={<IconGift size={22} stroke={1.8} />}
+                title="¿Tienes un código promocional?"
               >
                 <input
                   id="promo-code"
@@ -136,11 +217,11 @@ function Cart() {
                   aria-label="Código promocional"
                 />
                 <button type="button">Aplicar</button>
-              </SeccionExtra>
+              </ExtraSection>
 
-              <SeccionExtra
-                icono={<IconoNota size={22} />}
-                titulo="Agregar una nota a tu pedido (opcional)"
+              <ExtraSection
+                icon={<IconNote size={22} stroke={1.8} />}
+                title="Agregar una nota a tu pedido (opcional)"
               >
                 <textarea
                   id="order-note"
@@ -149,18 +230,19 @@ function Cart() {
                   placeholder="Escribe una nota para tu pedido"
                   aria-label="Nota para el pedido"
                 />
-              </SeccionExtra>
+              </ExtraSection>
             </div>
           </div>
 
+          {/* ---------- columna derecha: resumen y totales ---------- */}
           <aside className="cart-summary">
             <h2>Resumen del pedido</h2>
 
             <div className="summary-row">
               <span>
-                Subtotal ({totalUnidades} {palabra})
+                Subtotal ({totalUnits} {unitLabel})
               </span>
-              <span>{formatoPrecio(subtotal)}</span>
+              <span>{formatPrice(subtotal)}</span>
             </div>
 
             <div className="summary-row">
@@ -170,7 +252,7 @@ function Cart() {
 
             <div className="summary-total">
               <span className="summary-total__label">Total</span>
-              <span className="summary-total__amount">{formatoPrecio(subtotal)}</span>
+              <span className="summary-total__amount">{formatPrice(subtotal)}</span>
             </div>
             <p className="summary-tax">Impuestos incluidos</p>
 
@@ -181,21 +263,22 @@ function Cart() {
               onClick={() => navigate("/shop/cart/checkout")}
             >
               Finalizar compra
-              <IconoFlechaDerecha size={20} />
+              <IconArrowRight size={20} stroke={1.8} />
             </button>
 
             <p className="secure-note">
-              <IconoCandado size={15} />
+              <IconLock size={15} stroke={1.8} />
               Pago seguro y encriptado
             </p>
 
+            {/* beneficios de la tienda */}
             <div className="summary-benefits">
-              {BENEFICIOS.map(({ Icono, titulo, texto }) => (
-                <div className="benefit" key={titulo}>
-                  <Icono size={26} />
+              {BENEFITS.map(({ Icon, title, text }) => (
+                <div className="benefit" key={title}>
+                  <Icon size={26} stroke={1.6} />
                   <div>
-                    <h4>{titulo}</h4>
-                    <p>{texto}</p>
+                    <h4>{title}</h4>
+                    <p>{text}</p>
                   </div>
                 </div>
               ))}

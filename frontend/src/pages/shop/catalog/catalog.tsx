@@ -1,20 +1,20 @@
 import { useMemo, useState, type ReactNode } from "react";
-import ProductCard, {
-  type Producto,
-} from "../../../components/ProductCard/ProductCard";
+import { IconArrowRight, IconChevronRight, IconChevronUp } from "@tabler/icons-react";
+import ProductCard, { type Product } from "../../../components/ProductCard/ProductCard";
 import { useCart } from "../../../context/CartContext";
-import { PRODUCTOS, aItemCarrito } from "../../../data/productos";
+import { PRODUCTS, toCartItem } from "../../../data/productos";
 import { useShopHeaderItems } from "../../../hooks/useShopHeaderItems";
 import "./catalog.css";
 
 /* ===================================
-   DATOS (por ahora fijos; luego vendrán de la base)
+   DATOS DE LOS FILTROS
+   (por ahora fijos; luego se arman desde los productos de la base)
 =================================== */
 
-const PRECIO_MAX = 2000;
-const PRECIO_PASO = 50;
+const MAX_PRICE = 2000;
+const PRICE_STEP = 50;
 
-const CATEGORIAS = [
+const CATEGORIES = [
   "Todo",
   "Playeras",
   "Sudaderas",
@@ -24,95 +24,43 @@ const CATEGORIAS = [
   "Chaquetas",
 ];
 
-const TALLAS = ["XS", "S", "M", "L", "XL"];
+const SIZES = ["XS", "S", "M", "L", "XL"];
 
-const COLORES_FILTRO = [
-  { nombre: "Negro", hex: "#111111" },
-  { nombre: "Blanco", hex: "#ffffff" },
-  { nombre: "Gris", hex: "#858585" },
-  { nombre: "Beige", hex: "#dccfbd" },
-  { nombre: "Verde oliva", hex: "#4d5136" },
-  { nombre: "Café", hex: "#6b4a36" },
+const FILTER_COLORS = [
+  { name: "Negro", hex: "#111111" },
+  { name: "Blanco", hex: "#ffffff" },
+  { name: "Gris", hex: "#858585" },
+  { name: "Beige", hex: "#dccfbd" },
+  { name: "Verde oliva", hex: "#4d5136" },
+  { name: "Café", hex: "#6b4a36" },
 ];
 
-type Orden = "populares" | "nuevos" | "precio-asc" | "precio-desc";
+type SortOrder = "popular" | "newest" | "price-asc" | "price-desc";
 
 /** Agrega el valor a la lista si no está, o lo quita si ya está. */
-const alternar = (lista: string[], valor: string) =>
-  lista.includes(valor) ? lista.filter((v) => v !== valor) : [...lista, valor];
-
-/* ===================================
-   ÍCONOS (SVG propios, sin librerías)
-=================================== */
-
-function Icono({
-  children,
-  size = 20,
-  className,
-}: {
-  children: ReactNode;
-  size?: number;
-  className?: string;
-}) {
-  return (
-    <svg
-      className={className}
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      {children}
-    </svg>
-  );
-}
-
-const IconoFlechaDerecha = () => (
-  <Icono size={16}>
-    <path d="M5 12h14" />
-    <path d="m12 5 7 7-7 7" />
-  </Icono>
-);
-
-const IconoChevronDerecha = () => (
-  <Icono size={14}>
-    <path d="m9 18 6-6-6-6" />
-  </Icono>
-);
+const toggleValue = (list: string[], value: string) =>
+  list.includes(value) ? list.filter((item) => item !== value) : [...list, value];
 
 /* ===================================
    SECCIÓN COLAPSABLE DE FILTROS
 =================================== */
 
-function SeccionFiltro({
-  titulo,
-  children,
-}: {
-  titulo: string;
-  children: ReactNode;
-}) {
-  const [abierta, setAbierta] = useState(true);
+function FilterSection({ title, children }: { title: string; children: ReactNode }) {
+  const [open, setOpen] = useState(true);
 
   return (
     <div className="filter-section">
       <button
         type="button"
         className="filter-section__head"
-        aria-expanded={abierta}
-        onClick={() => setAbierta(!abierta)}
+        aria-expanded={open}
+        onClick={() => setOpen(!open)}
       >
-        <span>{titulo}</span>
-        <Icono size={16} className={abierta ? "" : "is-closed"}>
-          <path d="m18 15-6-6-6 6" />
-        </Icono>
+        <span>{title}</span>
+        <IconChevronUp size={16} stroke={1.8} className={open ? "" : "is-closed"} />
       </button>
 
-      {abierta && <div className="filter-section__body">{children}</div>}
+      {open && <div className="filter-section__body">{children}</div>}
     </div>
   );
 }
@@ -122,69 +70,78 @@ function SeccionFiltro({
 =================================== */
 
 function Catalog() {
-  const [filtrosAbiertos, setFiltrosAbiertos] = useState(false);
+  const { addItem } = useCart();
 
-  const { agregar } = useCart();
+  // en pantallas chicas los filtros arrancan ocultos
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
-  const agregarAlCarrito = (p: Producto) => agregar(aItemCarrito(p));
+  // rango de precio [mínimo, máximo]
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, MAX_PRICE]);
 
+  const [categories, setCategories] = useState<string[]>(["Todo"]);
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  const [selectedColors, setSelectedColors] = useState<string[]>([]); // nombres de color
+  const [sortOrder, setSortOrder] = useState<SortOrder>("popular");
+
+  // el header de la tienda muestra el enlace al carrito mientras se está aquí
   useShopHeaderItems();
 
-  const [precio, setPrecio] = useState<[number, number]>([0, PRECIO_MAX]);
+  // agrega al carrito con la primera talla y el primer color del producto
+  const addToCart = (product: Product) => addItem(toCartItem(product));
 
-  const izquierda = (precio[0] / PRECIO_MAX) * 100;
-  const derecha = 100 - (precio[1] / PRECIO_MAX) * 100;
-
-  const [categorias, setCategorias] = useState<string[]>(["Todo"]);
-  const [tallasSel, setTallasSel] = useState<string[]>([]);
-  const [coloresSel, setColoresSel] = useState<string[]>([]); // nombres de color
-  const [orden, setOrden] = useState<Orden>("populares");
+  // posición de la barra de precio en porcentaje, para pintarla
+  const leftPercent = (priceRange[0] / MAX_PRICE) * 100;
+  const rightPercent = 100 - (priceRange[1] / MAX_PRICE) * 100;
 
   // "Todo" y las demás categorías no pueden estar marcadas a la vez
-  const alternarCategoria = (cat: string) => {
-    if (cat === "Todo") {
-      setCategorias(["Todo"]);
+  const toggleCategory = (category: string) => {
+    if (category === "Todo") {
+      setCategories(["Todo"]);
       return;
     }
 
-    const nuevas = alternar(
-      categorias.filter((c) => c !== "Todo"),
-      cat,
+    const next = toggleValue(
+      categories.filter((item) => item !== "Todo"),
+      category,
     );
-    setCategorias(nuevas.length > 0 ? nuevas : ["Todo"]);
+    setCategories(next.length > 0 ? next : ["Todo"]);
   };
 
-  const limpiarFiltros = () => {
-    setCategorias(["Todo"]);
-    setTallasSel([]);
-    setColoresSel([]);
-    setPrecio([0, PRECIO_MAX]);
+  // deja todos los filtros como al principio
+  const clearFilters = () => {
+    setCategories(["Todo"]);
+    setSelectedSizes([]);
+    setSelectedColors([]);
+    setPriceRange([0, MAX_PRICE]);
   };
 
-  const productosVisibles = useMemo(() => {
-    const filtrados = PRODUCTOS.filter((p) => {
-      const cumpleCategoria =
-        categorias.includes("Todo") ||
-        (p.categoria !== undefined && categorias.includes(p.categoria));
+  // productos que cumplen todos los filtros, ya ordenados
+  const visibleProducts = useMemo(() => {
+    const filtered = PRODUCTS.filter((product) => {
+      const matchesCategory =
+        categories.includes("Todo") ||
+        (product.category !== undefined && categories.includes(product.category));
 
-      const cumpleTalla =
-        tallasSel.length === 0 || (p.tallas ?? []).some((t) => tallasSel.includes(t));
+      const matchesSize =
+        selectedSizes.length === 0 ||
+        (product.sizes ?? []).some((size) => selectedSizes.includes(size));
 
-      const cumpleColor =
-        coloresSel.length === 0 ||
-        (p.coloresNombre ?? []).some((c) => coloresSel.includes(c));
+      const matchesColor =
+        selectedColors.length === 0 ||
+        (product.colorNames ?? []).some((color) => selectedColors.includes(color));
 
-      const cumplePrecio = p.precio >= precio[0] && p.precio <= precio[1];
+      const matchesPrice =
+        product.price >= priceRange[0] && product.price <= priceRange[1];
 
-      return cumpleCategoria && cumpleTalla && cumpleColor && cumplePrecio;
+      return matchesCategory && matchesSize && matchesColor && matchesPrice;
     });
 
-    // "populares" deja el orden original; "nuevos" usa el id más alto como el más reciente
-    if (orden === "precio-asc") return [...filtrados].sort((x, y) => x.precio - y.precio);
-    if (orden === "precio-desc") return [...filtrados].sort((x, y) => y.precio - x.precio);
-    if (orden === "nuevos") return [...filtrados].sort((x, y) => y.id - x.id);
-    return filtrados;
-  }, [categorias, tallasSel, coloresSel, precio, orden]);
+    // "popular" deja el orden original; "newest" usa el id más alto como el más reciente
+    if (sortOrder === "price-asc") return [...filtered].sort((a, b) => a.price - b.price);
+    if (sortOrder === "price-desc") return [...filtered].sort((a, b) => b.price - a.price);
+    if (sortOrder === "newest") return [...filtered].sort((a, b) => b.id - a.id);
+    return filtered;
+  }, [categories, selectedSizes, selectedColors, priceRange, sortOrder]);
 
   return (
     <main className="catalog-page">
@@ -202,7 +159,7 @@ function Catalog() {
 
           <button type="button" className="hero-btn">
             Explorar ahora
-            <IconoFlechaDerecha />
+            <IconArrowRight size={16} stroke={1.8} />
           </button>
         </div>
 
@@ -217,126 +174,131 @@ function Catalog() {
         {/* BREADCRUMB */}
         <nav className="catalog-breadcrumb" aria-label="Ruta de navegación">
           <span>Inicio</span>
-          <IconoChevronDerecha />
+          <IconChevronRight size={14} stroke={1.8} />
           <span>Catálogo</span>
         </nav>
 
         <section className="catalog-content">
-          {/* FILTROS */}
+          {/* botón para mostrar u ocultar los filtros en el celular */}
           <button
             type="button"
             className="filters-toggle"
-            aria-expanded={filtrosAbiertos}
-            onClick={() => setFiltrosAbiertos(!filtrosAbiertos)}
+            aria-expanded={filtersOpen}
+            onClick={() => setFiltersOpen(!filtersOpen)}
           >
             <span>Filtros</span>
-            <span>{filtrosAbiertos ? "Ocultar" : "Mostrar"}</span>
+            <span>{filtersOpen ? "Ocultar" : "Mostrar"}</span>
           </button>
 
-          <aside className={`catalog-filters ${filtrosAbiertos ? "is-open" : ""}`}>
+          {/* ---------- FILTROS ---------- */}
+          <aside className={`catalog-filters ${filtersOpen ? "is-open" : ""}`}>
             <h3 className="filters-title">Filtrar productos</h3>
 
-            <SeccionFiltro titulo="Categoría">
+            {/* categoría */}
+            <FilterSection title="Categoría">
               <ul className="filter-list">
-                {CATEGORIAS.map((cat) => (
-                  <li key={cat}>
+                {CATEGORIES.map((category) => (
+                  <li key={category}>
                     <label>
                       <input
                         type="checkbox"
-                        checked={categorias.includes(cat)}
-                        onChange={() => alternarCategoria(cat)}
+                        checked={categories.includes(category)}
+                        onChange={() => toggleCategory(category)}
                       />
-                      {cat}
+                      {category}
                     </label>
                   </li>
                 ))}
               </ul>
-            </SeccionFiltro>
+            </FilterSection>
 
-            <SeccionFiltro titulo="Talla">
+            {/* talla */}
+            <FilterSection title="Talla">
               <div className="sizes">
-                {TALLAS.map((talla) => (
+                {SIZES.map((size) => (
                   <button
                     type="button"
-                    key={talla}
-                    className={tallasSel.includes(talla) ? "is-selected" : ""}
-                    aria-pressed={tallasSel.includes(talla)}
-                    onClick={() => setTallasSel(alternar(tallasSel, talla))}
+                    key={size}
+                    className={selectedSizes.includes(size) ? "is-selected" : ""}
+                    aria-pressed={selectedSizes.includes(size)}
+                    onClick={() => setSelectedSizes(toggleValue(selectedSizes, size))}
                   >
-                    {talla}
+                    {size}
                   </button>
                 ))}
               </div>
-            </SeccionFiltro>
+            </FilterSection>
 
-            <SeccionFiltro titulo="Color">
+            {/* color */}
+            <FilterSection title="Color">
               <div className="swatches">
-                {COLORES_FILTRO.map((c) => (
+                {FILTER_COLORS.map((color) => (
                   <button
                     type="button"
-                    key={c.hex}
-                    className={`swatch swatch--filter ${coloresSel.includes(c.nombre) ? "is-selected" : ""}`}
-                    aria-pressed={coloresSel.includes(c.nombre)}
-                    onClick={() => setColoresSel(alternar(coloresSel, c.nombre))}
-                    style={{ background: c.hex }}
-                    aria-label={c.nombre}
-                    title={c.nombre}
+                    key={color.hex}
+                    className={`swatch swatch--filter ${selectedColors.includes(color.name) ? "is-selected" : ""}`}
+                    aria-pressed={selectedColors.includes(color.name)}
+                    onClick={() => setSelectedColors(toggleValue(selectedColors, color.name))}
+                    style={{ background: color.hex }}
+                    aria-label={color.name}
+                    title={color.name}
                   />
                 ))}
               </div>
-            </SeccionFiltro>
+            </FilterSection>
 
-            <SeccionFiltro titulo="Precio">
+            {/* precio: dos sliders superpuestos (mínimo y máximo) */}
+            <FilterSection title="Precio">
               <div className="range">
                 <div className="range__track" />
                 <div
                   className="range__fill"
-                  style={{ left: `${izquierda}%`, right: `${derecha}%` }}
+                  style={{ left: `${leftPercent}%`, right: `${rightPercent}%` }}
                 />
                 <input
                   type="range"
                   min={0}
-                  max={PRECIO_MAX}
-                  step={PRECIO_PASO}
-                  value={precio[0]}
+                  max={MAX_PRICE}
+                  step={PRICE_STEP}
+                  value={priceRange[0]}
                   aria-label="Precio mínimo"
-                  style={{ zIndex: precio[0] > PRECIO_MAX / 2 ? 5 : 3 }}
-                  onChange={(e) =>
-                    setPrecio([
-                      Math.min(Number(e.target.value), precio[1] - PRECIO_PASO),
-                      precio[1],
+                  style={{ zIndex: priceRange[0] > MAX_PRICE / 2 ? 5 : 3 }}
+                  onChange={(event) =>
+                    setPriceRange([
+                      Math.min(Number(event.target.value), priceRange[1] - PRICE_STEP),
+                      priceRange[1],
                     ])
                   }
                 />
                 <input
                   type="range"
                   min={0}
-                  max={PRECIO_MAX}
-                  step={PRECIO_PASO}
-                  value={precio[1]}
+                  max={MAX_PRICE}
+                  step={PRICE_STEP}
+                  value={priceRange[1]}
                   aria-label="Precio máximo"
                   style={{ zIndex: 4 }}
-                  onChange={(e) =>
-                    setPrecio([
-                      precio[0],
-                      Math.max(Number(e.target.value), precio[0] + PRECIO_PASO),
+                  onChange={(event) =>
+                    setPriceRange([
+                      priceRange[0],
+                      Math.max(Number(event.target.value), priceRange[0] + PRICE_STEP),
                     ])
                   }
                 />
               </div>
 
               <div className="range__values">
-                <span>L {precio[0].toLocaleString("en-US")}</span>
-                <span>L {precio[1].toLocaleString("en-US")}</span>
+                <span>L {priceRange[0].toLocaleString("en-US")}</span>
+                <span>L {priceRange[1].toLocaleString("en-US")}</span>
               </div>
-            </SeccionFiltro>
+            </FilterSection>
 
-            <button type="button" className="clear-filters" onClick={limpiarFiltros}>
+            <button type="button" className="clear-filters" onClick={clearFilters}>
               Limpiar filtros
             </button>
           </aside>
 
-          {/* PRODUCTOS */}
+          {/* ---------- PRODUCTOS ---------- */}
           <div className="catalog-products">
             <div className="catalog-header">
               <div className="catalog-title">
@@ -345,35 +307,38 @@ function Catalog() {
               </div>
 
               <div className="catalog-controls">
+                {/* orden */}
                 <div className="catalog-sort">
                   <label htmlFor="orden">Ordenar por:</label>
                   <select
                     id="orden"
-                    value={orden}
-                    onChange={(e) => setOrden(e.target.value as Orden)}
+                    value={sortOrder}
+                    onChange={(event) => setSortOrder(event.target.value as SortOrder)}
                   >
-                    <option value="populares">Más populares</option>
-                    <option value="nuevos">Más nuevos</option>
-                    <option value="precio-asc">Precio: menor a mayor</option>
-                    <option value="precio-desc">Precio: mayor a menor</option>
+                    <option value="popular">Más populares</option>
+                    <option value="newest">Más nuevos</option>
+                    <option value="price-asc">Precio: menor a mayor</option>
+                    <option value="price-desc">Precio: mayor a menor</option>
                   </select>
                 </div>
 
+                {/* cuántos productos cumplen los filtros */}
                 <span className="catalog-count">
-                  {productosVisibles.length}{" "}
-                  {productosVisibles.length === 1 ? "producto" : "productos"}
+                  {visibleProducts.length}{" "}
+                  {visibleProducts.length === 1 ? "producto" : "productos"}
                 </span>
               </div>
             </div>
 
-            {productosVisibles.length > 0 ? (
+            {/* cuadrícula de tarjetas, o mensaje si nada coincide con los filtros */}
+            {visibleProducts.length > 0 ? (
               <div className="products-grid">
-                {productosVisibles.map((p) => (
+                {visibleProducts.map((product) => (
                   <ProductCard
-                    key={p.id}
-                    producto={p}
-                    enlace={`/shop/catalog/product-detail/${p.id}`}
-                    onAgregarCarrito={agregarAlCarrito}
+                    key={product.id}
+                    product={product}
+                    link={`/shop/catalog/product-detail/${product.id}`}
+                    onAddToCart={addToCart}
                   />
                 ))}
               </div>
@@ -381,7 +346,7 @@ function Catalog() {
               <div className="catalog-empty">
                 <h3>No encontramos productos</h3>
                 <p>Prueba quitando algún filtro o ampliando el rango de precio.</p>
-                <button type="button" onClick={limpiarFiltros}>
+                <button type="button" onClick={clearFilters}>
                   Limpiar filtros
                 </button>
               </div>

@@ -10,23 +10,24 @@ import type { LayoutNavOutletContext } from "./useLayoutNavItems";
  */
 export function useShopHeaderItems() {
   const { setNavItems } = useOutletContext<LayoutNavOutletContext<HeaderNavItem>>();
-  const { totalUnidades } = useCart();
+  const { totalUnits } = useCart();
 
+  // el texto del enlace cambia solo cuando cambia la cantidad de productos
   const items = useMemo<HeaderNavItem[]>(
     () => [
       {
         key: "cart",
-        label: totalUnidades > 0 ? `Carrito (${totalUnidades})` : "Carrito",
+        label: totalUnits > 0 ? `Carrito (${totalUnits})` : "Carrito",
         to: "/shop/cart",
       },
     ],
-    [totalUnidades],
+    [totalUnits],
   );
 
+  // al entrar se ponen los enlaces y al salir se quitan, para no dejarlos en otras páginas
   useEffect(() => {
     setNavItems(items);
 
-    // al salir de la página, el header se queda sin estos enlaces
     return () => setNavItems([]);
   }, [items, setNavItems]);
 }

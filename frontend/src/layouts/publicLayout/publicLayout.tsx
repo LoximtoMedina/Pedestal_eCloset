@@ -12,7 +12,7 @@ import { type LayoutNavOutletContext } from '../../hooks/useLayoutNavItems';
 2. LAYOUT PÚBLICO (HEADER + CONTENIDO DE PÁGINA + FOOTER)
    ========================================================================== */
 function PublicLayout() {
-  const { isAuthenticated, user, logoutMock, hasPermission } = useAuth();
+  const { isAuthenticated, user, logout, hasPermission } = useAuth();
   const navigate = useNavigate();
   const [headerItems, setHeaderItems] = useState<HeaderNavItem[]>([]);
 
@@ -30,7 +30,7 @@ function PublicLayout() {
       key: 'logout',
       label: 'Cerrar sesión',
       onClick: () => {
-        logoutMock();
+        logout();
         navigate('/');
       },
     },
@@ -45,7 +45,7 @@ function PublicLayout() {
         user={
           user
             ? {
-                name: `${user.primerNombre} ${user.primerApellido}`,
+                name: `${user.firstName} ${user.firstSurname}`,
                 avatarSrc: user.avatarSrc,
               }
             : null

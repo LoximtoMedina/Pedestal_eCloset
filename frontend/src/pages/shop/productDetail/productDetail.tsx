@@ -1,41 +1,59 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
+import {
+  IconArrowRight,
+  IconChevronRight,
+  IconCreditCard,
+  IconHeadset,
+  IconMinus,
+  IconPackage,
+  IconPlus,
+  IconShieldCheck,
+  IconShoppingBag,
+  IconTruckDelivery,
+} from "@tabler/icons-react";
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import ProductGallery from "../../../components/ProductGallery/ProductGallery";
 import ProductTabs from "../../../components/ProductTabs/ProductTabs";
 import StarRating from "../../../components/StarRating/StarRating";
-import {
-  IconoAuricular,
-  IconoBolsa,
-  IconoCaja,
-  IconoCamion,
-  IconoChevronDerecha,
-  IconoCorazon,
-  IconoEscudo,
-  IconoFlechaDerecha,
-  IconoMas,
-  IconoMenos,
-  IconoRegla,
-  IconoTarjeta,
-} from "../../../components/icons/icons";
 import { useCart } from "../../../context/CartContext";
 import {
-  aItemCarrito,
-  obtenerDetalle,
-  productosRelacionados,
-  type ProductoDetalle,
+  getProductDetail,
+  getRelatedProducts,
+  toCartItem,
+  type ProductDetailData,
 } from "../../../data/productos";
-import { formatoPrecio } from "../../../utils/formatoPrecio";
+import { formatPrice } from "../../../utils/formatoPrecio";
 import "./productDetail.css";
 
-const RUTA_DETALLE = "/shop/catalog/product-detail";
-const CANTIDAD_MAX = 10;
+// ruta base del detalle: se le agrega el id del producto
+const DETAIL_ROUTE = "/shop/catalog/product-detail";
 
-const BENEFICIOS = [
-  { Icono: IconoCamion, titulo: "Envíos a toda Honduras", texto: "Recibe tu pedido en 2 a 5 días hábiles." },
-  { Icono: IconoCaja, titulo: "Empaque de calidad", texto: "Tus productos llegan protegidos en perfectas condiciones." },
-  { Icono: IconoEscudo, titulo: "Compra segura", texto: "Tus datos están protegidos." },
-  { Icono: IconoTarjeta, titulo: "Múltiples métodos de pago", texto: "Tarjeta, transferencia o contra entrega." },
+// máximo de unidades que se pueden pedir de una vez
+const MAX_QUANTITY = 10;
+
+// beneficios que se listan al lado de la ficha
+const BENEFITS = [
+  {
+    Icon: IconTruckDelivery,
+    title: "Envíos a toda Honduras",
+    text: "Recibe tu pedido en 2 a 5 días hábiles.",
+  },
+  {
+    Icon: IconPackage,
+    title: "Empaque de calidad",
+    text: "Tus productos llegan protegidos en perfectas condiciones.",
+  },
+  {
+    Icon: IconShieldCheck,
+    title: "Compra segura",
+    text: "Tus datos están protegidos.",
+  },
+  {
+    Icon: IconCreditCard,
+    title: "Múltiples métodos de pago",
+    text: "Tarjeta, transferencia o contra entrega.",
+  },
 ];
 
 /* ===================================
@@ -43,61 +61,74 @@ const BENEFICIOS = [
    (se vuelve a crear desde cero cuando cambia el producto, por el `key` de abajo)
 =================================== */
 
-function DetalleProducto({ producto }: { producto: ProductoDetalle }) {
+function ProductDetailView({ product }: { product: ProductDetailData }) {
   const navigate = useNavigate();
-  const { agregar } = useCart();
+  const { addItem } = useCart();
 
-  const tallas = producto.tallas ?? ["Única"];
-  const nombresColor = producto.coloresNombre ?? producto.colores.map(() => "Único");
+  const sizes = product.sizes ?? ["Única"];
+  const colorNames = product.colorNames ?? product.colors.map(() => "Único");
 
-  const agotado = (talla: string, color: string) =>
-    producto.agotados.includes(`${talla}|${color}`);
-  const tallaDisponible = (color: string) => tallas.find((t) => !agotado(t, color));
-  const colorDisponible = (color: string) => tallas.some((t) => !agotado(t, color));
+  /* ---------- disponibilidad: una combinación talla+color puede estar agotada ---------- */
+  const isSoldOut = (size: string, color: string) =>
+    product.soldOut.includes(`${size}|${color}`);
 
-  const [colorIdx, setColorIdx] = useState(
-    Math.max(0, nombresColor.findIndex(colorDisponible)),
+  const firstAvailableSize = (color: string) =>
+    sizes.find((size) => !isSoldOut(size, color));
+
+  const isColorAvailable = (color: string) =>
+    sizes.some((size) => !isSoldOut(size, color));
+
+  /* ---------- selección del cliente ---------- */
+  const [colorIndex, setColorIndex] = useState(
+    Math.max(0, colorNames.findIndex(isColorAvailable)),
   );
-  const colorNombre = nombresColor[colorIdx];
-  const [talla, setTalla] = useState(tallaDisponible(colorNombre) ?? tallas[0]);
-  const [cantidad, setCantidad] = useState(1);
-  const [agregado, setAgregado] = useState(false);
+  const colorName = colorNames[colorIndex];
 
-  const sinStock = agotado(talla, colorNombre);
+  const [selectedSize, setSelectedSize] = useState(
+    firstAvailableSize(colorName) ?? sizes[0],
+  );
+  const [quantity, setQuantity] = useState(1);
+  const [added, setAdded] = useState(false);
 
+  const outOfStock = isSoldOut(selectedSize, colorName);
+
+  // cada vez que se abre un producto, la página arranca desde arriba
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   // si la talla elegida se agota en el color nuevo, pasa a la primera disponible
-  const elegirColor = (i: number) => {
-    const nombre = nombresColor[i];
-    setColorIdx(i);
-    if (agotado(talla, nombre)) setTalla(tallaDisponible(nombre) ?? talla);
+  const selectColor = (index: number) => {
+    const name = colorNames[index];
+    setColorIndex(index);
+    if (isSoldOut(selectedSize, name)) {
+      setSelectedSize(firstAvailableSize(name) ?? selectedSize);
+    }
   };
 
-  const nuevoItem = () => ({
-    productoId: producto.id,
-    nombre: producto.nombre,
-    precio: producto.precio,
-    imagen: producto.imagenes[0],
-    talla,
-    color: colorNombre,
-    cantidad,
+  /* ---------- carrito ---------- */
+  const buildItem = () => ({
+    productId: product.id,
+    name: product.name,
+    price: product.price,
+    image: product.images[0],
+    size: selectedSize,
+    color: colorName,
+    quantity,
   });
 
-  const agregarAlCarrito = () => {
-    agregar(nuevoItem());
-    setAgregado(true);
-    window.setTimeout(() => setAgregado(false), 1800);
+  const addToCart = () => {
+    addItem(buildItem());
+    setAdded(true);
+    window.setTimeout(() => setAdded(false), 1800);
   };
 
-  const comprarAhora = () => {
-    agregar(nuevoItem());
+  const buyNow = () => {
+    addItem(buildItem());
     navigate("/shop/cart/checkout");
   };
 
-  const relacionados = productosRelacionados(producto.id, 4);
+  const relatedProducts = getRelatedProducts(product.id, 4);
 
   return (
     <main className="detail-page">
@@ -105,61 +136,63 @@ function DetalleProducto({ producto }: { producto: ProductoDetalle }) {
         {/* MIGAS DE PAN */}
         <nav className="detail-breadcrumb" aria-label="Ruta de navegación">
           <Link to="/">Inicio</Link>
-          <IconoChevronDerecha size={14} />
+          <IconChevronRight size={14} stroke={1.8} />
           <Link to="/shop/catalog">Catálogo</Link>
-          <IconoChevronDerecha size={14} />
-          {producto.categoria && (
+          <IconChevronRight size={14} stroke={1.8} />
+          {product.category && (
             <>
-              <span>{producto.categoria}</span>
-              <IconoChevronDerecha size={14} />
+              <span>{product.category}</span>
+              <IconChevronRight size={14} stroke={1.8} />
             </>
           )}
-          <span aria-current="page">{producto.nombre}</span>
+          <span aria-current="page">{product.name}</span>
         </nav>
 
         <section className="detail-layout">
-          <ProductGallery imagenes={producto.imagenes} nombre={producto.nombre} />
+          {/* ---------- columna izquierda: galería de fotos ---------- */}
+          <ProductGallery images={product.images} name={product.name} />
 
-          {/* INFORMACIÓN Y COMPRA */}
+          {/* ---------- columna central: ficha y compra ---------- */}
           <div className="detail-info">
-            {producto.etiqueta && (
-              <span className="detail-badge">{producto.etiqueta.toUpperCase()}</span>
+            {product.tag && (
+              <span className="detail-badge">{product.tag.toUpperCase()}</span>
             )}
 
-            <h1>{producto.nombre}</h1>
-            <p className="detail-price">{formatoPrecio(producto.precio)}</p>
+            <h1>{product.name}</h1>
+            <p className="detail-price">{formatPrice(product.price)}</p>
 
+            {/* calificación promedio */}
             <div className="detail-rating">
-              <StarRating valor={producto.calificacion} />
+              <StarRating value={product.rating} />
               <span>
-                <strong>{producto.calificacion.toFixed(1)}</strong> ({producto.totalResenas}{" "}
+                <strong>{product.rating.toFixed(1)}</strong> ({product.reviewCount}{" "}
                 reseñas)
               </span>
             </div>
 
-            <p className="detail-summary">{producto.descripcionCorta}</p>
+            <p className="detail-summary">{product.shortDescription}</p>
 
             {/* COLOR */}
             <div className="detail-option">
               <p className="detail-label">
-                Color: <span>{colorNombre}</span>
+                Color: <span>{colorName}</span>
               </p>
               <div className="detail-colors">
-                {producto.colores.map((hex, i) => {
-                  const nombre = nombresColor[i];
-                  const disponible = colorDisponible(nombre);
+                {product.colors.map((hex, index) => {
+                  const name = colorNames[index];
+                  const available = isColorAvailable(name);
 
                   return (
                     <button
                       type="button"
                       key={hex}
-                      className={`detail-swatch ${i === colorIdx ? "is-selected" : ""}`}
+                      className={`detail-swatch ${index === colorIndex ? "is-selected" : ""}`}
                       style={{ background: hex }}
-                      aria-label={disponible ? nombre : `${nombre} (agotado)`}
-                      aria-pressed={i === colorIdx}
-                      title={nombre}
-                      disabled={!disponible}
-                      onClick={() => elegirColor(i)}
+                      aria-label={available ? name : `${name} (agotado)`}
+                      aria-pressed={index === colorIndex}
+                      title={name}
+                      disabled={!available}
+                      onClick={() => selectColor(index)}
                     />
                   );
                 })}
@@ -170,24 +203,18 @@ function DetalleProducto({ producto }: { producto: ProductoDetalle }) {
             <div className="detail-option">
               <p className="detail-label">Talla:</p>
               <div className="detail-sizes">
-                {tallas.map((t) => (
+                {sizes.map((size) => (
                   <button
                     type="button"
-                    key={t}
-                    className={t === talla ? "is-selected" : ""}
-                    aria-pressed={t === talla}
-                    disabled={agotado(t, colorNombre)}
-                    onClick={() => setTalla(t)}
+                    key={size}
+                    className={size === selectedSize ? "is-selected" : ""}
+                    aria-pressed={size === selectedSize}
+                    disabled={isSoldOut(size, colorName)}
+                    onClick={() => setSelectedSize(size)}
                   >
-                    {t}
+                    {size}
                   </button>
                 ))}
-
-                {/* TODO: abrir la guía de tallas */}
-                <button type="button" className="detail-guide">
-                  <IconoRegla size={18} />
-                  Guía de tallas
-                </button>
               </div>
             </div>
 
@@ -198,72 +225,70 @@ function DetalleProducto({ producto }: { producto: ProductoDetalle }) {
                 <button
                   type="button"
                   aria-label="Reducir cantidad"
-                  disabled={cantidad <= 1}
-                  onClick={() => setCantidad(cantidad - 1)}
+                  disabled={quantity <= 1}
+                  onClick={() => setQuantity(quantity - 1)}
                 >
-                  <IconoMenos size={16} />
+                  <IconMinus size={16} stroke={2} />
                 </button>
-                <span aria-live="polite">{cantidad}</span>
+                <span aria-live="polite">{quantity}</span>
                 <button
                   type="button"
                   aria-label="Aumentar cantidad"
-                  disabled={cantidad >= CANTIDAD_MAX}
-                  onClick={() => setCantidad(cantidad + 1)}
+                  disabled={quantity >= MAX_QUANTITY}
+                  onClick={() => setQuantity(quantity + 1)}
                 >
-                  <IconoMas size={16} />
+                  <IconPlus size={16} stroke={2} />
                 </button>
               </div>
             </div>
 
-            {/* BOTONES */}
+            {/* BOTONES DE COMPRA */}
             <div className="detail-actions">
               <button
                 type="button"
                 className="detail-btn detail-btn--primary"
-                disabled={sinStock}
-                onClick={agregarAlCarrito}
+                disabled={outOfStock}
+                onClick={addToCart}
               >
-                <IconoBolsa size={20} />
+                <IconShoppingBag size={20} stroke={1.8} />
                 Agregar al carrito
               </button>
 
               <button
                 type="button"
                 className="detail-btn detail-btn--outline"
-                disabled={sinStock}
-                onClick={comprarAhora}
+                disabled={outOfStock}
+                onClick={buyNow}
               >
                 Comprar ahora
               </button>
             </div>
 
             <p className="detail-status" role="status">
-              {sinStock ? "Agotado en esta combinación" : agregado ? "Agregado al carrito ✓" : ""}
+              {outOfStock
+                ? "Agotado en esta combinación"
+                : added
+                  ? "Agregado al carrito ✓"
+                  : ""}
             </p>
-
-            {/* TODO: guardar en favoritos (necesita sesión) */}
-            <button type="button" className="detail-fav">
-              <IconoCorazon size={20} />
-              Agregar a favoritos
-            </button>
           </div>
 
-          {/* BENEFICIOS Y AYUDA */}
+          {/* ---------- columna derecha: beneficios y ayuda ---------- */}
           <aside className="detail-aside">
             <div className="detail-card detail-benefits">
-              {BENEFICIOS.map(({ Icono, titulo, texto }) => (
-                <div className="detail-benefit" key={titulo}>
-                  <Icono size={32} />
+              {BENEFITS.map(({ Icon, title, text }) => (
+                <div className="detail-benefit" key={title}>
+                  <Icon size={32} stroke={1.6} />
                   <div>
-                    <h3>{titulo}</h3>
-                    <p>{texto}</p>
+                    <h3>{title}</h3>
+                    <p>{text}</p>
                   </div>
                 </div>
               ))}
             </div>
 
             <div className="detail-card detail-help">
-              <IconoAuricular size={32} />
+              <IconHeadset size={32} stroke={1.6} />
               <div>
                 <h3>¿Necesitas ayuda?</h3>
                 <p>Contáctanos por WhatsApp o correo.</p>
@@ -276,13 +301,13 @@ function DetalleProducto({ producto }: { producto: ProductoDetalle }) {
 
         {/* PESTAÑAS */}
         <ProductTabs
-          descripcion={producto.descripcion}
-          caracteristicas={producto.caracteristicas}
-          materiales={producto.materiales}
-          envios={producto.envios}
-          calificacion={producto.calificacion}
-          totalResenas={producto.totalResenas}
-          resenas={producto.resenas}
+          description={product.description}
+          features={product.features}
+          materials={product.materials}
+          shipping={product.shipping}
+          rating={product.rating}
+          reviewCount={product.reviewCount}
+          reviews={product.reviews}
         />
 
         {/* RELACIONADOS */}
@@ -291,17 +316,17 @@ function DetalleProducto({ producto }: { producto: ProductoDetalle }) {
             <h2>Productos relacionados</h2>
             <Link to="/shop/catalog">
               Ver más
-              <IconoFlechaDerecha size={16} />
+              <IconArrowRight size={16} stroke={1.8} />
             </Link>
           </div>
 
           <div className="detail-related__grid">
-            {relacionados.map((p) => (
+            {relatedProducts.map((item) => (
               <ProductCard
-                key={p.id}
-                producto={p}
-                enlace={`${RUTA_DETALLE}/${p.id}`}
-                onAgregarCarrito={(prod) => agregar(aItemCarrito(prod))}
+                key={item.id}
+                product={item}
+                link={`${DETAIL_ROUTE}/${item.id}`}
+                onAddToCart={(p) => addItem(toCartItem(p))}
               />
             ))}
           </div>
@@ -315,11 +340,12 @@ function DetalleProducto({ producto }: { producto: ProductoDetalle }) {
    PÁGINA: busca el producto por el id de la ruta
 =================================== */
 
-function ProductDetail() {
+function ProductDetailPage() {
   const { id } = useParams();
-  const producto = obtenerDetalle(Number(id));
+  const product = getProductDetail(Number(id));
 
-  if (!producto) {
+  // si el id no existe, se muestra el mensaje de no encontrado
+  if (!product) {
     return (
       <main className="detail-page">
         <div className="detail-container detail-missing">
@@ -332,7 +358,7 @@ function ProductDetail() {
   }
 
   // el key reinicia color, talla y cantidad al pasar de un producto a otro
-  return <DetalleProducto key={producto.id} producto={producto} />;
+  return <ProductDetailView key={product.id} product={product} />;
 }
 
-export default ProductDetail;
+export default ProductDetailPage;

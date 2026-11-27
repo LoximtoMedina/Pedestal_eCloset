@@ -9,8 +9,10 @@ import {
   getCurrentSessionUser,
   getStoredAuthToken,
   loginUser,
+  registerUser,
   saveAuthToken,
   type LoginRequestPayload,
+  type RegisterRequestPayload,
   type SessionUserData,
 } from '../services/authService';
 import {
@@ -20,6 +22,10 @@ import {
 } from './authContextInstance';
 
 export type { AuthContextValue, SessionUser };
+
+// El hook useAuth y la ruta por rol viven en hooks/authHook.ts; se vuelven a exportar
+// aquí para que las páginas los importen siempre desde el mismo archivo.
+export { getDashboardRoute, useAuth } from '../hooks/authHook';
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -114,6 +120,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
     []
   );
 
+  // registro de una cuenta nueva: guarda el token y deja la sesión iniciada
+  const register = useCallback(
+    async (payload: RegisterRequestPayload): Promise<SessionUser> => {
+      const authResponse = await registerUser(payload);
+      saveAuthToken(authResponse.token, true);
+      const mapped = mapSessionUser(authResponse.user);
+      setUser(mapped);
+      setIsAuthenticated(true);
+      return mapped;
+    },
+    []
+  );
+
   const logout = useCallback(() => {
     clearAuthToken();
     setUser(null);
@@ -136,6 +155,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         isLoadingSession,
         user,
         login,
+        register,
         logout,
         refreshSession,
         hasPermission,

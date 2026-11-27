@@ -1,6 +1,7 @@
 import { createContext } from 'react';
 import type {
   LoginRequestPayload,
+  RegisterRequestPayload,
   SessionUserData,
 } from '../services/authService';
 
@@ -13,6 +14,7 @@ export interface AuthContextValue {
   isLoadingSession: boolean;
   user: SessionUser | null;
   login: (payload: LoginRequestPayload) => Promise<SessionUser>;
+  register: (payload: RegisterRequestPayload) => Promise<SessionUser>;
   logout: () => void;
   refreshSession: () => Promise<SessionUser | null>;
   hasPermission: (permission?: string) => boolean;

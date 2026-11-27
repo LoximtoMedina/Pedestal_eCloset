@@ -14,7 +14,7 @@ function DashboardLayout() {
   const viewport = useViewportType();
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const navigate = useNavigate();
-  const { user, logoutMock } = useAuth();
+  const { user, logout } = useAuth();
   const [sidebarItems, setSidebarItems] = useState<SideBarSection[]>([]);
 
   const isMobile = viewport === 'mobile';
@@ -25,14 +25,14 @@ function DashboardLayout() {
   };
 
   const handleLogout = () => {
-    logoutMock();
+    logout();
     navigate('/login');
   };
 
   const sideBarUser = user
     ? {
-        name: `${user.primerNombre ?? ''} ${user.primerApellido ?? ''}`.trim() || undefined,
-        email: user.correo,
+        name: `${user.firstName ?? ''} ${user.firstSurname ?? ''}`.trim() || undefined,
+        email: user.email,
         avatarSrc: user.avatarSrc,
       }
     : null;
