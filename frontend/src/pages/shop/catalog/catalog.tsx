@@ -1,10 +1,10 @@
 import { useMemo, useState, type ReactNode } from "react";
-import { useLayoutNavItems } from "../../../hooks/useLayoutNavItems";
-import type { HeaderNavItem } from "../../../components/header/header";
 import ProductCard, {
   type Producto,
 } from "../../../components/ProductCard/ProductCard";
 import { useCart } from "../../../context/CartContext";
+import { PRODUCTOS, aItemCarrito } from "../../../data/productos";
+import { useShopHeaderItems } from "../../../hooks/useShopHeaderItems";
 import "./catalog.css";
 
 /* ===================================
@@ -33,17 +33,6 @@ const COLORES_FILTRO = [
   { nombre: "Beige", hex: "#dccfbd" },
   { nombre: "Verde oliva", hex: "#4d5136" },
   { nombre: "Café", hex: "#6b4a36" },
-];
-
-const PRODUCTOS: Producto[] = [
-  { id: 1, nombre: "Playera Essential", precio: 450, categoria: "Playeras", etiqueta: "Nuevo", colores: ["#111111", "#b4b4b4", "#dccfbd"], coloresNombre: ["Negro", "Gris", "Beige"], tallas: ["S", "M", "L"] },
-  { id: 2, nombre: "Sudadera Minimal", precio: 850, categoria: "Sudaderas", colores: ["#ffffff", "#858585", "#4d5136"], coloresNombre: ["Blanco", "Gris", "Verde oliva"], tallas: ["S", "M", "L", "XL"] },
-  { id: 3, nombre: "Pantalón Cargo", precio: 950, categoria: "Pantalones", etiqueta: "Más vendido", colores: ["#6b4a36", "#424a2c", "#111111"], coloresNombre: ["Café", "Verde oliva", "Negro"], tallas: ["S", "M", "L", "XL"] },
-  { id: 4, nombre: "Gorra Classic", precio: 350, categoria: "Gorras", colores: ["#111111", "#e0e0dd", "#dccfbd"], coloresNombre: ["Negro", "Gris", "Beige"], tallas: ["Única"] },
-  { id: 5, nombre: "Chaqueta Urban", precio: 1200, categoria: "Chaquetas", colores: ["#2a2a28", "#858585", "#dccfbd"], coloresNombre: ["Negro", "Gris", "Beige"], tallas: ["S", "M", "L", "XL"] },
-  { id: 6, nombre: "Playera Oversize", precio: 550, categoria: "Playeras", colores: ["#5b5a35", "#858585", "#c9b08a"], coloresNombre: ["Verde oliva", "Gris", "Beige"], tallas: ["S", "M", "L", "XL"] },
-  { id: 7, nombre: "Short Basic", precio: 600, categoria: "Pantalones", colores: ["#4a3a2e", "#111111"], coloresNombre: ["Café", "Negro"], tallas: ["S", "M", "L", "XL"] },
-  { id: 8, nombre: "Sudadera Graphic", precio: 900, categoria: "Sudaderas", colores: ["#3d3a35", "#ffffff"], coloresNombre: ["Gris", "Blanco"], tallas: ["S", "M", "L", "XL"] },
 ];
 
 type Orden = "populares" | "nuevos" | "precio-asc" | "precio-desc";
@@ -137,27 +126,9 @@ function Catalog() {
 
   const { agregar } = useCart();
 
-  const agregarAlCarrito = (p: Producto) =>
-    agregar({
-      id: p.id,
-      nombre: p.nombre,
-      precio: p.precio,
-      imagen: p.imagen,
-      talla: p.tallas?.[0] ?? "Única",
-      color: p.coloresNombre?.[0] ?? "Estándar",
-    });
+  const agregarAlCarrito = (p: Producto) => agregar(aItemCarrito(p));
 
-  const navItems = useMemo<HeaderNavItem[]>(
-    () => [
-      {
-        key: "cart",
-        label: "Carrito",
-        to: "/shop/cart",
-      },
-    ],
-    [],
-  );
-  useLayoutNavItems<HeaderNavItem>(navItems);
+  useShopHeaderItems();
 
   const [precio, setPrecio] = useState<[number, number]>([0, PRECIO_MAX]);
 
@@ -401,6 +372,7 @@ function Catalog() {
                   <ProductCard
                     key={p.id}
                     producto={p}
+                    enlace={`/shop/catalog/product-detail/${p.id}`}
                     onAgregarCarrito={agregarAlCarrito}
                   />
                 ))}

@@ -123,7 +123,7 @@ function AppRoutes() {
 
         {/* Shop */}
         <Route path="/shop/catalog" element={<Catalog />} />
-        <Route path="/shop/catalog/product-detail" element={<ProductDetail />} />
+        <Route path="/shop/catalog/product-detail/:id" element={<ProductDetail />} />
       </Route>
 
       

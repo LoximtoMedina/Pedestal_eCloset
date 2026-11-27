@@ -1,0 +1,501 @@
+/* ===================================
+   VARIABLES Y BASE
+=================================== */
+
+.detail-page {
+    --bg: #faf9f7;
+    --surface: #ffffff;
+    --ink: #1c1b1a;
+    --muted: #6f6b66;
+    --line: #e8e3dc;
+    --brown: #705344;
+    --brown-dark: #5d4336;
+    --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+    --header-height: 90px; /* altura del header fijo */
+
+    background: var(--bg);
+    color: var(--ink);
+    /* deja libre el header fijo; el footer queda debajo del <main> */
+    padding: calc(var(--header-height) + 1.5rem) 0 4rem;
+    min-height: 70vh;
+}
+
+.detail-page :is(button, a):focus-visible {
+    outline: 2px solid var(--brown);
+    outline-offset: 2px;
+}
+
+.detail-container {
+    width: 90%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* ===================================
+   MIGAS DE PAN
+=================================== */
+
+.detail-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.detail-breadcrumb a {
+    color: var(--muted);
+}
+
+.detail-breadcrumb a:hover {
+    color: var(--brown);
+}
+
+.detail-breadcrumb [aria-current="page"] {
+    color: var(--ink);
+}
+
+/* ===================================
+   LAYOUT: galería | información | beneficios
+=================================== */
+
+.detail-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) 320px;
+    gap: 2rem;
+    align-items: start;
+    margin-bottom: 2rem;
+}
+
+/* ===================================
+   INFORMACIÓN
+=================================== */
+
+.detail-badge {
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    border-radius: 4px;
+    background: var(--brown);
+    color: #fff;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+}
+
+.detail-info h1 {
+    margin: 0.75rem 0 0.4rem;
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: normal;
+    line-height: 1.15;
+}
+
+.detail-price {
+    margin: 0 0 0.6rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.detail-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.detail-rating strong {
+    color: var(--ink);
+}
+
+.detail-summary {
+    margin: 1rem 0 0;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--line);
+    color: #4a4743;
+    line-height: 1.55;
+}
+
+.detail-option {
+    margin-top: 1.25rem;
+}
+
+.detail-label {
+    margin: 0 0 0.6rem;
+    font-size: 0.92rem;
+}
+
+/* colores */
+
+.detail-colors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.detail-swatch {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.detail-swatch.is-selected {
+    box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--ink);
+}
+
+.detail-swatch:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* tallas */
+
+.detail-sizes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.detail-sizes > button:not(.detail-guide) {
+    min-width: 46px;
+    height: 40px;
+    padding: 0 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface);
+    font: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.detail-sizes > button:not(.detail-guide):hover:not(:disabled) {
+    border-color: var(--ink);
+}
+
+.detail-sizes > button.is-selected {
+    border-color: var(--ink);
+    background: #f1efeb;
+    font-weight: 600;
+}
+
+.detail-sizes > button:disabled {
+    opacity: 0.4;
+    text-decoration: line-through;
+    cursor: not-allowed;
+}
+
+.detail-guide {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-left: auto;
+    padding: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.88rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+
+/* cantidad */
+
+.detail-qty-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.detail-qty-row .detail-label {
+    margin: 0;
+}
+
+.detail-qty {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.detail-qty button {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface);
+    cursor: pointer;
+}
+
+.detail-qty button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.detail-qty span {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 40px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface);
+}
+
+/* botones de compra */
+
+.detail-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.detail-btn {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+    height: 48px;
+    border-radius: 6px;
+    font: inherit;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.detail-btn--primary {
+    border: 0;
+    background: var(--brown);
+    color: #fff;
+}
+
+.detail-btn--primary:hover:not(:disabled) {
+    background: var(--brown-dark);
+}
+
+.detail-btn--outline {
+    border: 1px solid #bdb5ab;
+    background: var(--surface);
+    color: var(--ink);
+}
+
+.detail-btn--outline:hover:not(:disabled) {
+    background: #f5f3ef;
+}
+
+.detail-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.detail-status {
+    min-height: 1.4rem;
+    margin: 0.6rem 0 0;
+    font-size: 0.88rem;
+    color: var(--muted);
+}
+
+.detail-fav {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+    padding: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.92rem;
+    cursor: pointer;
+}
+
+.detail-fav:hover {
+    color: var(--brown);
+}
+
+/* ===================================
+   BENEFICIOS Y AYUDA
+=================================== */
+
+.detail-aside {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.detail-card {
+    padding: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+}
+
+.detail-benefits {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.detail-benefit,
+.detail-help {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.detail-benefit svg,
+.detail-help > svg {
+    flex-shrink: 0;
+}
+
+.detail-benefit h3,
+.detail-help h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.detail-benefit p,
+.detail-help p {
+    margin: 0.2rem 0 0;
+    font-size: 0.88rem;
+    color: var(--muted);
+}
+
+.detail-help button {
+    margin-top: 0.9rem;
+    padding: 0.6rem 2.5rem;
+    border: 1px solid #bdb5ab;
+    border-radius: 6px;
+    background: var(--surface);
+    font: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+/* ===================================
+   RELACIONADOS
+=================================== */
+
+.detail-related {
+    margin-top: 2.5rem;
+}
+
+.detail-related__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1.25rem;
+}
+
+.detail-related__head h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.detail-related__head a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--ink);
+    font-size: 0.9rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.detail-related__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
+}
+
+/* producto no encontrado */
+
+.detail-missing {
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.detail-missing h1 {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+}
+
+.detail-missing p {
+    margin: 0 0 1.25rem;
+    color: var(--muted);
+}
+
+.detail-missing a {
+    color: var(--ink);
+    text-decoration: underline;
+}
+
+/* ===================================
+   RESPONSIVE
+=================================== */
+
+@media (max-width: 1100px) {
+    .detail-layout {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    /* los beneficios pasan debajo, en dos columnas */
+    .detail-aside {
+        grid-column: 1 / -1;
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 900px) {
+    .detail-page {
+        --header-height: 70px; /* ajusta a la altura real de tu header en celular */
+    }
+}
+
+@media (max-width: 760px) {
+    .detail-container {
+        width: 92%;
+    }
+
+    .detail-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-aside {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-related__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .detail-info h1 {
+        font-size: 1.7rem;
+    }
+
+    .detail-actions {
+        flex-direction: column;
+    }
+
+    .detail-guide {
+        margin-left: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .detail-page * {
+        transition: none !important;
+    }
+}

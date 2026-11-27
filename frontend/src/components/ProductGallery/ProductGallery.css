@@ -1,0 +1,113 @@
+.gallery {
+    display: grid;
+    grid-template-columns: 78px minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+}
+
+.gallery button:focus-visible {
+    outline: 2px solid var(--brown, #705344);
+    outline-offset: 2px;
+}
+
+.gallery__thumbs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.gallery__arrow {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 28px;
+    border: 0;
+    background: none;
+    color: var(--ink, #1c1b1a);
+    cursor: pointer;
+}
+
+.gallery__thumb {
+    display: grid;
+    place-items: center;
+    width: 78px;
+    height: 78px;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--line, #e8e3dc);
+    border-radius: 8px;
+    background: #e6e2dd;
+    color: var(--muted, #6f6b66);
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.gallery__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gallery__thumb.is-active {
+    border: 2px solid var(--ink, #1c1b1a);
+}
+
+.gallery__main {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 20 / 21;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #e6e2dd;
+    color: var(--muted, #6f6b66);
+    font-size: 1.2rem;
+}
+
+.gallery__main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gallery__zoom {
+    position: absolute;
+    right: 0.9rem;
+    bottom: 0.9rem;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    color: var(--ink, #1c1b1a);
+    cursor: pointer;
+}
+
+@media (max-width: 760px) {
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery__main {
+        order: 1;
+    }
+
+    .gallery__thumbs {
+        order: 2;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .gallery__arrow {
+        display: none;
+    }
+
+    .gallery__thumb {
+        width: 64px;
+        height: 64px;
+    }
+}

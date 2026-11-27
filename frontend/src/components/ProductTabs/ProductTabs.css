@@ -1,0 +1,112 @@
+.product-tabs {
+    background: var(--surface, #fff);
+    border: 1px solid var(--line, #e8e3dc);
+    border-radius: 12px;
+}
+
+.product-tabs button:focus-visible {
+    outline: 2px solid var(--brown, #705344);
+    outline-offset: -2px;
+}
+
+.product-tabs__list {
+    display: flex;
+    padding: 0 1rem;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--line, #e8e3dc);
+}
+
+.product-tabs__list button {
+    flex-shrink: 0;
+    padding: 1.1rem 1.4rem;
+    margin-bottom: -1px;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: var(--muted, #6f6b66);
+    font: inherit;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.product-tabs__list button.is-active {
+    border-bottom-color: var(--ink, #1c1b1a);
+    color: var(--ink, #1c1b1a);
+    font-weight: 600;
+}
+
+.product-tabs__panel {
+    padding: 1.5rem;
+    line-height: 1.65;
+    color: #3a3835;
+}
+
+.product-tabs__panel p {
+    max-width: 75ch;
+    margin: 0;
+}
+
+.product-tabs__features {
+    display: grid;
+    gap: 0.3rem;
+    margin: 1rem 0 0;
+    padding-left: 1.25rem;
+}
+
+/* reseñas */
+
+.reviews__summary {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.reviews__summary strong {
+    font-size: 1.6rem;
+}
+
+.reviews__summary span {
+    color: var(--muted, #6f6b66);
+}
+
+.reviews__list {
+    display: grid;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.reviews__item {
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--line, #e8e3dc);
+}
+
+.reviews__item:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
+.reviews__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+}
+
+.reviews__meta span {
+    color: var(--muted, #6f6b66);
+}
+
+@media (max-width: 480px) {
+    .product-tabs__panel {
+        padding: 1.1rem;
+    }
+
+    .product-tabs__list button {
+        padding: 0.9rem 1rem;
+    }
+}

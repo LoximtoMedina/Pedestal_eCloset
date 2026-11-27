@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import "./productCard.css";
 
 /*
@@ -28,6 +29,7 @@ export type Producto = {
 
 type Props = {
   producto: Producto;
+  enlace?: string; // si se da, la imagen y el nombre llevan a esa ruta (detalle del producto)
   onToggleFavorito?: (producto: Producto) => void; // al tocar el corazón
   onAgregarCarrito?: (producto: Producto) => void; // al tocar el carrito
 };
@@ -35,8 +37,14 @@ type Props = {
 const formatoPrecio = (n: number) =>
   `L ${n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-function ProductCard({ producto, onToggleFavorito, onAgregarCarrito }: Props) {
+function ProductCard({ producto, enlace, onToggleFavorito, onAgregarCarrito }: Props) {
   const { nombre, precio, etiqueta, colores, imagen } = producto;
+
+  const contenidoImagen = imagen ? (
+    <img src={imagen} alt={nombre} loading="lazy" />
+  ) : (
+    <span className="product-card__placeholder">IMG</span>
+  );
 
   return (
     <article className="product-card">
@@ -64,16 +72,22 @@ function ProductCard({ producto, onToggleFavorito, onAgregarCarrito }: Props) {
           </svg>
         </button>
 
-        {imagen ? (
-          <img src={imagen} alt={nombre} loading="lazy" />
+        {enlace ? (
+          <Link
+            to={enlace}
+            className="product-card__image-link"
+            aria-label={`Ver ${nombre}`}
+          >
+            {contenidoImagen}
+          </Link>
         ) : (
-          <span className="product-card__placeholder">IMG</span>
+          contenidoImagen
         )}
       </div>
 
       <div className="product-card__info">
         <h3 className="product-card__name" title={nombre}>
-          {nombre}
+          {enlace ? <Link to={enlace}>{nombre}</Link> : nombre}
         </h3>
 
         <p className="product-card__price">{formatoPrecio(precio)}</p>
@@ -118,3 +132,4 @@ function ProductCard({ producto, onToggleFavorito, onAgregarCarrito }: Props) {
 }
 
 export default ProductCard;
+

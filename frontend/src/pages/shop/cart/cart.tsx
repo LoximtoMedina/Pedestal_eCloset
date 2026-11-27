@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router";
-import CartItem from "../../../components/CartItems/cartItem";
+import CartItem from "../../../components/CartItems/CartItem";
 import { useCart } from "../../../context/CartContext";
 import {
   IconoCaja,

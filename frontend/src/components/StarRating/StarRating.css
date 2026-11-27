@@ -1,0 +1,18 @@
+.star-rating {
+    display: inline-flex;
+    gap: 2px;
+    line-height: 1;
+}
+
+.star-rating__star {
+    display: inline-block;
+}
+
+/* la estrella se pinta con un degradado: dorado hasta --relleno y gris el resto */
+.star-rating__star::before {
+    content: "★";
+    background: linear-gradient(90deg, #d9a441 var(--relleno), #dcd7cf var(--relleno));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
