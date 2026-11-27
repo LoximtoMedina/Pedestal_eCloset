@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -60,10 +61,21 @@ public sealed class AuthService
                 "Ya existe una cuenta activa con ese correo electrónico o nombre de usuario.");
         }
 
-        var person = await _db.People
-            .FirstOrDefaultAsync(p =>
-                (p.DocumentId != null && p.DocumentId == docNorm) ||
-                (p.Email != null && p.Email.ToLower() == emailNorm), ct);
+        var personByDoc = await _db.People
+            .FirstOrDefaultAsync(p => p.DocumentId != null && p.DocumentId == docNorm, ct);
+
+        var personByEmail = await _db.People
+            .FirstOrDefaultAsync(p => p.Email != null && p.Email.ToLower() == emailNorm, ct);
+
+        if (personByDoc is not null && personByEmail is not null && personByDoc.Id != personByEmail.Id)
+        {
+            return ServiceResult<AuthResponseDto>.Fail(
+                409,
+                "Conflicto de identidad",
+                "El documento y el correo pertenecen a registros de persona distintos.");
+        }
+
+        var person = personByDoc ?? personByEmail;
 
         if (person is not null)
         {
@@ -254,13 +266,19 @@ public sealed class AuthService
         account.LastLoginDate = now;
         account.UpdatedAt = now;
 
+        var auditPayload = JsonSerializer.Serialize(new
+        {
+            accountId = account.Id,
+            username = account.Username
+        });
+
         _db.AuditLogs.Add(new AuditLog
         {
             TableName = nameof(Account),
             ActionType = "LOGIN",
             RecordId = account.Id.ToString(),
             OldValues = null,
-            NewValues = $"{{\"accountId\":{account.Id},\"username\":\"{account.Username}\"}}",
+            NewValues = auditPayload,
             AuditDate = now,
             AccountId = account.Id
         });
@@ -435,10 +453,10 @@ public sealed class AuthService
 
     private static string ResolveInitialRoute(IReadOnlyCollection<string> roles)
     {
-        if (roles.Contains("Admin")) return "/admin";
-        if (roles.Contains("National Manager")) return "/dashboards/national";
+        if (roles.Contains("Admin")) return "/admin/roles";
+        if (roles.Contains("NationalManager")) return "/dashboards/national";
         if (roles.Contains("AreaManager")) return "/dashboards/area";
         if (roles.Contains("StoreSupervisor") || roles.Contains("Staff")) return "/pos";
-        return "/shop";
+        return "/shop/catalog";
     }
 }
