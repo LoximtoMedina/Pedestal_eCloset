@@ -1,0 +1,35 @@
+/* Contenedor exterior que da margen respirable dentro del <main> de DashboardLayout */
+.areaDashboardContainer {
+  padding: 1rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estructura interna estándar para el contenido de cada panel */
+.dashboardPaneSection {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+/* Área visual donde se montará el componente de gráfico */
+.dashboardChartPlaceholder {
+  min-height: 200px;
+  border-radius: var(--mantine-radius-md);
+  border: 1px dashed light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-3));
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tarjeta interna para alertas dentro de los paneles */
+.dashboardAlertCard {
+  padding: 0.75rem 1rem;
+  border-radius: var(--mantine-radius-sm);
+  border-left: 3px solid var(--mantine-color-red-6);
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+}

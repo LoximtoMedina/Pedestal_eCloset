@@ -14,12 +14,14 @@ export interface SessionUser {
 }
 
 export interface LoginMockPayload {
-  identifier?: string; // Puede ser correo o nombreUsuario ingresado en Login
+  identifier?: string;
   nombreUsuario?: string;
   correo?: string;
   primerNombre?: string;
   primerApellido?: string;
   avatarSrc?: string;
+  role?: string;
+  permissions?: string[];
 }
 
 export interface AuthContextValue {
@@ -39,7 +41,7 @@ const DEFAULT_MOCK_USER: SessionUser = {
   primerNombre: 'Carlos',
   primerApellido: 'Mejía',
   avatarSrc: '',
-  role: 'admin',
+  role: 'area_manager',
   permissions: ['dashboard.view', 'ecloset.access'],
 };
 
@@ -96,6 +98,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       primerNombre: payload?.primerNombre?.trim() || DEFAULT_MOCK_USER.primerNombre,
       primerApellido: payload?.primerApellido?.trim() || DEFAULT_MOCK_USER.primerApellido,
       avatarSrc: payload?.avatarSrc ?? DEFAULT_MOCK_USER.avatarSrc,
+      role: payload?.role ?? DEFAULT_MOCK_USER.role,
+      permissions: payload?.permissions ?? DEFAULT_MOCK_USER.permissions,
     };
 
     setUser(nextUser);
