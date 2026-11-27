@@ -3,7 +3,7 @@
    ========================================================================== */
 import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router';
-import { useAuth } from '../../context/authContext';
+import { useAuth } from '../../hooks/authHook';
 import Header, { type HeaderNavItem, type HeaderSubItem } from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import { type LayoutNavOutletContext } from '../../hooks/useLayoutNavItems';

@@ -1,5 +1,4 @@
 import type { Product } from "../components/ProductCard/ProductCard";
-import type { Review } from "../components/ProductTabs/ProductTabs";
 
 /*
   Datos de EJEMPLO. Este archivo hace el papel de la base de datos mientras no hay API:
@@ -16,7 +15,6 @@ export type ProductDetailData = Product & {
   shipping: string; // pestaña Envíos y devoluciones
   rating: number; // promedio de reseñas
   reviewCount: number;
-  reviews: Review[];
   images: string[]; // fotos de la galería; vacío = recuadros "IMG"
   soldOut: string[]; // combinaciones sin stock, con formato "talla|color" (ej. "XL|Beige")
 };
@@ -36,12 +34,6 @@ export const PRODUCTS: Product[] = [
 
 /* ---------- textos de ejemplo del detalle ---------- */
 
-const SAMPLE_REVIEWS: Review[] = [
-  { author: "Camila R.", rating: 5, date: "12 nov 2026", comment: "Muy cómoda y la tela se siente de buena calidad." },
-  { author: "Daniel M.", rating: 5, date: "3 nov 2026", comment: "Queda tal como en las fotos. La talla M me quedó perfecta." },
-  { author: "Andrea P.", rating: 4, date: "28 oct 2026", comment: "Me gustó mucho, solo que tardó un poco más de lo esperado en llegar." },
-];
-
 const SHIPPING_AND_RETURNS =
   "Envíos a toda Honduras: recibe tu pedido en 2 a 5 días hábiles. " +
   "(Texto de ejemplo: define aquí la política de devoluciones y cambios de Pedestal.)";
@@ -58,7 +50,6 @@ const genericDetail = (product: Product): ExtraDetail => ({
   shipping: SHIPPING_AND_RETURNS,
   rating: 4.6,
   reviewCount: 12,
-  reviews: SAMPLE_REVIEWS,
   images: [],
   soldOut: [],
 });

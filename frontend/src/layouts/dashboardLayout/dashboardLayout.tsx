@@ -5,7 +5,7 @@ import { Outlet, useNavigate } from 'react-router';
 import logo from '../../assets/PedestalLogo.svg';
 import '../../components/header/header.css';
 import SideBar, { type SideBarSection } from '../../components/sideBar/sideBar';
-import { useAuth } from '../../context/authContext';
+import { useAuth } from '../../hooks/authHook';
 import type { LayoutNavOutletContext } from '../../hooks/useLayoutNavItems';
 import { useViewportType } from '../../hooks/useViewportType';
 import './dashboardLayout.css';

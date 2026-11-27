@@ -2,7 +2,7 @@
    1. DEPENDENCIAS DE ENRUTAMIENTO Y CONTEXTO DE SESIÓN
    ========================================================================== */
 import { Navigate, Outlet } from 'react-router';
-import { useAuth } from '../context/authContext';
+import { useAuth } from '../hooks/authHook';
 
 /* ==========================================================================
    2. TIPOS Y CONTRATO DE PROPS

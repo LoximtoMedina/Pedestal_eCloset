@@ -21,11 +21,9 @@ import {
   type SessionUser,
 } from './authContextInstance';
 
+// El hook useAuth y getDashboardRoute viven en hooks/authHook.ts para que este archivo
+// solo exporte el provider (si no, el recargado en caliente de Vite se queja).
 export type { AuthContextValue, SessionUser };
-
-// El hook useAuth y la ruta por rol viven en hooks/authHook.ts; se vuelven a exportar
-// aquí para que las páginas los importen siempre desde el mismo archivo.
-export { getDashboardRoute, useAuth } from '../hooks/authHook';
 
 interface AuthProviderProps {
   children: ReactNode;

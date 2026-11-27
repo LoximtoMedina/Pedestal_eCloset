@@ -2,7 +2,7 @@
    1. DEPENDENCIAS DE ENRUTAMIENTO Y CONTEXTO DE SESIÓN
    ========================================================================== */
 import { Routes, Route, Navigate, useNavigate } from 'react-router';
-import { useAuth, getDashboardRoute } from '../context/authContext';
+import { useAuth, getDashboardRoute } from '../hooks/authHook';
 
 /* 
 ==========================================================================

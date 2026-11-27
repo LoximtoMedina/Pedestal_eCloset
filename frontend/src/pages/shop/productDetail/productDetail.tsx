@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import {
   IconArrowRight,
-  IconChevronRight,
+  IconChevronDown,
+  IconChevronUp,
   IconCreditCard,
   IconHeadset,
   IconMinus,
@@ -11,11 +12,9 @@ import {
   IconShieldCheck,
   IconShoppingBag,
   IconTruckDelivery,
+  IconZoomIn,
 } from "@tabler/icons-react";
 import ProductCard from "../../../components/ProductCard/ProductCard";
-import ProductGallery from "../../../components/ProductGallery/ProductGallery";
-import ProductTabs from "../../../components/ProductTabs/ProductTabs";
-import StarRating from "../../../components/StarRating/StarRating";
 import { useCart } from "../../../context/CartContext";
 import {
   getProductDetail,
@@ -55,6 +54,108 @@ const BENEFITS = [
     text: "Tarjeta, transferencia o contra entrega.",
   },
 ];
+
+/* ===================================
+   PIEZAS DE LA PÁGINA
+=================================== */
+
+/*
+  Galería: miniaturas a la izquierda y foto grande a la derecha.
+
+  ┌────┬──────────────────────┐
+  │ ▲  │                      │
+  │ 1  │      foto grande     │
+  │ 2  │                  🔍  │
+  │ ▼  │                      │
+  └────┴──────────────────────┘
+*/
+function Gallery({ images, name }: { images: string[]; name: string }) {
+  // si el producto todavía no tiene fotos, se muestran cuatro espacios vacíos
+  const photos: (string | null)[] = images.length > 0 ? images : [null, null, null, null];
+
+  const [current, setCurrent] = useState(0);
+
+  // mueve la foto grande una posición, dando la vuelta al llegar al final
+  const move = (delta: number) =>
+    setCurrent((current + delta + photos.length) % photos.length);
+
+  return (
+    <div className="gallery">
+      {/* columna de miniaturas */}
+      <div className="gallery__thumbs">
+        <button
+          type="button"
+          className="gallery__arrow"
+          aria-label="Foto anterior"
+          onClick={() => move(-1)}
+        >
+          <IconChevronUp size={18} stroke={1.8} />
+        </button>
+
+        {photos.map((photo, index) => (
+          <button
+            type="button"
+            key={index}
+            className={`gallery__thumb ${index === current ? "is-active" : ""}`}
+            aria-label={`Ver foto ${index + 1}`}
+            aria-current={index === current}
+            onClick={() => setCurrent(index)}
+          >
+            {photo ? <img src={photo} alt="" /> : <span>{index + 1}</span>}
+          </button>
+        ))}
+
+        <button
+          type="button"
+          className="gallery__arrow"
+          aria-label="Foto siguiente"
+          onClick={() => move(1)}
+        >
+          <IconChevronDown size={18} stroke={1.8} />
+        </button>
+      </div>
+
+      {/* foto grande + botón de zoom */}
+      <div className="gallery__main">
+        {photos[current] ? (
+          <img src={photos[current]!} alt={`${name}, foto ${current + 1}`} />
+        ) : (
+          <span>IMG</span>
+        )}
+
+        {/* TODO: abrir la foto en grande */}
+        <button type="button" className="gallery__zoom" aria-label="Ampliar imagen">
+          <IconZoomIn size={20} stroke={1.8} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/** Cinco estrellas que se rellenan en proporción al valor (4.8 pinta casi 5). */
+function StarRating({ value, size = 16 }: { value: number; size?: number }) {
+  return (
+    <span
+      className="star-rating"
+      role="img"
+      aria-label={`${value} de 5 estrellas`}
+      style={{ fontSize: size }}
+    >
+      {[0, 1, 2, 3, 4].map((index) => {
+        // cuánto se rellena esta estrella: 1 = llena, 0.5 = media, 0 = vacía
+        const fill = Math.max(0, Math.min(1, value - index)) * 100;
+
+        return (
+          <span
+            key={index}
+            className="star-rating__star"
+            style={{ "--relleno": `${fill}%` } as CSSProperties}
+          />
+        );
+      })}
+    </span>
+  );
+}
 
 /* ===================================
    CONTENIDO DEL PRODUCTO
@@ -133,24 +234,9 @@ function ProductDetailView({ product }: { product: ProductDetailData }) {
   return (
     <main className="detail-page">
       <div className="detail-container">
-        {/* MIGAS DE PAN */}
-        <nav className="detail-breadcrumb" aria-label="Ruta de navegación">
-          <Link to="/">Inicio</Link>
-          <IconChevronRight size={14} stroke={1.8} />
-          <Link to="/shop/catalog">Catálogo</Link>
-          <IconChevronRight size={14} stroke={1.8} />
-          {product.category && (
-            <>
-              <span>{product.category}</span>
-              <IconChevronRight size={14} stroke={1.8} />
-            </>
-          )}
-          <span aria-current="page">{product.name}</span>
-        </nav>
-
         <section className="detail-layout">
           {/* ---------- columna izquierda: galería de fotos ---------- */}
-          <ProductGallery images={product.images} name={product.name} />
+          <Gallery images={product.images} name={product.name} />
 
           {/* ---------- columna central: ficha y compra ---------- */}
           <div className="detail-info">
@@ -299,16 +385,19 @@ function ProductDetailView({ product }: { product: ProductDetailData }) {
           </aside>
         </section>
 
-        {/* PESTAÑAS */}
-        <ProductTabs
-          description={product.description}
-          features={product.features}
-          materials={product.materials}
-          shipping={product.shipping}
-          rating={product.rating}
-          reviewCount={product.reviewCount}
-          reviews={product.reviews}
-        />
+        {/* DESCRIPCIÓN */}
+        <section className="detail-description">
+          <h2>Descripción</h2>
+          <p>{product.description}</p>
+
+          {product.features.length > 0 && (
+            <ul>
+              {product.features.map((feature) => (
+                <li key={feature}>{feature}</li>
+              ))}
+            </ul>
+          )}
+        </section>
 
         {/* RELACIONADOS */}
         <section className="detail-related">
