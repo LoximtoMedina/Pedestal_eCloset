@@ -1,0 +1,11 @@
+@Pedestal.Api_HostAddress = http://localhost:5194
+
+GET {{Pedestal.Api_HostAddress}}/openapi/v1.json
+Accept: application/json
+
+###
+
+GET {{Pedestal.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

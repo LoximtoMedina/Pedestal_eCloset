@@ -1,0 +1,67 @@
+/* Contenedor principal del Splitter */
+.pedestalSplitter {
+  width: 100%;
+  border-radius: var(--mantine-radius-md);
+  border: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+  overflow: hidden;
+}
+
+/* Variante principal dentro del <main> del DashboardLayout */
+.pedestalSplitter--full {
+  height: calc(100vh - 2rem);
+  min-height: 520px;
+}
+
+/* Variante para cuando metes un Splitter dentro de otro Splitter */
+.pedestalSplitter--nested {
+  height: 100%;
+  min-height: 100%;
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+/* En móvil le damos altura automática para que los paneles apilados respiren */
+@media (max-width: 768px) {
+  .pedestalSplitter--full {
+    height: auto;
+    min-height: 75vh;
+  }
+}
+
+/* Cada panel (caja) donde van gráficos, tarjetas o tablas */
+.pedestalSplitterPane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+}
+
+.pedestalSplitterPane--padded {
+  padding: 1.25rem;
+}
+
+.pedestalSplitterPane--scrollable {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Barra separadora entre paneles */
+.pedestalSplitterSeparator {
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+  transition: background-color 150ms ease;
+}
+
+.pedestalSplitterSeparator:hover,
+.pedestalSplitterSeparator[data-dragging] {
+  background-color: var(--mantine-color-red-6);
+}
+
+/* Agarradera (handle) central del separador */
+.pedestalSplitterHandle {
+  border: 1px solid light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-3));
+  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+  border-radius: var(--mantine-radius-sm);
+}
